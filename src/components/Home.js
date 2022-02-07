@@ -1,5 +1,6 @@
 import React from 'react';
-import '../css/stackdev.css'
+import { Link } from 'react-router-dom';
+import '../css/homepage.css'
 import logo from '../images/logo.svg'
 import reactIcon from '../images/react-original-wordmark.svg'
 import htmlIcon from '../images/html5-original-wordmark.svg'
@@ -30,14 +31,31 @@ const Home = () => {
           >With your help, we’re working together to build a library of detailed answers to every question about programming. <strong>It’s built and run by you.</strong>
         </p>
 
-        <button id="exploreBttn" 
+        <button  
           className="standardBttn">
-          Explore Questions
+          <Link to={`/questions`}> Explore Questions</Link>
         </button>
       </div>
       
       <div className="formSpaceRight">
-        <p> <a href="">Log in</a> </p>
+
+        <ul className='newUser'>
+          <li className="floatLog"> <a className="floatLog" href="">Log in</a></li>
+
+        <li><form action="/dashboard" method="POST">
+
+          <input className="formSpaceInput" placeholder="Your Display Name"  type="text" name="username" id='username' />
+
+          <input className="formSpaceInput" placeholder="E-mail"  type="text" name="email" id='email'/>
+
+          <input className="formSpaceInput" placeholder="Password"  type="text" name="password" id='password'/>
+
+          <input className="formSpaceInput"placeholder="Confirm Password"  type="text" name="cPassword" id='cPassword'/>
+           
+          <input className="newUserBttn" type="submit" id="submituser" value='Sign Up Now!'/>
+          
+        </form></li>
+        </ul>
 
          
       </div>

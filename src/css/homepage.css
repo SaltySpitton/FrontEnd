@@ -14,14 +14,40 @@ h1 {
     margin-bottom: 4rem;
 }
 
+
+.homeIcons {
+  margin-bottom: 3rem;
+}
+
+.newUserBttn{
+  
+    background-color: Transparent;
+    border: 2px solid white;
+    color: white;
+    cursor:pointer;
+    height: 2.5rem;
+    width: 10.5rem;
+    border-radius: 5px;
+    
+}
+
+/* trying to get login button to go right */
+.floatLog{
+  
+}
+
+.formSpaceInput{
+  height: 1.2rem;
+}
+
 .homeIcon {
-    margin-left: 2rem;!
+    margin-left: 5rem;
     width:7rem;
     margin-bottom: 1rem;
 }
 
 .listIcon {
-    margin-left: 2rem;
+    margin-left: 5rem;
     width:4rem;
   
 }
@@ -81,7 +107,7 @@ table, th, td {
 }
 
   .homeLeft {
-    margin-left: 2rem;
+    margin-left: 5rem;
     grid-column: 1/ span 2;
    
   }
@@ -89,9 +115,24 @@ table, th, td {
   .homeRight {
     grid-row: 1;
     grid-column: 3;
-  
+    }
+
+  .newUser {
+   position: absolute;
+   width:70px;
+   text-align: center;
+   margin: 3rem 3rem 3rem 3rem;
+   
   }
 
+  ul{
+    list-style-type: none;
+  }
+
+  .newUser input{
+  
+    margin-bottom: 1.5rem;
+  }
 
   .formSpace {
     display: grid;
@@ -102,7 +143,8 @@ table, th, td {
 }
 
   .formSpaceLeft {
-    margin-left: 2rem;
+    margin-left: 5rem;
+    margin-right: 3rem;
     grid-column: 1/ span 2;
    
   }
@@ -112,11 +154,10 @@ table, th, td {
     grid-column: 3/ span 2;
     background-color: #292929;
     color: white;
+    margin-right: 1rem;
   }
 
   .formSpaceRight a{
-
     float: right;
     color: white;
-    font-size: x-large;
   }
