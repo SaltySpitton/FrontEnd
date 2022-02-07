@@ -40,7 +40,7 @@ const Home = () => {
       <div className="formSpaceRight">
 
         <ul className='newUser'>
-          <li className="floatLog"> <a className="floatLog" href="">Log in</a></li>
+          <li className="floatLog"> <Link to={'/login'}>Log in</Link></li>
 
         <li><form action="/dashboard" method="POST">
 
@@ -105,9 +105,7 @@ const Home = () => {
       
     </div>
     
-    
-    <br />
-
+        <br />
   </>)
 }
 
