@@ -28,7 +28,7 @@ const Layout = ({children}) => {
                             MDN</a>
                         </td>
 
-                        <td> <a href="www.andrewurquhart.com" target="_blank">
+                        <td> <a href="http://www.andrewurquhart.com" target="_blank">
                             Andrew</a>
                         </td>
                     </tr>
