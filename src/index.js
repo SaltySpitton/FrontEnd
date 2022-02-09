@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router
 } from "react-router-dom"
 import Layout from './components/Layout'
+import { StyledEngineProvider } from '@mui/material/styles';
 
 ReactDOM.render(
   <React.StrictMode>
