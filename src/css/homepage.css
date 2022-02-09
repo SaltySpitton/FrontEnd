@@ -10,6 +10,12 @@ h1 {
     line-height: 45px;
 }
 
+.container {
+  width: 1000px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
 .formSpace {
     margin-bottom: 4rem;
 }
@@ -17,6 +23,10 @@ h1 {
 
 .homeIcons {
   margin-bottom: 3rem;
+}
+
+.homeIcons img{
+  width: 5rem;
 }
 
 .newUserBttn{
