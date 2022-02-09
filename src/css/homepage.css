@@ -1,0 +1,163 @@
+
+body {    
+    font-family: "Roboto Mono", "sans";
+    
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 34px;
+    line-height: 45px;
+}
+
+.formSpace {
+    margin-bottom: 4rem;
+}
+
+
+.homeIcons {
+  margin-bottom: 3rem;
+}
+
+.newUserBttn{
+  
+    background-color: Transparent;
+    border: 2px solid white;
+    color: white;
+    cursor:pointer;
+    height: 2.5rem;
+    width: 10.5rem;
+    border-radius: 5px;
+    
+}
+
+/* trying to get login button to go right */
+.floatLog{
+  
+}
+
+.formSpaceInput{
+  height: 1.2rem;
+}
+
+.homeIcon {
+    margin-left: 5rem;
+    width:7rem;
+    margin-bottom: 1rem;
+}
+
+.listIcon {
+    margin-left: 5rem;
+    width:4rem;
+  
+}
+
+.standardBttn {
+
+    width: 285px;
+    height: 64px;
+    font-family: "Roboto Mono";
+    font-size: 16px;
+    line-height: 21px;
+    align-items: center;
+    text-align: center;
+   /* White */
+
+    background: #FFFFFF;
+    /* Black */
+
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    /* Shadow/Default */
+
+    box-shadow: 0px 2px 0px #000000;
+    border-radius: 8px;
+}
+
+table, th, td {
+    padding: 5px;
+  }
+
+  th{
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 40px;
+    text-align: center;
+    color: #8D8F8A;
+  }
+
+ td {
+      text-align: center;
+      color: #8D8F8A;
+      font-size: 18px;
+      line-height: 24px;
+  }
+
+  table {
+    width: 100%;
+    background-color:#292929 ;
+  }
+
+
+  .homeQuestions {
+    display: grid;
+    grid-template-rows:  1fr .1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+
+}
+
+  .homeLeft {
+    margin-left: 5rem;
+    grid-column: 1/ span 2;
+   
+  }
+
+  .homeRight {
+    grid-row: 1;
+    grid-column: 3;
+    }
+
+  .newUser {
+   position: absolute;
+   width:70px;
+   text-align: center;
+   margin: 3rem 3rem 3rem 3rem;
+   
+  }
+
+  ul{
+    list-style-type: none;
+  }
+
+  .newUser input{
+  
+    margin-bottom: 1.5rem;
+  }
+
+  .formSpace {
+    display: grid;
+    grid-template-rows:  1fr .1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    padding-left: .5rem;
+
+}
+
+  .formSpaceLeft {
+    margin-left: 5rem;
+    margin-right: 3rem;
+    grid-column: 1/ span 2;
+   
+  }
+
+  .formSpaceRight{
+    grid-row: 1;
+    grid-column: 3/ span 2;
+    background-color: #292929;
+    color: white;
+    margin-right: 1rem;
+  }
+
+  .formSpaceRight a{
+    float: right;
+    color: white;
+  }
