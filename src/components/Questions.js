@@ -9,7 +9,8 @@ const Questions = () => {
   
     <h1>Questions</h1>
     <Askquestion/>
-    
+   
+    <br></br>
 
   </>)
 };

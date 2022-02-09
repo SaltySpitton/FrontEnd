@@ -48,8 +48,9 @@ function FormRow() {
           
         <Item sx={{
           boxShadow: 0,
-          textAlign: 'left' }}>
+          textAlign: 'left' }}> <strong>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut cumque, harum vel at ipsum dolores saepe adipisci incidunt eligendi mollitia, eum, totam praesentium! Molestiae ullam sint illo animi, tenetur voluptatem.
+          </strong>
         </Item>
 
         <Grid lg={2} sx={{
@@ -69,30 +70,22 @@ function FormRow() {
       </Grid>
 
 
-      <Grid container direction="column"
-        item lg={1} >
+      <Grid container direction="column-reverse"
+        item lg={2} >
         <Grid>
           <Item sx={{
             boxShadow: 0, }}
-            >Date
-        </Item>
+            >User- goes here
+          </Item>
         </Grid>
-        
+
         <Grid>
           <Item sx={{
             boxShadow: 0, }}>
-            user
+            Date - goes here
           </Item>
         </Grid>
-        
-
-        </Grid>
-
-        
-
-      
-          
-    
+      </Grid>
 
     </React.Fragment>
 
@@ -102,8 +95,8 @@ function FormRow() {
 export default function Askquestion() {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={1} >
-        <Grid container item spacing={1} 
+      <Grid container spacing={2} >
+        <Grid container item spacing={2} 
           sx={{
           boxShadow: 5,
           border: 2,
