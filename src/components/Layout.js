@@ -4,7 +4,7 @@ import footLogo from '../images/foot-t-logo.png'
 
 const Layout = ({children}) => {
 
-  return( <> 
+  return( <div className='container'>  
 
         { children }
 
@@ -65,7 +65,7 @@ const Layout = ({children}) => {
                </tbody>
            </table>
         </footer>
-    </>)
+    </div>)
 }
 
 export default Layout;
