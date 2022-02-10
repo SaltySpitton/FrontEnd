@@ -1,11 +1,13 @@
 import React from 'react';
+import AskQuestion from './AskQuestion';
 
 const Dashboard = () => {
 
     
   return( <>
   
-    <p>Dashboard</p>
+    {/* <p>Dashboard</p> */}
+    <AskQuestion />
   </>)
 };
 

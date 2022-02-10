@@ -1,11 +1,17 @@
 import React from 'react';
+import Askquestion from './Askquestion';
+import '../css/Questions.css'
 
 const Questions = () => {
 
     
   return( <>
   
-    <p>Questions</p>
+    <h1>Questions</h1>
+    <Askquestion/>
+   
+    <br></br>
+
   </>)
 };
 
