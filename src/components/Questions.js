@@ -1,5 +1,5 @@
 import React from 'react';
-import Askquestion from './Askquestion';
+import SummaryQuestion from './SummaryQuestion';
 import '../css/Questions.css'
 
 const Questions = () => {
@@ -8,7 +8,7 @@ const Questions = () => {
   return( <>
   
     <h1>Questions</h1>
-    <Askquestion/>
+    <SummaryQuestion />
    
     <br></br>
 

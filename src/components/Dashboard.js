@@ -1,13 +1,15 @@
 import React from 'react';
-import AskQuestion from './AskQuestion';
+import QuestionForm from './QuestionForm'
 
 const Dashboard = () => {
 
     
   return( <>
   
-    {/* <p>Dashboard</p> */}
-    <AskQuestion />
+    <p>Dashboard</p>
+
+
+    <QuestionForm /> 
   </>)
 };
 
