@@ -11,10 +11,13 @@ import cplusIcon from '../images/cplusplus-original.svg'
 import qaBubbles from '../images/QA-bubbles.svg'
 import checkMark from "../images/Vector 1.png"
 import upvoted from '../images/votes-up.svg'
+import Footer from './Footer';
 
 
 const Home = () => {
-  return(<>
+  return(
+    <div className="container">
+
 
     <div className="formSpace">
       <div className="formSpaceLeft">
@@ -102,11 +105,13 @@ const Home = () => {
         <img className="homeRight" src={qaBubbles} alt="Q&A bubble picture" />
 
       </div>
-      
+     
     </div>
-    
-        <br />
-  </>)
+  
+       
+
+     
+    </div>)
 }
 
 export default Home;
