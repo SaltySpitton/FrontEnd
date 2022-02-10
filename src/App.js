@@ -4,6 +4,7 @@ import Questions from './components/Questions';
 import Answers from  './components/Answers';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
+import UserDataProfile from './components/UserDataProfile';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 
@@ -46,6 +47,7 @@ function App() {
         <Route path='/Answers' element={<Answers/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/login' element={<Login/>}/>
+        <Route path='/userdata' element={<UserDataProfile/>}/>
       
       </Routes>
       </ThemeProvider>
