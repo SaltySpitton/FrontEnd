@@ -22,7 +22,6 @@ li{
     margin-bottom: 1rem;
 }
 
-
 a{
 color: #8D8F8A;
 text-decoration: none;

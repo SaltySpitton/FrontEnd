@@ -1,4 +1,5 @@
-import {Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react';
 import Home from './components/Home';
 import Questions from './components/Questions';
 import Answers from  './components/Answers';
@@ -6,7 +7,7 @@ import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import UserDataProfile from './components/UserDataProfile';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import Axios from "axios";
 
 //link to color picker
 //https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=42A5F5&secondary.color=3F51B5
@@ -24,8 +25,7 @@ const theme = createTheme({
             dark: '#000000',
           },
         
-    },
-
+  },
     typography: {
       fontFamily: [
         'Roboto Mono',
@@ -37,6 +37,23 @@ const theme = createTheme({
 
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUser = () => {
+      Axios({
+        method: "GET",
+        withCredentials: true,
+        url: "http://localhost:4200/users",
+      }).then((res) => {
+        setUser(res.data)
+        console.log(res.data)
+      })
+    }
+    getUser();
+  }, []);
+
+
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -44,7 +61,7 @@ function App() {
 
         <Route path='/' element={<Home/>}/>
         <Route path='/questions' element={<Questions/>}/>
-        <Route path='/Answers' element={<Answers/>}/>
+          <Route path='/answers' element={<Answers />} />
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/userdata' element={<UserDataProfile/>}/>

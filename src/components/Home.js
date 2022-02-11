@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { LinkButton } from '../css/Button.styled';
 import '../css/homepage.css'
 import logo from '../images/logo.svg'
 import reactIcon from '../images/react-original-wordmark.svg'
@@ -11,33 +12,22 @@ import cplusIcon from '../images/cplusplus-original.svg'
 import qaBubbles from '../images/QA-bubbles.svg'
 import checkMark from "../images/Vector 1.png"
 import upvoted from '../images/votes-up.svg'
-import Footer from './Footer';
 
 
 const Home = () => {
   return(
     <div className="container">
-
-
     <div className="formSpace">
       <div className="formSpaceLeft">
-        <h1>
-          <img className="mainlogo" 
-          src={logo} alt="Stack dev logo" /> 
-        </h1>
-
+          <img className="mainlogo" src={logo} alt="StackDevHelp logo" /> 
         <h1> 
             Q&A Without Distractions
         </h1>
         
-        <p
-          >With your help, we’re working together to build a library of detailed answers to every question about programming. <strong>It’s built and run by you.</strong>
+          <p>With your help, we're working together to build a library of detailed answers to every question about programming. <strong>It's built and run by you.</strong>
         </p>
 
-        <button  
-          className="standardBttn">
-          <Link to={`/questions`}> Explore Questions</Link>
-        </button>
+          <LinkButton m="1rem 0" p="1rem 3rem" to={`/questions`}> Explore Questions</LinkButton>
       </div>
       
       <div className="formSpaceRight">
@@ -102,15 +92,9 @@ const Home = () => {
         </p>
       </div>
       <div className="homeRight">
-        <img className="homeRight" src={qaBubbles} alt="Q&A bubble picture" />
-
+          <img className="homeRight" src={qaBubbles} alt="Q&A bubble picture" />
+        </div>   
       </div>
-     
-    </div>
-  
-       
-
-     
     </div>)
 }
 

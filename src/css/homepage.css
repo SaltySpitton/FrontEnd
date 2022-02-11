@@ -12,6 +12,9 @@ h1 {
     line-height: 45px;
 }
 
+strong{
+  font-weight: 900;
+}
 .container {
   width: 1000px;
   max-width: 100%;

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
-import { AppButton } from '../css/Button.styled'
+import { LinkButton } from '../css/Button.styled'
 import logo from '../images/logo.svg'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -9,8 +9,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Axios from "axios";
 
 
 const Nav = styled.nav`
@@ -26,18 +26,17 @@ a {
     color: #292929;
     font-weight: 700;
 }
-
 .nav-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 `
-
 const ImgTag = styled.img`
 height: 2rem;
 margin: 0 0.5rem;
 `
+//test user -------
 const userInfo = {
     id: "prof1",
     displayName: "spyBoi",
@@ -45,6 +44,24 @@ const userInfo = {
 }
 
 export default function Navigation() {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const getUser = () => {
+            Axios({
+                method: "GET",
+                withCredentials: true,
+                url: "http://localhost:4200/users",
+            }).then((res) => {
+                setUser(res.data)
+                console.log(res.data)
+            })
+        }
+        getUser();
+    }, []);
+
+
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -75,34 +92,40 @@ export default function Navigation() {
             />
             <Link to="/tags">Tags</Link>
             <div className="nav-container">
-                <ImgTag src={userInfo.avatar} />
-                <div>
-                    <Button
-                        id="basic-button"
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                    >
-                        {userInfo.displayName}
-                    </Button>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Help</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
-                </div>
-                {/* if user is not logged in */}
-                {/* <AppButton>Login</AppButton>
-            <AppButton bg="hsla(90, 52%, 58%, 80%)">SignUp</AppButton> */}
+                {user ?
+                    (<>
+                        <ImgTag src={userInfo.avatar} />
+                        <div>
+                            <Button
+                                id="basic-button"
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                            >
+                                {user.username}
+                            </Button>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem onClick={handleClose}>My account</MenuItem>
+                                <MenuItem onClick={handleClose}>Help</MenuItem>
+                                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                            </Menu>
+                        </div>
+                    </>)
+                    :
+                    <>
+                        <LinkButton to="/login">Login</LinkButton>
+                        <LinkButton to="/" bg="hsla(90, 52%, 58%, 80%)">SignUp</LinkButton>
+                    </>
+                }               
             </div>
 
 
