@@ -1,6 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react'
 import { LinkButton } from '../css/Button.styled';
+import { FormInput } from '../css/Form.styled';
+import { AppButton } from '../css/Button.styled';
+import UserContext from "./UserContext";
+import Axios from 'axios'
 import '../css/homepage.css'
 import logo from '../images/logo.svg'
 import reactIcon from '../images/react-original-wordmark.svg'
@@ -15,10 +20,12 @@ import upvoted from '../images/votes-up.svg'
 
 
 const Home = () => {
-  return(
+  const { register, setRegisterUsername, setRegisterEmail, setRegisterPassword } = useContext(UserContext)
+
+  return (
     <div className="container">
-    <div className="formSpace">
-      <div className="formSpaceLeft">
+      <div className="hero-section">
+        <div className="hero-left">
           <img className="mainlogo" src={logo} alt="StackDevHelp logo" /> 
         <h1> 
             Q&A Without Distractions
@@ -27,43 +34,66 @@ const Home = () => {
           <p>With your help, we're working together to build a library of detailed answers to every question about programming. <strong>It's built and run by you.</strong>
         </p>
 
-          <LinkButton m="1rem 0" p="1rem 3rem" to={`/questions`}> Explore Questions</LinkButton>
+          <LinkButton m="2rem 0" p="1rem 3rem" to={`/questions`}> Explore Questions</LinkButton>
       </div>
       
-      <div className="formSpaceRight">
+        <div className="register-form">
+          {/* <div className="login-link"> */}
+          <Link to={'/login'}>Log in</Link>
+          {/* </div> */}
 
-        <ul className='newUser'>
-          <li className="floatLog"> <Link to={'/login'}>Log in</Link></li>
+          <FormInput
+            width={"60%"}
+            className="formSpaceInput"
+            placeholder="Your Display Name"
+            type="text" name="username"
+            id='username'
+            onChange={(e) => setRegisterUsername(e.target.value)}
+          />
 
-        <li><form action="/dashboard" method="POST">
+          <FormInput
+            width={"60%"}
+            className="formSpaceInput"
+            placeholder="Email"
+            type="text"
+            name="email"
+            id='email'
+            onChange={(e) => setRegisterEmail(e.target.value)}
+          />
 
-          <input className="formSpaceInput" placeholder="Your Display Name"  type="text" name="username" id='username' />
+          <FormInput
+            width={"60%"}
+            className="formSpaceInput"
+            placeholder="Password"
+            type="password"
+            name="password"
+            id='password'
+            onChange={(e) => setRegisterPassword(e.target.value)}
+          />
 
-          <input className="formSpaceInput" placeholder="E-mail"  type="text" name="email" id='email'/>
+          {/* <FormInput
+            width={"60%"} className="formSpaceInput" placeholder="Confirm Password" type="text" name="cPassword" id='cPassword' /> */}
 
-          <input className="formSpaceInput" placeholder="Password"  type="text" name="password" id='password'/>
-
-          <input className="formSpaceInput"placeholder="Confirm Password"  type="text" name="cPassword" id='cPassword'/>
-           
-          <input className="newUserBttn" type="submit" id="submituser" value='Sign Up Now!'/>
-          
-        </form></li>
-        </ul>
-
-         
+          <AppButton
+            bg="#292929"
+            bcolor="#fff"
+            color="#fff"
+            className="newUserBttn"
+            type="submit"
+            id="submituser"
+            onClick={register}
+          >Sign Up Now!</AppButton>
+        </div>
       </div>
-    </div>
-   
-
-    <div className="homeIcons">
+      <div className="homeIcons">
       <img className='homeIcon' src={reactIcon} alt="React Icon" />
       <img className='homeIcon' src={htmlIcon} alt="HTML Icon" />
       <img className='homeIcon' src={cssIcon} alt="CSS Icon" />
       <img className='homeIcon' src={javaIcon} alt="Java Icon" />
       <img className='homeIcon' src={djangoIcon} alt="Django Icon" />
       <img className='homeIcon' src={cplusIcon} alt="C++ Icon" />
-    </div>
-   <div className="homeQuestions">
+      </div>
+      <div className="homeQuestions">
       <div className="homeLeft">
         <h1> 
           Ask Questions, Get Answers
@@ -74,7 +104,7 @@ const Home = () => {
         <br /><br />
 
         <h3>
-          <img className='listIcon' src={upvoted} alt="up voted image" />
+            <img className='listIcon' src={upvoted} alt="" />
           Good answers are voted up and rise to the top
         </h3>
         
@@ -92,7 +122,7 @@ const Home = () => {
         </p>
       </div>
       <div className="homeRight">
-          <img className="homeRight" src={qaBubbles} alt="Q&A bubble picture" />
+          <img className="homeRight" src={qaBubbles} alt="" />
         </div>   
       </div>
     </div>)

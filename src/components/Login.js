@@ -1,61 +1,16 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
 import { FormInput } from '../css/Form.styled';
 import { AppButton } from '../css/Button.styled';
 import '../css/Login.css'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
+import UserContext from "./UserContext";
 
-import Axios from "axios";
+// import Axios from "axios";
 
 const Login = () => {
-  const [registerUsername, setRegisterUsername] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate()
-
-  const register = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: registerUsername,
-        password: registerPassword,
-        email: registerEmail,
-      },
-      withCredentials: true,
-      url: "http://localhost:4200/users/register",
-    }).then((res) => console.log(res));
-  }
-
-  const login = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-      },
-      withCredentials: true,
-      url: "http://localhost:4200/users/login",
-    }).then((res) => {
-      navigate(-1)
-      console.log(res)
-
-    })
-  }
-
-  const getUser = () => {
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:4200/users",
-    }).then((res) => {
-      setUser(res.data)
-      console.log(res.data)
-    })
-  }
+  const { user, setLoginUsername, setLoginPassword, login, getUser } = useContext(UserContext)
 
   return (
     <div>
@@ -93,9 +48,7 @@ const Login = () => {
         </div>
       </div>
 
-
-
-      <div>
+      {/* <div>
         <h1>Register</h1>
         <FormInput
           placeholder="username"
@@ -110,9 +63,7 @@ const Login = () => {
           onChange={(e) => setRegisterEmail(e.target.value)}
         />
         <button onClick={register}>Submit</button>
-      </div>
-
-
+      </div> */}
       <div>
         <h1>Get User</h1>
         <button onClick={getUser}>Submit</button>
