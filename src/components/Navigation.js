@@ -9,29 +9,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import { useState, useEffect } from 'react';
-import Axios from "axios";
+import { useState, useContext } from 'react';
+import UserContext from "./UserContext";
+import { Nav } from '../css/Nav.styled';
 
 
-const Nav = styled.nav`
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 1.5rem;
-background-color: hsla(90, 52%, 58%, 20%);
-padding: 0.5rem 1rem;
-gap: 1rem;
-
-a {
-    color: #292929;
-    font-weight: 700;
-}
-.nav-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-`
 const ImgTag = styled.img`
 height: 2rem;
 margin: 0 0.5rem;
@@ -44,22 +26,7 @@ const userInfo = {
 }
 
 export default function Navigation() {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const getUser = () => {
-            Axios({
-                method: "GET",
-                withCredentials: true,
-                url: "http://localhost:4200/users",
-            }).then((res) => {
-                setUser(res.data)
-                console.log(res.data)
-            })
-        }
-        getUser();
-    }, []);
-
+    const { user, logout } = useContext(UserContext)
 
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -116,7 +83,7 @@ export default function Navigation() {
                             >
                                 <MenuItem onClick={handleClose}>My account</MenuItem>
                                 <MenuItem onClick={handleClose}>Help</MenuItem>
-                                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                <MenuItem onClick={logout}>Logout</MenuItem>
                             </Menu>
                         </div>
                     </>)

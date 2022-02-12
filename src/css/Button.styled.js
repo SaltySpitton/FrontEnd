@@ -12,7 +12,7 @@ background-color: ${({ bg }) => bg || '#fff'};
 color: ${({ color }) => color || '#292929'};
 font-size: 0.9rem;
 font-weight: 700;
-padding: 0.8rem 1.5em;
+padding: ${({ p }) => p || "0.8rem 1.5em"};
 margin: 0.3rem;
 
 &:active {
@@ -34,6 +34,7 @@ font-weight: 700;
 padding: ${({ p }) => p || "0.8rem 1.5em"};
 margin: ${({ m }) => m || "0.3rem"};
 text-decoration: none;
+display: inline-block;
 
 &:active {
     box-shadow: 0 1px #292929;

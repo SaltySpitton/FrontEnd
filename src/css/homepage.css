@@ -21,6 +21,40 @@ strong{
   margin: 0 auto;
 }
 
+.hero-section {
+  display: flex;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+}
+
+.hero-left {
+  padding: 1rem;
+}
+
+.hero-left img {
+  margin-bottom: 3rem;
+}
+.register-form {
+  width: 50rem;
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  align-items: center;
+  background-color: #292929;
+  padding: 2rem;
+}
+.login-link {
+  width: 100%;
+  text-align: right;
+}
+.register-form a {
+  display: block;
+  width: 100%;
+  color: #fff;
+  text-align: right;
+  margin-bottom: 2rem;
+}
+
 .formSpace {
     margin-bottom: 4rem;
 }
