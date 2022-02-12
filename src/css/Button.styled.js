@@ -4,7 +4,8 @@ import { Link } from "react-router-dom"
 export const AppButton = styled.button`
 border-radius: 0.8rem;
 border: 2px solid #292929;
-box-shadow: 0 4px #292929;
+border-color: ${({ bcolor }) => bcolor} ;
+box-shadow: 0 4px;
 align-items: center;
 text-align: center;
 background-color: ${({ bg }) => bg || '#fff'};

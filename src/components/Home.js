@@ -1,6 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react'
 import { LinkButton } from '../css/Button.styled';
+import { FormInput } from '../css/Form.styled';
+import { AppButton } from '../css/Button.styled';
+import Axios from 'axios'
 import '../css/homepage.css'
 import logo from '../images/logo.svg'
 import reactIcon from '../images/react-original-wordmark.svg'
@@ -15,10 +19,30 @@ import upvoted from '../images/votes-up.svg'
 
 
 const Home = () => {
+  const [registerUsername, setRegisterUsername] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [registerEmail, setRegisterEmail] = useState("");
+  const navigate = useNavigate()
+
+  const register = () => {
+    Axios({
+      method: "POST",
+      data: {
+        username: registerUsername,
+        password: registerPassword,
+        email: registerEmail,
+      },
+      withCredentials: true,
+      url: "http://localhost:4200/users/register",
+    }).then((res) => console.log(res));
+  }
+
+
+
   return(
     <div className="container">
-    <div className="formSpace">
-      <div className="formSpaceLeft">
+      <div className="formSpace">
+        <div className="formSpaceLeft">
           <img className="mainlogo" src={logo} alt="StackDevHelp logo" /> 
         <h1> 
             Q&A Without Distractions
@@ -31,39 +55,61 @@ const Home = () => {
       </div>
       
       <div className="formSpaceRight">
+          <div className="floatLog"> <Link to={'/login'}>Log in</Link>
+          </div>
 
-        <ul className='newUser'>
-          <li className="floatLog"> <Link to={'/login'}>Log in</Link></li>
+          <FormInput
+            width={"60%"}
+            className="formSpaceInput"
+            placeholder="Your Display Name"
+            type="text" name="username"
+            id='username'
+            onChange={(e) => setRegisterUsername(e.target.value)}
+          />
 
-        <li><form action="/dashboard" method="POST">
+          <FormInput
+            width={"60%"}
+            className="formSpaceInput"
+            placeholder="Email"
+            type="text"
+            name="email"
+            id='email'
+            onChange={(e) => setRegisterEmail(e.target.value)}
+          />
 
-          <input className="formSpaceInput" placeholder="Your Display Name"  type="text" name="username" id='username' />
+          <FormInput
+            width={"60%"}
+            className="formSpaceInput"
+            placeholder="Password"
+            type="password"
+            name="password"
+            id='password'
+            onChange={(e) => setRegisterPassword(e.target.value)}
+          />
 
-          <input className="formSpaceInput" placeholder="E-mail"  type="text" name="email" id='email'/>
+          <FormInput
+            width={"60%"} className="formSpaceInput" placeholder="Confirm Password" type="text" name="cPassword" id='cPassword' />
 
-          <input className="formSpaceInput" placeholder="Password"  type="text" name="password" id='password'/>
+          <AppButton
+            bcolor="#fff"
+            className="newUserBttn"
+            type="submit"
+            id="submituser">Sign Up Now!</AppButton>
 
-          <input className="formSpaceInput"placeholder="Confirm Password"  type="text" name="cPassword" id='cPassword'/>
-           
-          <input className="newUserBttn" type="submit" id="submituser" value='Sign Up Now!'/>
-          
-        </form></li>
-        </ul>
 
-         
+        </div>
       </div>
-    </div>
    
 
-    <div className="homeIcons">
+      <div className="homeIcons">
       <img className='homeIcon' src={reactIcon} alt="React Icon" />
       <img className='homeIcon' src={htmlIcon} alt="HTML Icon" />
       <img className='homeIcon' src={cssIcon} alt="CSS Icon" />
       <img className='homeIcon' src={javaIcon} alt="Java Icon" />
       <img className='homeIcon' src={djangoIcon} alt="Django Icon" />
       <img className='homeIcon' src={cplusIcon} alt="C++ Icon" />
-    </div>
-   <div className="homeQuestions">
+      </div>
+      <div className="homeQuestions">
       <div className="homeLeft">
         <h1> 
           Ask Questions, Get Answers
