@@ -5,6 +5,14 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
+import { useState, useContext } from 'react';
+import UserContext from './UserContext' 
+import {
+  Link,
+  useNavigate,
+  Navigate                                          
+} from "react-router-dom";
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -13,6 +21,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function FormRow() {
+
+  const { user, Axios} = useContext(UserContext)
+  const [question, setQuestion] = useState('')
+  let navigate = useNavigate();
+
   return (
     <React.Fragment>
       

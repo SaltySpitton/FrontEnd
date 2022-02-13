@@ -3,17 +3,63 @@ import { AppButton } from '../css/Button.styled';
 import { FormStyles, FormInput, BodyTextarea, MarkdownPreviewArea } from '../css/Form.styled';
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { useState } from 'react';
-
-
+import { useState, useContext } from 'react';
+import UserContext from './UserContext'
+import axios from 'axios'
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation,
+  Navigate,
+  Outlet
+} from "react-router-dom";
 
 const QuestionForm = () => {
+
+    const { user, getUser } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
+    const [addTags, setAddTags] = useState('')
+
+    const [warningMessage, setWarningMessage] = useState('')
+    let navigate = useNavigate();
+
+    const loginWarning = () => {
+            setWarningMessage('You must Login to Ask a Question, login or Signup here')
+            setTimeout(() => {
+                setWarningMessage('')
+            }, 3000);
+        }
+
+    const getQuestion = async (currUser) => {
+        let data = await axios.post(`http://localhost:4200/questions/${currUser.id}`, {
+            title: questionTitle, 
+            body: questionBody, 
+            tags: addTags
+        })
+        console.log(data)
+        console.log(data.data)
+        setQuestionTitle('')
+        setQuestionBody('')
+        setAddTags(null)
+    }
+    
+    const handlePost = (e) => {
+        e.preventDefault()
+        if(user){
+            getQuestion(user)
+        }else {
+            loginWarning()
+            //navigate("/login", { replace: true }, -1)
+            // navigate(-1)
+        }
+    }
 
     return (
         <div>
-            <h1>Ask a public question</h1>
+            <h1>Ask a public question {warningMessage}</h1>
             <FormStyles action="">
                 <fieldset>
                     <label htmlFor="title">Title</label>
@@ -45,7 +91,8 @@ const QuestionForm = () => {
                         id="tags"
                         options={tags}
                         getOptionLabel={(option) => option.tag}
-                        defaultValue={[tags[1]]}
+                        // defaultValue={[tags[1]]}
+                        onChange={(e, value) => setAddTags(value)}
                         filterSelectedOptions
                         renderInput={(params) => (
                             <TextField
@@ -56,11 +103,37 @@ const QuestionForm = () => {
                         )}
                     />
                 </fieldset>
-                <AppButton bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
+                <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
 
 
 
-                {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
+        
+            </FormStyles>
+        </div>
+    );
+}
+
+// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+const tags = [
+    { tag: 'Javascript' },
+    { tag: 'HTML' },
+    { tag: 'CSS' },
+    { tag: 'ReactJS' },
+    { tag: 'MongoDB' },
+    { tag: 'Express' },
+    { tag: 'NodeJS' },
+    { tag: 'Other' },
+];
+
+export default QuestionForm
+
+
+
+
+
+
+
+   {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
                 <TextField
                     id='title'
                     variant='outlined'
@@ -86,22 +159,3 @@ const QuestionForm = () => {
                         />
                     )}
                 /> */}
-
-            </FormStyles>
-        </div>
-    );
-}
-
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-const tags = [
-    { tag: 'Javascript' },
-    { tag: 'HTML' },
-    { tag: 'CSS' },
-    { tag: 'ReactJS' },
-    { tag: 'MongoDB' },
-    { tag: 'Express' },
-    { tag: 'NodeJS' },
-    { tag: 'Other' },
-];
-
-export default QuestionForm
