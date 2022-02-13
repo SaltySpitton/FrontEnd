@@ -128,12 +128,8 @@ const tags = [
 export default QuestionForm
 
 
+  {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
 
-
-
-
-
-   {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
                 <TextField
                     id='title'
                     variant='outlined'

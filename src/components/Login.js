@@ -64,11 +64,11 @@ const Login = () => {
         />
         <button onClick={register}>Submit</button>
       </div> */}
-      <div>
+      {/* <div>
         <h1>Get User</h1>
         <button onClick={getUser}>Submit</button>
-        {user ? <h1>Welcome Back {user.username}</h1> : null}
-      </div>
+        {user ? <h1>Welcome Back {user.username + " id: " + user.id}</h1> : null}
+      </div> */}
     </div>
   );
 };
