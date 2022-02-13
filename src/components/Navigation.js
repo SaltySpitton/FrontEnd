@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
 import { LinkButton } from '../css/Button.styled'
@@ -26,7 +26,10 @@ const userInfo = {
 }
 
 export default function Navigation() {
-    const { user, logout } = useContext(UserContext)
+    const { user, logout, getUser } = useContext(UserContext)
+    useEffect(() => {
+        getUser()
+    }, [])
 
 
     const [anchorEl, setAnchorEl] = useState(null);
