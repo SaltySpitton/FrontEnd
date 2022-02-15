@@ -9,6 +9,7 @@ import UserDataProfile from './components/UserDataProfile';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Layout from './components/Layout'
 import { UserProvider } from './components/UserContext';
+import ProfileForm from './components/ProfileForm';
 
 
 //link to color picker
@@ -17,14 +18,14 @@ import { UserProvider } from './components/UserContext';
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#a4e265',
-            light: '#d8ff96',
-            dark: '#72b035',
+        main: '#72b035',
+        light: '#d0e6ba',
+        dark: '#408000',
         },
           secondary: {
-            main: '#282828',
-            light: '#505050',
-            dark: '#000000',
+            main: '#273817',
+            light: '#50623e',
+            dark: '#001300',
           },
         
   },
@@ -51,6 +52,7 @@ function App() {
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/login' element={<Login />} />
               <Route path='/userdata' element={<UserDataProfile />} />
+              <Route path='/profile' element={<ProfileForm />} />
             </Routes>
           </ThemeProvider>
         </div>

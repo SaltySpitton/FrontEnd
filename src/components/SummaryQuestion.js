@@ -114,7 +114,8 @@ export default function SummaryQuestion() {
           boxShadow: 5,
           border: 2,
           borderRadius: 4,
-          borderColor: 'secondary.light', }}>
+            borderColor: 'secondary.dark',
+          }}>
           <FormRow />
         </Grid>
      </Grid>

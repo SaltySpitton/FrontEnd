@@ -28,6 +28,9 @@ export const UserProvider = ({ children }) => {
       getUser();
       navigate(-1);
       console.log(res);
+             // FORM VALIDATION
+      //if condition if status is not equal 200 then have message from backend save it in state
+      // state will be empty string, update the message with message, show message on login form 
     });
   };
 

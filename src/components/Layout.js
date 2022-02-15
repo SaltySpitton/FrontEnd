@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
 
        
     return (
-        <div className='container'>
+        <div>
            {(location.pathname !== "/") ? <Navigation /> : null}
 
             {children}
