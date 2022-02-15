@@ -1,11 +1,10 @@
-import { InputLabel, Autocomplete, TextField } from "@mui/material";
-import { AppButton } from "../css/Button.styled";
+import { InputLabel, Autocomplete, TextField } from '@mui/material';
+import { AppButton } from '../css/Button.styled';
 import {
   FormStyles,
   FormInput,
   BodyTextarea,
-  MarkdownPreviewArea,
-} from "../css/Form.styled";
+  MarkdownPreviewArea} from "../css/Form.styled";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useContext } from "react";
@@ -151,7 +150,6 @@ const QuestionForm = () => {
 //     { tag: 'data structures' },
 //     { tag: 'react-router-v6' },
 // ];
-
 const tags = [
   "c#",
   "CSS",
@@ -174,5 +172,5 @@ const tags = [
   "react-router-v6",
   "other",
 ];
-
 export default QuestionForm;
+                   
