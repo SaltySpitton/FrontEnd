@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users/login",
     }).then((res) => {
       getUser();
-      navigate(-1);
+      navigate("/questions");
       console.log(res);
     });
   };
