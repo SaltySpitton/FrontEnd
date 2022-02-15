@@ -10,32 +10,63 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useContext } from "react";
 import UserContext from "./UserContext";
-import Axios from "axios";
+import axios from "axios";
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 
 const QuestionForm = () => {
+  const { user, getUser } = useContext(UserContext);
   const [questionTitle, setQuestionTitle] = useState("");
   const [questionBody, setQuestionBody] = useState("");
-  const [newTags, setNewTags] = useState();
-  const { user } = useContext(UserContext);
-  console.log(user);
-  const addQuestion = () => {
-    Axios({
-      method: "POST",
-      data: {
+  const [addTags, setAddTags] = useState([]);
+
+  const [warningMessage, setWarningMessage] = useState("");
+  let navigate = useNavigate();
+
+  const loginWarning = () => {
+    setWarningMessage("You must Login to Ask a Question, login or Signup here");
+    setTimeout(() => {
+      setWarningMessage("");
+    }, 3000);
+  };
+
+  const getQuestion = async (currUser) => {
+    let data = await axios.post(
+      `http://localhost:4200/questions/${currUser.id}`,
+      {
         title: questionTitle,
         body: questionBody,
-        tags: newTags,
-      },
-      withCredentials: true,
-      url: `http://localhost:4200/questions/${user.id}`,
-    }).then((res) => {
-      console.log(res.data);
-    });
+        tags: addTags,
+      }
+    );
+    console.log(data);
+    console.log(data.data);
+    setQuestionTitle("");
+    setQuestionBody("");
+    setAddTags([]);
+  };
+
+  const handlePost = (e) => {
+    e.preventDefault();
+    if (user) {
+      getQuestion(user);
+    } else {
+      loginWarning();
+      //navigate("/login", { replace: true }, -1)
+      // navigate(-1)
+    }
   };
 
   return (
     <div>
-      <h1>Ask a public question</h1>
+      <h1>Ask a public question {warningMessage}</h1>
       <FormStyles action="">
         <fieldset>
           <label htmlFor="title">Title</label>
@@ -76,7 +107,10 @@ const QuestionForm = () => {
             multiple
             id="tags"
             options={tags}
-            getOptionLabel={(option) => option.tag}
+            getOptionLabel={(option) => option}
+            // getOptionLabel={(option) => option.tag}
+            // defaultValue={[tags[1]]}
+            onChange={(e, value) => setAddTags(value)}
             filterSelectedOptions
             renderInput={(params) => (
               <TextField
@@ -85,55 +119,60 @@ const QuestionForm = () => {
                 placeholder="Add up to 5 tags to describe what your question is about"
               />
             )}
-            value={newTags}
-            onChange={(e, addTags) => setNewTags(addTags)}
           />
         </fieldset>
-        <AppButton onClick={addQuestion} bg="hsla(90, 52%, 58%, 80%)">
+        <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">
           Post Your Question
         </AppButton>
-
-        {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
-                <TextField
-                    id='title'
-                    variant='outlined'
-                    color='secondary'
-                    margin='normal'
-                    fullWidth
-                    helperText='Be specific and imagine you’re asking a question to another person'
-                />
-
-                <InputLabel htmlFor='tags'>Select Tags</InputLabel>
-                <Autocomplete
-                    multiple
-                    id="tags"
-                    options={tags}
-                    getOptionLabel={(option) => option.tag}
-                    defaultValue={[tags[1]]}
-                    filterSelectedOptions
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            id='tags'
-                            placeholder="Add up to 5 tags to describe what your question is about"
-                        />
-                    )}
-                /> */}
       </FormStyles>
     </div>
   );
 };
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+// const tags = [
+//     { tag: 'c#' },
+//     { tag: 'CSS' },
+//     { tag: 'JSX' },
+//     { tag: 'sql' },
+//     { tag: 'HTML' },
+//     { tag: 'ajax' },
+//     { tag: 'ruby' },
+//     { tag: 'regex' },
+//     { tag: 'django' },
+//     { tag: 'nodeJS' },
+//     { tag: 'python' },
+//     { tag: 'reactJS' },
+//     { tag: 'mongoDB' },
+//     { tag: 'express' },
+//     { tag: 'algorithms' },
+//     { tag: 'components' },
+//     { tag: 'javascript' },
+//     { tag: 'data structures' },
+//     { tag: 'react-router-v6' },
+// ];
+
 const tags = [
-  { tag: "Javascript" },
-  { tag: "HTML" },
-  { tag: "CSS" },
-  { tag: "ReactJS" },
-  { tag: "MongoDB" },
-  { tag: "Express" },
-  { tag: "NodeJS" },
-  { tag: "Other" },
+  "c#",
+  "CSS",
+  "JSX",
+  "sql",
+  "HTML",
+  "ajax",
+  "ruby",
+  "regex",
+  "django",
+  "nodeJS",
+  "python",
+  "reactJS",
+  "mongoDB",
+  "express",
+  "algorithms",
+  "components",
+  "javascript",
+  "data structures",
+  "react-router-v6",
+  "other",
 ];
 
 export default QuestionForm;
