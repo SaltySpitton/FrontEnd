@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [profile, setProfile] = useState()
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,18 +27,18 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/login",
     }).then((res) => {
-          getUser()
-          console.log(res)
-          navigate("/questions");
+      getUser()
+      console.log(res)
+      navigate("/questions");
     })
-    .catch(err => {
-      if(err){
+      .catch(err => {
+        if (err) {
           setErrorMessage('Invalid Username or Password, please try again')
           setTimeout(() => {
-             setErrorMessage('')
+            setErrorMessage('')
           }, 2000);
-      }
-    })
+        }
+      })
   };
 
   const register = () => {
@@ -82,6 +83,23 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+
+
+  const getUserProfile = () => {
+    getUser()
+    console.log(user)
+    Axios({
+      method: "GET",
+      withCredentials: true,
+      url: `http://localhost:4200/userdata/${user.id}`,
+    }).then((res) => {
+      setProfile(res.data)
+
+    });
+
+  }
+
+
   return (
     <UserContext.Provider
       value={{
@@ -101,8 +119,11 @@ export const UserProvider = ({ children }) => {
         setLoginUsername,
         loginPassword,
         setLoginPassword,
-        errorMessage, 
-        setErrorMessage
+        errorMessage,
+        setErrorMessage,
+        profile,
+        setProfile,
+        getUserProfile
       }}
     >
       {children}

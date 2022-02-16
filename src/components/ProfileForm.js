@@ -2,6 +2,9 @@ import { styled } from "@mui/system"
 import { TextField, Container, Typography, Grid, IconButton, Box } from "@mui/material"
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { AppButton } from "../css/Button.styled";
+import { useState, useContext, useEffect } from "react";
+import Axios from "axios";
+import UserContext from './UserContext'
 
 
 const ProfileInput = styled(TextField)({
@@ -30,8 +33,46 @@ const PhotoInput = styled('input')({
     display: 'none',
 });
 
+//need state for name, about, github, linkedin, twitter, avatar
+
 
 const ProfileForm = () => {
+    const { user, profile, setProfile, } = useContext(UserContext)
+    const [displayName, setDisplayName] = useState()
+    const [about, setAbout] = useState()
+    const [github, setGithub] = useState()
+    const [linkedin, setLinkedin] = useState()
+    const [twitter, setTwitter] = useState()
+
+
+    const getUserProfile = () => {
+        console.log(user)
+        Axios({
+            method: "GET",
+            withCredentials: true,
+            url: `http://localhost:4200/userdata/${user.id}`,
+        }).then((res) => {
+            // setDisplayName(res.data.name)
+            setAbout(res.data[0].about)
+            // setGithub(res.data.github || "")
+            // setLinkedin(res.data.linkedin || "")
+            // setTwitter(res.data.twitter || "")
+            setProfile(res.data)
+            console.log(about)
+        });
+
+    }
+    // useEffect(() => {
+    //     getUserProfile()
+    // }, [])
+
+    const handleProfileEdit = () => {
+        getUserProfile()
+        // user id will be user.id
+        // post id will 
+        // let profile = await axios.put()
+    }
+
     return (
         <Container>
             <Typography variant='h4' component='h2' my={2} style={{
@@ -44,6 +85,9 @@ const ProfileForm = () => {
                         label="Name"
                         id="name"
                         fullWidth
+                        placeholder={displayName}
+                        value={displayName}
+                        onChangeCapture={(e) => setDisplayName(e.target.value)}
                         margin="normal"
                     />
                     <ProfileInput
@@ -51,6 +95,8 @@ const ProfileForm = () => {
                         id="about"
                         fullWidth
                         multiline
+                        value={about}
+                        onChangeCapture={(e) => setAbout(e.target.value)}
                         maxRows={5}
                         margin="normal"
                     />
@@ -70,21 +116,27 @@ const ProfileForm = () => {
                         label="Github"
                         id="github"
                         fullWidth
+                        value={github}
+                        onChangeCapture={(e) => setGithub(e.target.value)}
                         margin="normal"
                     />
                     <ProfileInput
                         label="Linkedin"
                         id="linkedin"
                         fullWidth
+                        value={linkedin}
+                        onChangeCapture={(e) => setLinkedin(e.target.value)}
                         margin="normal"
                     />
                     <ProfileInput
                         label="Twitter"
                         id="twitter"
                         fullWidth
+                        value={twitter}
+                        onChangeCapture={(e) => setTwitter(e.target.value)}
                         margin="normal"
                     />
-                    <AppButton bg="hsla(90, 52%, 58%, 80%)">Edit Profile</AppButton>
+                    <AppButton onClick={handleProfileEdit} bg="hsla(90, 52%, 58%, 80%)">Edit Profile</AppButton>
 
                 </Grid>
             </Grid>
