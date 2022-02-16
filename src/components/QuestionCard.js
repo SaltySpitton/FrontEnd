@@ -28,8 +28,14 @@ const QuestionCard = ({title, body, createdAt, _id, tags , votes, answers, image
         console.log(e.target.value)
     }
 
-    const handleAddVote = () => {
+    const handleAddVote = async(question) => {
         console.log('add vote')
+        e.preventDefault()
+        const votes = {votes : question.votes + 1}
+        const url = `http://localhost:4200/questions/${questionId}`
+        const addVote = await axios.put(url, votes)
+        
+
     }
 
     const handleDeductVote = () => {
