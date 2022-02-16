@@ -26,7 +26,7 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users/login",
     }).then((res) => {
       getUser();
-      navigate(-1);
+      navigate("/questions");
       console.log(res);
              // FORM VALIDATION
       //if condition if status is not equal 200 then have message from backend save it in state

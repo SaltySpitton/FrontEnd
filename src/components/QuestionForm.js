@@ -1,37 +1,58 @@
-import { InputLabel, Autocomplete, TextField } from '@mui/material';
+import { InputLabel, Autocomplete, TextField} from '@mui/material';
 import { AppButton } from '../css/Button.styled';
-import { FormStyles, FormInput, BodyTextarea, MarkdownPreviewArea } from '../css/Form.styled';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { useState, useContext } from 'react';
-import UserContext from './UserContext'
-import axios from 'axios'
+import {
+  FormStyles,
+  FormInput,
+  BodyTextarea,
+  MarkdownPreviewArea} from "../css/Form.styled";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { useState, useContext } from "react";
+import UserContext from "./UserContext";
+import axios from "axios";
 import {
   Routes,
   Route,
   Link,
-  useNavigate,
+  useNavigate,  
   useLocation,
   Navigate,
-  Outlet
+  Outlet,
 } from "react-router-dom";
 
 const QuestionForm = () => {
-
+    let navigate = useNavigate();
     const { user, getUser } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
-    const [addTags, setAddTags] = useState('')
+    const [addTags, setAddTags] = useState([])
 
     const [warningMessage, setWarningMessage] = useState('')
-    let navigate = useNavigate();
-
     const loginWarning = () => {
-            setWarningMessage('You must Login to Ask a Question, login or Signup here')
-            setTimeout(() => {
-                setWarningMessage('')
-            }, 3000);
-        }
+    setWarningMessage("You must Login to Ask a Question, login or Signup here");
+    setTimeout(() => {
+      setWarningMessage("");
+    }, 3000);
+  };
+    
+
+
+  const getQuestion = async (currUser) => {
+    let data = await axios.post(
+      `http://localhost:4200/questions/${currUser.id}`,
+      {
+        title: questionTitle,
+        body: questionBody,
+        tags: addTags,
+      }
+    );
+    console.log(data);
+    console.log(data.data);
+    setQuestionTitle("");
+    setQuestionBody("");
+    setAddTags([]);
+  };
+
 
     const getQuestion = async (currUser) => {
         let data = await axios.post(`http://localhost:4200/questions/${currUser.id}`, {
@@ -39,27 +60,41 @@ const QuestionForm = () => {
             body: questionBody, 
             tags: addTags
         })
+        data.status === 400 ?
+        setWarningMessage('error posting please try again'):
         console.log(data)
+        
         console.log(data.data)
         setQuestionTitle('')
         setQuestionBody('')
-        setAddTags(null)
+        setAddTags([])
     }
     
     const handlePost = (e) => {
         e.preventDefault()
         if(user){
             getQuestion(user)
+
         }else {
             loginWarning()
+            setTimeout(() => {
+                navigate("/login", { replace: true })
+            }, 5000)
+           
+            //Go back button:
+            // <Button onClick={() => {
+            //     navigate(-1)
+            // }} text="Go Back">
             //navigate("/login", { replace: true }, -1)
             // navigate(-1)
         }
     }
+  };
 
     return (
         <div>
-            <h1>Ask a public question {warningMessage}</h1>
+            {warningMessage}
+            <h1>Ask a public question</h1>
             <FormStyles action="">
                 <fieldset>
                     <label htmlFor="title">Title</label>
@@ -90,7 +125,8 @@ const QuestionForm = () => {
                         multiple
                         id="tags"
                         options={tags}
-                        getOptionLabel={(option) => option.tag}
+                        getOptionLabel={(option) => option}
+                        // getOptionLabel={(option) => option.tag}
                         // defaultValue={[tags[1]]}
                         onChange={(e, value) => setAddTags(value)}
                         filterSelectedOptions
@@ -105,53 +141,35 @@ const QuestionForm = () => {
                 </fieldset>
                 <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
 
-
-
-        
             </FormStyles>
         </div>
     );
 }
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+ 
 const tags = [
-    { tag: 'Javascript' },
-    { tag: 'HTML' },
-    { tag: 'CSS' },
-    { tag: 'ReactJS' },
-    { tag: 'MongoDB' },
-    { tag: 'Express' },
-    { tag: 'NodeJS' },
-    { tag: 'Other' },
-];
+  'c#',
+  'CSS',
+  'JSX', 
+  'sql',
+  'HTML',
+  'ajax',
+  'ruby',
+  'regex',
+  'django',
+  'nodeJS',
+  'python', 
+  'reactJS',
+  'mongoDB',
+  'express',
+  'algorithms', 
+  'components',
+  'javascript',
+  'data structures', 
+  'react-router-v6',
+  'other'
+]
 
 export default QuestionForm
 
 
-  {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
-
-                <TextField
-                    id='title'
-                    variant='outlined'
-                    color='secondary'
-                    margin='normal'
-                    fullWidth
-                    helperText='Be specific and imagine you’re asking a question to another person'
-                />
-
-                <InputLabel htmlFor='tags'>Select Tags</InputLabel>
-                <Autocomplete
-                    multiple
-                    id="tags"
-                    options={tags}
-                    getOptionLabel={(option) => option.tag}
-                    defaultValue={[tags[1]]}
-                    filterSelectedOptions
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            id='tags'
-                            placeholder="Add up to 5 tags to describe what your question is about"
-                        />
-                    )}
-                /> */}

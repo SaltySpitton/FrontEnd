@@ -2,14 +2,17 @@ import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
 import Home from './components/Home';
 import Questions from './components/Questions';
+import QuestionView from './components/QuestionView'
 import Answers from  './components/Answers';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import UserDataProfile from './components/UserDataProfile';
+import PageNotFound from './components/PageNotFound';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Layout from './components/Layout'
 import { UserProvider } from './components/UserContext';
 import ProfileForm from './components/ProfileForm';
+
 
 
 //link to color picker
@@ -34,10 +37,8 @@ const theme = createTheme({
         'Roboto Mono',
         'sans-serif',
       ].join(','),
-    },
-})
-
-
+  },
+});
 
 function App() {
   return (
@@ -46,19 +47,22 @@ function App() {
         <div className="App">
           <ThemeProvider theme={theme}>
             <Routes>
+
               <Route path='/' element={<Home />} />
               <Route path='/questions' element={<Questions />} />
+              <Route path='/questions/:questionId' element={<QuestionView />} />
               <Route path='/answers' element={<Answers />} />
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/login' element={<Login />} />
               <Route path='/userdata' element={<UserDataProfile />} />
               <Route path='/profile' element={<ProfileForm />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>
         </div>
       </Layout>
     </UserProvider>
-  )
+  );
 }
 
 export default App;
