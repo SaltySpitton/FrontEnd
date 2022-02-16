@@ -6,7 +6,6 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 margin-bottom: 1.5rem;
-background-color: hsla(90, 52%, 58%, 20%);
 padding: 0.5rem 1rem;
 gap: 1rem;
 
@@ -19,4 +18,9 @@ a {
     justify-content: center;
     align-items: center;
 }
+`
+
+export const LightBg = styled.div`
+background-color: hsla(90, 52%, 58%, 20%);
+width: 100%;
 `

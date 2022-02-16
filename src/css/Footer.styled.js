@@ -3,9 +3,6 @@ import styled from "styled-components"
 export const FooterStyles = styled.footer`
 background-color: #292929;
 color:#8D8F8A;
-display: flex;
-justify-content: space-between;
-padding: 1rem 4rem 2rem 2rem;
 text-align: center;
 
 h4 {

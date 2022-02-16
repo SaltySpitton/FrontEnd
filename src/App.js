@@ -11,6 +11,7 @@ import PageNotFound from './components/PageNotFound';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Layout from './components/Layout'
 import { UserProvider } from './components/UserContext';
+import ProfileForm from './components/ProfileForm';
 
 
 
@@ -18,20 +19,24 @@ import { UserProvider } from './components/UserContext';
 //https://material.io/resources/color/#!/?view.left=0&view.right=1&primary.color=42A5F5&secondary.color=3F51B5
 // https://mui.com/components/bottom-navigation/$
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#a4e265",
-      light: "#d8ff96",
-      dark: "#72b035",
-    },
-    secondary: {
-      main: "#282828",
-      light: "#505050",
-      dark: "#000000",
-    },
+    palette: {
+        primary: {
+        main: '#72b035',
+        light: '#d0e6ba',
+        dark: '#408000',
+        },
+          secondary: {
+            main: '#273817',
+            light: '#50623e',
+            dark: '#001300',
+          },
+        
   },
-  typography: {
-    fontFamily: ["Roboto Mono", "sans-serif"].join(","),
+    typography: {
+      fontFamily: [
+        'Roboto Mono',
+        'sans-serif',
+      ].join(','),
   },
 });
 
@@ -50,8 +55,8 @@ function App() {
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/login' element={<Login />} />
               <Route path='/userdata' element={<UserDataProfile />} />
+              <Route path='/profile' element={<ProfileForm />} />
               <Route path="*" element={<PageNotFound />} />
-
             </Routes>
           </ThemeProvider>
         </div>
