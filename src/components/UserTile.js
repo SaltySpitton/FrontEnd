@@ -18,8 +18,7 @@ import {
 } from "react-router-dom";
 
 
-const UserTile = ({image, username, createdAt, width}) => {
-
+const UserTile = ({image, user, createdAt, width}) => {
     // const displayedTime = RelativeTime(createdAt)
     
     //need to export this -> tried to with relative time
@@ -33,6 +32,13 @@ const UserTile = ({image, username, createdAt, width}) => {
         const timeDifference = today - createdAtMilisec
         const hours = (timeDifference / 3600000)
 
+        console.log(showCreatedDate)
+        console.log(createdAtMilisec)
+        console.log(Today)
+        console.log(today)
+        console.log(timeDifference)
+        console.log(hours)
+        
         if(hours > 12){
             return showCreatedDate
         }
@@ -45,15 +51,14 @@ const UserTile = ({image, username, createdAt, width}) => {
 
         const minutes = (timeDifference / 60000)
         const seconds = (timeDifference / 1000)
+         console.log(minutes)
+        console.log(seconds)
 
-        if(hours > 1 && minutes > 1){
+        if(minutes < 59 && minutes > 1){
            return `${Math.floor(minutes)} minutes ago`
         }
-        if(minutes === 1){
-            return `${Math.floor(minutes)} minute ago`
-        }
-        if(minutes < 1){
-           return `${Math.floor(seconds)} seconds ago`
+        if(minutes <= 1){
+            return `${Math.floor(seconds)} seconds ago`
         }
     } 
   return (
@@ -77,7 +82,7 @@ const UserTile = ({image, username, createdAt, width}) => {
                 }}
             >
                  <Avatar 
-                    alt={username}
+                    alt={user.username}
                     src={image}
                     sx={{
                         width: 40,
@@ -86,7 +91,10 @@ const UserTile = ({image, username, createdAt, width}) => {
                     }}
                     variant="square"
                 />
-                <Typography variant="h5" color="text.primary">{username}</Typography>
+                <Link to="/userdata/:userId" >{user.username}</Link>
+                {/* <Typography variant="h5" color="text.primary">
+                    {user.username}
+                </Typography> */}
             </Box>
         </Card>
     </>

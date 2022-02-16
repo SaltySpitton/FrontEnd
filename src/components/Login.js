@@ -10,7 +10,7 @@ import UserContext from "./UserContext";
 // import Axios from "axios";
 
 const Login = () => {
-  const { user, setLoginUsername, setLoginPassword, login, getUser } = useContext(UserContext)
+  const { user, setLoginUsername, setLoginPassword, login, getUser, errorMessage} = useContext(UserContext)
 
   return (
     <div>
@@ -31,6 +31,7 @@ const Login = () => {
             <div className="line" />
             <div className="or">OR</div>
           </div>
+          {errorMessage && <div>{errorMessage}</div>}
           <div className="right">
             <FormInput width={"60%"}
               type="text"

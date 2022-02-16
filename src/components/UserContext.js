@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,13 +26,18 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/login",
     }).then((res) => {
-      getUser();
-      navigate("/questions");
-      console.log(res);
-             // FORM VALIDATION
-      //if condition if status is not equal 200 then have message from backend save it in state
-      // state will be empty string, update the message with message, show message on login form 
-    });
+          getUser()
+          console.log(res)
+          navigate("/questions");
+    })
+    .catch(err => {
+      if(err){
+          setErrorMessage('Invalid Username or Password, please try again')
+          setTimeout(() => {
+             setErrorMessage('')
+          }, 2000);
+      }
+    })
   };
 
   const register = () => {
@@ -95,6 +101,8 @@ export const UserProvider = ({ children }) => {
         setLoginUsername,
         loginPassword,
         setLoginPassword,
+        errorMessage, 
+        setErrorMessage
       }}
     >
       {children}
