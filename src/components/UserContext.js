@@ -32,7 +32,6 @@ export const UserProvider = ({ children }) => {
     })
     .catch(err => {
       if(err){
-        // where can we have text show up? was not populating on top of form
           setErrorMessage('Invalid Username or Password, please try again')
           setTimeout(() => {
              setErrorMessage('')

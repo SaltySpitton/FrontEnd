@@ -48,28 +48,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-      {/* <div>
-        <h1>Register</h1>
-        <FormInput
-          placeholder="username"
-          onChange={(e) => setRegisterUsername(e.target.value)}
-        />
-        <FormInput
-          placeholder="password"
-          onChange={(e) => setRegisterPassword(e.target.value)}
-        />
-        <FormInput
-          placeholder="email"
-          onChange={(e) => setRegisterEmail(e.target.value)}
-        />
-        <button onClick={register}>Submit</button>
-      </div> */}
-      {/* <div>
-        <h1>Get User</h1>
-        <button onClick={getUser}>Submit</button>
-        {user ? <h1>Welcome Back {user.username + " id: " + user.id}</h1> : null}
-      </div> */}
     </div>
   );
 };

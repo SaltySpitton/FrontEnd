@@ -138,15 +138,8 @@ const SummaryQuestion = () => {
         )
 
 
-
-
-
-
-
-
-
-
   return (
+
   <>
      <Box sx={{ flexGrow: 1 }}>
       <Grid 
