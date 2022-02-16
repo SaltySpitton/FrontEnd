@@ -22,18 +22,18 @@ import {
   Navigate                                          
 } from "react-router-dom";
 
-const QuestionCard = ({title, body, createdAt, _id, tags , votes, answers, image, username}) => {
+const QuestionCard = ({title, body, createdAt, _id, tags , votes, answers, image, username, user}) => {
     const handleDeleteSubmit = (e) => {
         e.preventDefault()
-        console.log(e.target.value)
+        // console.log(e.target.value)
     }
 
-    const handleAddVote = async(question) => {
+    const handleAddVote = async(e) => {
         console.log('add vote')
         e.preventDefault()
-        const votes = {votes : question.votes + 1}
-        const url = `http://localhost:4200/questions/${questionId}`
-        const addVote = await axios.put(url, votes)
+        // const votes = {votes : question.votes + 1}
+        // const url = `http://localhost:4200/questions/${questionId}`
+        // const addVote = await axios.put(url, votes)
         
 
     }
@@ -75,6 +75,7 @@ const QuestionCard = ({title, body, createdAt, _id, tags , votes, answers, image
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flexStart',
+                width: '90%',
                 // alignItems: 'flexStart',
                 margin: 2,
                 // padding: 2,
@@ -113,9 +114,9 @@ const QuestionCard = ({title, body, createdAt, _id, tags , votes, answers, image
                 {answers && <Typography variant="h6">{answers.length} Answers</Typography>}
                     <UserTile 
                         image={image}
-                        username={username}
+                        user={user}
                         createdAt={createdAt}
-                        width={'30%'}
+                        width={'40%'}
                     />
                 </Box>
             </Box>

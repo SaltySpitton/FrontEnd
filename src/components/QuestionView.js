@@ -47,6 +47,7 @@ const QuestionView = () => {
         answers={questionView._doc.answers}
         image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
         username={questionView.user.username}
+        user={questionView.user}
         
     /> :
     <p>question</p>

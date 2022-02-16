@@ -11,6 +11,7 @@ export const UserProvider = ({ children }) => {
   const [registerEmail, setRegisterEmail] = useState("");
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,10 +26,19 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/login",
     }).then((res) => {
-      getUser();
-      navigate("/questions");
-      console.log(res);
-    });
+          getUser()
+          console.log(res)
+          navigate("/questions");
+    })
+    .catch(err => {
+      if(err){
+        // where can we have text show up? was not populating on top of form
+          setErrorMessage('Invalid Username or Password, please try again')
+          setTimeout(() => {
+             setErrorMessage('')
+          }, 2000);
+      }
+    })
   };
 
   const register = () => {
@@ -92,6 +102,8 @@ export const UserProvider = ({ children }) => {
         setLoginUsername,
         loginPassword,
         setLoginPassword,
+        errorMessage, 
+        setErrorMessage
       }}
     >
       {children}

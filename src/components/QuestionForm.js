@@ -22,37 +22,13 @@ import {
 
 const QuestionForm = () => {
     let navigate = useNavigate();
+
     const { user, getUser } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
 
     const [warningMessage, setWarningMessage] = useState('')
-    const loginWarning = () => {
-    setWarningMessage("You must Login to Ask a Question, login or Signup here");
-    setTimeout(() => {
-      setWarningMessage("");
-    }, 3000);
-  };
-    
-
-
-  const getQuestion = async (currUser) => {
-    let data = await axios.post(
-      `http://localhost:4200/questions/${currUser.id}`,
-      {
-        title: questionTitle,
-        body: questionBody,
-        tags: addTags,
-      }
-    );
-    console.log(data);
-    console.log(data.data);
-    setQuestionTitle("");
-    setQuestionBody("");
-    setAddTags([]);
-  };
-
 
     const getQuestion = async (currUser) => {
         let data = await axios.post(`http://localhost:4200/questions/${currUser.id}`, {
@@ -70,18 +46,25 @@ const QuestionForm = () => {
         setAddTags([])
     }
     
+    const loginWarning = () => {
+        setWarningMessage("You must Login to Ask a Question, login or Signup here");
+        setTimeout(() => {
+          setWarningMessage("");
+        }, 3000);
+    };
+
     const handlePost = (e) => {
         e.preventDefault()
         if(user){
             getQuestion(user)
 
-        }else {
+        } else {
             loginWarning()
             setTimeout(() => {
                 navigate("/login", { replace: true })
             }, 5000)
            
-            //Go back button:
+            //Go back button: Do we want to use and what is the best place for this
             // <Button onClick={() => {
             //     navigate(-1)
             // }} text="Go Back">
@@ -89,7 +72,7 @@ const QuestionForm = () => {
             // navigate(-1)
         }
     }
-  };
+ 
 
     return (
         <div>
@@ -126,8 +109,6 @@ const QuestionForm = () => {
                         id="tags"
                         options={tags}
                         getOptionLabel={(option) => option}
-                        // getOptionLabel={(option) => option.tag}
-                        // defaultValue={[tags[1]]}
                         onChange={(e, value) => setAddTags(value)}
                         filterSelectedOptions
                         renderInput={(params) => (
@@ -142,8 +123,8 @@ const QuestionForm = () => {
                 <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
 
             </FormStyles>
-        </div>
-    );
+      </div>
+    )
 }
 
  
@@ -173,3 +154,18 @@ const tags = [
 export default QuestionForm
 
 
+  // const getQuestion = async (currUser) => {
+  //   let data = await axios.post(
+  //     `http://localhost:4200/questions/${currUser.id}`,
+  //     {
+  //       title: questionTitle,
+  //       body: questionBody,
+  //       tags: addTags,
+  //     }
+  //   );
+  //   console.log(data);
+  //   console.log(data.data);
+  //   setQuestionTitle("");
+  //   setQuestionBody("");
+  //   setAddTags([]);
+  // };
