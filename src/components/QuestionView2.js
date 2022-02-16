@@ -1,61 +1,63 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { Card} from '@mui/material'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios'
+import UserTile from './UserTile'
 import UserContext from './UserContext' 
 import {
   Link,
   useNavigate,
+  useParams,
   Navigate                                          
 } from "react-router-dom";
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
-const SummaryQuestion = () => {
-        
-        const { user} = useContext(UserContext)
-        const [question, setQuestion] = useState('')
-        const [questions, setQuestions] = useState('')
-        const [searchTag, setSearchTag] = useState(false)
-    
-          const getAllQuestions = async() => {
-              const apiUrl = 'http://localhost:4200/questions'
-              let allQuestions = await axios.get(apiUrl)
-              await setQuestions(allQuestions.data)
-          }
-          
-          useEffect(() => {
-              getAllQuestions()
-          },[])
+const QuestionView = () => {
 
-        const questionsDisplay = (
-           <Grid container item spacing={2} 
-          xl={12}
-          md={12}
-          xs={12}
-          sx={{
-          boxShadow: 5,
-          border: 2,
-          borderRadius: 1,
-          borderColor: 'secondary.light', }}>
-          {questions && questions.questions.map((q) => {
-            return (
-              <Grid 
-                xl={12}
-                sx={{
-                  borderBottom: 1 
-                }}
-              >
-                <Grid item xs={4} md={2}>
+  let navigate = useNavigate();
+  const {questionId} = useParams()
+  const { user } = useContext(UserContext)
+  const [questionView, setQuestionView] = useState('')
+
+  
+
+  const retrieveQuestion = async() => {
+      const url = `http://localhost:4200/questions/${questionId}`
+      const question = await axios.get(url)
+      console.log(question)
+      question.status === 200 ?
+      setQuestionView(question.data) :
+      //set an error and navigate back to questions
+      navigate(-1) 
+  }
+
+  useEffect(() => {
+    retrieveQuestion()
+  }, [])
+
+  const questionsDisplay = (
+          //  <Grid container item spacing={2} 
+          // xl={12}
+          // md={12}
+          // xs={12}
+          // sx={{
+          // boxShadow: 5,
+          // border: 2,
+          // borderRadius: 1,
+          // borderColor: 'secondary.light', }}>
+          // {viewQuestion &&  
+          //   <Grid 
+          //       xl={12}
+          //       sx={{
+          //         borderBottom: 1 
+          //       }}
+              
+                {/* <Grid item xs={4} md={2}>
                     <Item 
                       sx={{
                         boxShadow: 0 
@@ -66,9 +68,9 @@ const SummaryQuestion = () => {
                       boxShadow: 0 }}>
                       {q.answers.length} answers
                     </Item>
-                </Grid>
+                </Grid> */}
 
-                <Grid
+                {/* <Grid
                   container direction="row"
                   // item 
                   lg={10} xs={10} sm={10}  
@@ -115,8 +117,8 @@ const SummaryQuestion = () => {
                       )
                     })}
 
-                </Grid>
-                <Grid 
+                </Grid> */}
+                {/* <Grid 
                     container direction="row"
                     item lg={2} 
                 > 
@@ -131,82 +133,45 @@ const SummaryQuestion = () => {
                       </Item>
                   </Grid>
                  
-              </Grid>
-            )
-          })}
-        </Grid>
-        )
+              </Grid>} */}
+           
 
-
-
-
-
-
-
-
-
-
-  return (
-  <>
-     <Box sx={{ flexGrow: 1 }}>
-      <Grid 
-        container 
-        xl={12}
-        md={12}
-        xs={12}
-        // spacing={2}
-        sx={{
-          padding: 2,
-          marginLeft: 1 
-        }}
-      >
-       {questions ? questionsDisplay : null}
-     </Grid>
-    </Box>
   
-  </> 
-  )
-}
+  return (<div>
 
-export default SummaryQuestion
+      {questionView && questionsDisplay}
+     
+}}
 
+export default QuestionView
 
-
-
-
-
+{/*  */}
 
 
+{/* 
+/
+//           image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
+//           username={questionUser.username}
+//           createdAt={questionView._doc.createdAt}
+//       />
 
-
-
-
-
-
-
-
-
-// export default function SummaryQuestion() {
-//   return (
-//     <Box sx={{ flexGrow: 1 }}>
-//       <Grid container spacing={2} >
-//         <Grid container item spacing={2} 
-//           sx={{
-//           boxShadow: 5,
-//           border: 2,
-//           borderRadius: 4,
-//           borderColor: 'secondary.light', }}>
-//           <FormRow />
-//         </Grid>
-//      </Grid>
-//     </Box>
+//       <h2> And me! the answers!</h2>
+//       <p>{questionView._doc.answers.length} answers</p>
+//       <h4>Dont forget about me! I give you the answers silly dilly</h4> */}
+ {/* <Card
+           sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 1, 
   
-//   );
-// }
-
-
-
-        // const [options, setOptions] = useState('')
-        // const [returnOptions, setReturnOptions] = useState(15)
-        // const [userSearch, setUserSearch] = useState(false)
-        // const [value, setValue] = useState(null)
+            }}
+      > */}
+      {/* <Typography variant="h5">{questionView._doc.title}</Typography> */}
+      {/* <Typography ></Typography>
+      <Typography ></Typography>
+      </Card> */}
+      {/* <h1>{questionView._doc.title}</h1>
+      <h3>{questionView.user.username}</h3>
+      <p>{questionView._doc.title}</p>
+      <p>{questionView._doc.body}</p> */}
+      </div>)

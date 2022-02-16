@@ -1,4 +1,4 @@
-import { InputLabel, Autocomplete, TextField } from '@mui/material';
+import { InputLabel, Autocomplete, TextField} from '@mui/material';
 import { AppButton } from '../css/Button.styled';
 import { FormStyles, FormInput, BodyTextarea, MarkdownPreviewArea } from '../css/Form.styled';
 import ReactMarkdown from 'react-markdown'
@@ -10,21 +10,21 @@ import {
   Routes,
   Route,
   Link,
-  useNavigate,
+  useNavigate,  
   useLocation,
   Navigate,
   Outlet
 } from "react-router-dom";
 
 const QuestionForm = () => {
-
+    let navigate = useNavigate();
     const { user, getUser } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
-    const [addTags, setAddTags] = useState('')
+    const [addTags, setAddTags] = useState([])
 
     const [warningMessage, setWarningMessage] = useState('')
-    let navigate = useNavigate();
+   
 
     const loginWarning = () => {
             setWarningMessage('You must Login to Ask a Question, login or Signup here')
@@ -39,19 +39,31 @@ const QuestionForm = () => {
             body: questionBody, 
             tags: addTags
         })
+        data.status === 400 ?
+        setWarningMessage('error posting please try again'):
         console.log(data)
+        
         console.log(data.data)
         setQuestionTitle('')
         setQuestionBody('')
-        setAddTags(null)
+        setAddTags([])
     }
     
     const handlePost = (e) => {
         e.preventDefault()
         if(user){
             getQuestion(user)
+
         }else {
             loginWarning()
+            setTimeout(() => {
+                navigate("/login", { replace: true })
+            }, 5000)
+           
+            //Go back button:
+            // <Button onClick={() => {
+            //     navigate(-1)
+            // }} text="Go Back">
             //navigate("/login", { replace: true }, -1)
             // navigate(-1)
         }
@@ -59,7 +71,8 @@ const QuestionForm = () => {
 
     return (
         <div>
-            <h1>Ask a public question {warningMessage}</h1>
+            {warningMessage}
+            <h1>Ask a public question</h1>
             <FormStyles action="">
                 <fieldset>
                     <label htmlFor="title">Title</label>
@@ -90,7 +103,8 @@ const QuestionForm = () => {
                         multiple
                         id="tags"
                         options={tags}
-                        getOptionLabel={(option) => option.tag}
+                        getOptionLabel={(option) => option}
+                        // getOptionLabel={(option) => option.tag}
                         // defaultValue={[tags[1]]}
                         onChange={(e, value) => setAddTags(value)}
                         filterSelectedOptions
@@ -114,16 +128,50 @@ const QuestionForm = () => {
 }
 
 // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+// const tags = [
+//     { tag: 'c#' },
+//     { tag: 'CSS' },
+//     { tag: 'JSX' }, 
+//     { tag: 'sql' },
+//     { tag: 'HTML' },
+//     { tag: 'ajax' },
+//     { tag: 'ruby' },
+//     { tag: 'regex' },
+//     { tag: 'django' },
+//     { tag: 'nodeJS' },
+//     { tag: 'python' }, 
+//     { tag: 'reactJS' },
+//     { tag: 'mongoDB' },
+//     { tag: 'express' },
+//     { tag: 'algorithms' }, 
+//     { tag: 'components' },
+//     { tag: 'javascript' },
+//     { tag: 'data structures' }, 
+//     { tag: 'react-router-v6' },
+// ];
+
 const tags = [
-    { tag: 'Javascript' },
-    { tag: 'HTML' },
-    { tag: 'CSS' },
-    { tag: 'ReactJS' },
-    { tag: 'MongoDB' },
-    { tag: 'Express' },
-    { tag: 'NodeJS' },
-    { tag: 'Other' },
-];
+  'c#',
+  'CSS',
+  'JSX', 
+  'sql',
+  'HTML',
+  'ajax',
+  'ruby',
+  'regex',
+  'django',
+  'nodeJS',
+  'python', 
+  'reactJS',
+  'mongoDB',
+  'express',
+  'algorithms', 
+  'components',
+  'javascript',
+  'data structures', 
+  'react-router-v6',
+  'other'
+]
 
 export default QuestionForm
 

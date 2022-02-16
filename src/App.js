@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
 import Home from './components/Home';
 import Questions from './components/Questions';
+import QuestionView from './components/QuestionView'
 import Answers from  './components/Answers';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
@@ -47,6 +48,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/questions' element={<Questions />} />
+              <Route path='/questions/:questionId' element={<QuestionView />} />
               <Route path='/answers' element={<Answers />} />
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/login' element={<Login />} />
