@@ -31,7 +31,7 @@ export default function Navigation() {
         getUser()
     }, [])
 
-
+    const [searchString, setSearchString] = useState('')
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -41,6 +41,15 @@ export default function Navigation() {
         setAnchorEl(null);
     };
 
+    const handleChange = (e) => {
+        setSearchString(e.target.value)
+        console.log(searchString)
+    }
+
+    const handleSearch = (e) => {
+        console.log(searchString)
+        console.log('clicked to search')
+    }
     return (
         <Nav>
             <ImgTag src={logo} alt="" />
@@ -49,13 +58,17 @@ export default function Navigation() {
                 id="outlined-basic"
                 label="Search"
                 variant="outlined"
+                value={searchString}
+                onChange={handleChange}
                 InputProps={{
                     style: {
                         backgroundColor: "#fff",
                     },
                     endAdornment: (
                         <InputAdornment position="start">
-                            <SearchIcon />
+                            <SearchIcon
+                                onClick={handleSearch}
+                            />
                         </InputAdornment>
                     )
                 }}
