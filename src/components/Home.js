@@ -95,7 +95,7 @@ const Home = () => {
       {/* scrolling logos section -------------------------------------------  */}
 
       <Marquee speed={50}>
-        <div class="homeIcons">
+        <div className="homeIcons">
           <span><i className="devicon-css3-plain"></i></span>
           <span><i className="devicon-html5-plain"></i></span>
           <span><i className="devicon-javascript-plain"></i></span>
@@ -112,7 +112,7 @@ const Home = () => {
           <span><i className="devicon-rails-plain"></i></span>
           <span><i className="devicon-sass-original"></i></span>
           <span><i className="devicon-vscode-plain"></i></span>
-      </div>
+        </div>
       </Marquee>
 
       {/* SUB-SECTION --------------------------------------------------------*/}
