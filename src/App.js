@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
 import Home from './components/Home';
-import Tags from './components/Tags';
+import TagsDetails from './components/TagsDetails';
 import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
 import Answers from  './components/Answers';
@@ -49,7 +49,6 @@ function App() {
           <ThemeProvider theme={theme}>
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/tags' element={<Tags />}/>
               <Route path='/questions' element={<Questions />} />
               <Route path='/questions/:questionId' element={<QuestionView />} />
               <Route path='/answers' element={<Answers />} />
@@ -58,6 +57,7 @@ function App() {
               <Route path='/userdata' element={<UserDataProfile />} />
               <Route path='/userdata/:userId' element={<UserDataProfile />} />
               <Route path='/profile' element={<ProfileForm />} />
+              <Route path='/tags' element={<TagsDetails />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>
