@@ -13,7 +13,7 @@ color: ${({ color }) => color || '#292929'};
 font-size: 0.9rem;
 font-weight: 700;
 padding: ${({ p }) => p || "0.8rem 1.5em"};
-margin: 0.3rem;
+margin: ${({ m }) => m || "0.3rem"};
 
 &:active {
     box-shadow: 0 1px #292929;

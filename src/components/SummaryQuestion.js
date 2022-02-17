@@ -46,27 +46,23 @@ const SummaryQuestion = () => {
                   justifyContent: 'flexStart',
                   flexGrow: 1,
                   flexWrap: 'wrap',
-                  marginBottom: 2
+                  marginBottom: 2,
                 }}
               >
-                  <Grid 
-                    xl={3}
+                <Grid container
+                  xl={2}
                     md={2}
-                    xs={12}
-                    container 
+                  xs={12}
                     sx={{
                       marginRight: 1,
-
                   }}>
-                      <Grid container
-                        xl={6}
+                  <Grid container
                         xs={6}
-                        container sx={{
+                    sx={{
                           display: 'flex',
                           marginRight: 1,
                           justifyContent: 'center',
-                          flexWrap: 'reverse'
-
+                      flexWrap: 'reverse',
                         }}
                       >
                         <Item 
@@ -80,10 +76,10 @@ const SummaryQuestion = () => {
                   <Grid container
                     xl={6}
                     xs={6}
-                    container sx={{
+                    sx={{
                       display: 'flex',
                       marginRight: 1,
-                      justifyContent: 'center'
+                      justifyContent: 'center',
                     }}
                   >
                       <Item 
@@ -95,17 +91,14 @@ const SummaryQuestion = () => {
                     
                   </Grid>
                 </Grid>
-               <Grid
-                  xl={8}
+                <Grid container
+                  xl={7}
                   md={6}
                   xs={12}
-                container sx={{
-                  
-                }}>
-                  <Grid container
-                      xl={12}
+                >
+                  <Grid item
                       xs={12}
-                      container sx={{
+                    sx={{
                       display: 'flex',
                       flexDirection: 'column', 
                       justifyContent: 'center', 
@@ -119,13 +112,12 @@ const SummaryQuestion = () => {
                    
                   </Grid>
                   <Grid container
-                      xl={12}
                       xs={12}
-                      container sx={{
+                    sx={{
                       display: 'flex',
                       flexDirection: 'column', 
                       justifyContent: 'center', 
-                      alignItems: 'flex-start'
+                      alignItems: 'flex-start',
                       }}
                   >
                   { q.body.length > 200 ? 
@@ -134,10 +126,9 @@ const SummaryQuestion = () => {
                   }
                   </Grid>
 
-                   <Grid container
-                    xl={12}
+                  <Grid container
                     xs={12}
-                    container sx={{
+                    sx={{
                     display: 'flex',
                     flexDirection: 'row', 
                     justifyContent: 'flex-start', 
@@ -163,18 +154,16 @@ const SummaryQuestion = () => {
                     })}
                   </Grid>
                 </Grid>
-                <Grid 
-                xl={2} 
+                <Grid container
+                  xl={2} 
                 md={3}
                 xs={12}
-                container sx={{
-                  
+                  sx={{
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-end',
                   alignItems: 'flex-end',
-                  marginRight: 1
-          
+                    marginRight: 1,
                 }}>
 
                     {relativeTime(q.createdAt)}{" "}
@@ -202,7 +191,7 @@ const SummaryQuestion = () => {
             }}
         >
           {!isLoading && questionsDisplay}
-          {isLoading && <Typography variant="h2">Loading ...</Typography>}
+        {isLoading && <Typography variant="h3">Loading ...</Typography>}
       </Grid>
     </Box>
   

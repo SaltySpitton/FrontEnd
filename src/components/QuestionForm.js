@@ -27,7 +27,6 @@ const QuestionForm = () => {
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
-
     const [warningMessage, setWarningMessage] = useState('')
 
     const getQuestion = async (currUser) => {

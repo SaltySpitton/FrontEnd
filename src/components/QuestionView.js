@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Card, Chip, Container, Box, Paper, Grid, Typography} from '@mui/material';
+import { Card, Chip, Container, Box, Paper, Grid, Typography, Divider, Button } from '@mui/material';
 import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate, useParams, Navigate} from "react-router-dom";
 import axios from 'axios'
 import UserContext from './UserContext' 
 import UserTile from './UserTile'
 import SummaryQuestion from './SummaryQuestion'
+import AnswerForm from './AnswerForm'
 import QuestionCard from './QuestionCard'
-import AnswerCard from './AnswerCard'
-import upvoted from '../images/votes-up.svg'
-import downVoted from '../images/votes.down.svg'
+import QuestionAnswerCard from './QuestionAnswerCard';
+
 
 const QuestionView = () => {
     const {questionId} = useParams()
@@ -36,14 +36,27 @@ const QuestionView = () => {
         retrieveQuestion()
     }, [])
     
-    return (<Container lg={12} xs={12} sx={{display: 'flex', flexDirection: 'column', flexGrow: 1, margin: 0}}>
+  return (
+    <Container>
         {isLoading &&  <Typography variant="h2">Loading Question ....</Typography>}
         {questionView && <QuestionCard 
             question={questionView._doc}
             questionUser={questionView.user}
         />}
-    {/* {questionView._doc.answers > 0 &&  <h2>Answers!!!</h2> }
-    {questionView._doc.answers > 0 ? <h2>Answers!</h2> : <h3>no answers</h3>} */}
+      <Divider variant="middle" />
+      <Typography variant="h6" component="h3" my={2}><strong>Answers</strong></Typography>
+      <QuestionAnswerCard
+        //temporary
+        createdAt={"2020-07-06T20:36:59.414Z"}
+        image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
+        user={"TEST"}
+      />
+      <Divider variant="middle" />
+      <Box sx={{display: "flex", justifyContent: "space-between"}}>
+        <Typography variant="h6" component="h3" my={2}><strong>Your Answer</strong></Typography>
+        <Button variant="text" >Markdown Cheatsheet</Button>
+      </Box>
+      <AnswerForm />
     
   </Container>)
 }

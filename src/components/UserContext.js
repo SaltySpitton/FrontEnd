@@ -84,9 +84,9 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users/logout",
     }).then((res) => {
       setUser(null);
-      navigate(-1);
       getUser();
       localStorage.removeItem("user")
+      navigate("/questions");
       // console.log(`we hit this route`);
     });
   };
@@ -117,6 +117,38 @@ export const UserProvider = ({ children }) => {
     setProfile(userProfile.data[0])
     console.log("Logging getUserProfile function: " + profile._id)
   }
+  const dateDifference = (createdAt) => {
+    const showCreatedDate = new Date(createdAt).toLocaleString('en')
+    const createdAtMilisec = new Date(createdAt).getTime()
+
+    const Today = new Date()
+    const today = Today.getTime()
+
+    const timeDifference = today - createdAtMilisec
+    const hours = (timeDifference / 3600000)
+
+    if (hours > 12) {
+      return showCreatedDate
+    }
+    if (hours > 1 && hours <= 12) {
+      return `${Math.floor(hours)} hours ago`
+    }
+    if (hours < 2 && hours > 1) {
+      return `${Math.floor(hours)} hour ago`
+    }
+
+    const minutes = (timeDifference / 60000)
+    const seconds = (timeDifference / 1000)
+    console.log(minutes)
+    console.log(seconds)
+
+    if (minutes < 59 && minutes > 1) {
+      return `${Math.floor(minutes)} minutes ago`
+    }
+    if (minutes <= 1) {
+      return `${Math.floor(seconds)} seconds ago`
+    }
+  } 
 
   return (
     <UserContext.Provider
@@ -149,7 +181,8 @@ export const UserProvider = ({ children }) => {
         setErrorMessage,
         profile,
         setProfile,
-        getUserProfile
+        getUserProfile,
+        dateDifference
       }}
     >
       {children}
