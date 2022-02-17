@@ -12,6 +12,7 @@ export const UserProvider = ({ children }) => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [profile, setProfile] = useState()
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
@@ -26,18 +27,20 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/login",
     }).then((res) => {
-          getUser()
-          console.log(res)
-          navigate("/questions");
+      getUser()
+      getUserProfile()
+      localStorage.setItem("user", res.data._id)
+      console.log(res)
+      navigate("/userdata");
     })
-    .catch(err => {
-      if(err){
+      .catch(err => {
+        if (err) {
           setErrorMessage('Invalid Username or Password, please try again')
           setTimeout(() => {
-             setErrorMessage('')
+            setErrorMessage('')
           }, 2000);
-      }
-    })
+        }
+      })
   };
 
   const register = () => {
@@ -64,7 +67,9 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users",
     }).then((res) => {
       setUser(res.data);
-      console.log(res.data);
+      console.log(res.data)
+      console.log("Logging GetUser Function: " + user);
+      return res.data
       // console.log(`we hit this route`);
     });
   };
@@ -78,9 +83,18 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       navigate(-1);
       getUser();
-      console.log(`we hit this route`);
+      localStorage.removeItem("user")
+      // console.log(`we hit this route`);
     });
   };
+
+  const getUserProfile = async () => {
+    // getUser()
+    const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
+    const userProfile = await Axios.get(url)
+    setProfile(userProfile.data[0])
+    console.log("Logging getUserProfile function: " + profile._id)
+  }
 
   return (
     <UserContext.Provider
@@ -101,8 +115,11 @@ export const UserProvider = ({ children }) => {
         setLoginUsername,
         loginPassword,
         setLoginPassword,
-        errorMessage, 
-        setErrorMessage
+        errorMessage,
+        setErrorMessage,
+        profile,
+        setProfile,
+        getUserProfile
       }}
     >
       {children}

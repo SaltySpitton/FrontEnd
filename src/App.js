@@ -48,7 +48,6 @@ function App() {
         <div className="App">
           <ThemeProvider theme={theme}>
             <Routes>
-
               <Route path='/' element={<Home />} />
               <Route path='/tags' element={<Tags />}/>
               <Route path='/questions' element={<Questions />} />
@@ -57,8 +56,8 @@ function App() {
               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/login' element={<Login />} />
               <Route path='/userdata' element={<UserDataProfile />} />
-              <Route path='/userdata/:userId' element={<UserDataProfile /> }/>
-
+              <Route path='/userdata/:userId' element={<UserDataProfile />} />
+              <Route path='/profile' element={<ProfileForm />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>
