@@ -47,6 +47,7 @@ const TagsDetails = () => {
                   sx={{
                     boxShadow: 0,
                     textAlign: "left",
+                    
                   }}
                 >
                   <div
