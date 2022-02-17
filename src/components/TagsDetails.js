@@ -41,7 +41,7 @@ const TagsDetails = () => {
                 boxShadow: 0,
                 textAlign: 'left',}}>  
                 <div style={{  'backgroundColor': backgroundColor, 'display' : display }}  >
-                   {nameTag}
+                   <strong>{nameTag}</strong>
                 </div>
                 </Item>
 
