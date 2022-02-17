@@ -28,8 +28,10 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users/login",
     }).then((res) => {
       getUser()
+      getUserProfile()
+      localStorage.setItem("user", res.data._id)
       console.log(res)
-      navigate("/questions");
+      navigate("/userdata");
     })
       .catch(err => {
         if (err) {
@@ -65,7 +67,9 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users",
     }).then((res) => {
       setUser(res.data);
-      console.log(res.data);
+      console.log(res.data)
+      console.log("Logging GetUser Function: " + user);
+      return res.data
       // console.log(`we hit this route`);
     });
   };
@@ -79,26 +83,18 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       navigate(-1);
       getUser();
-      console.log(`we hit this route`);
+      localStorage.removeItem("user")
+      // console.log(`we hit this route`);
     });
   };
 
-
-
-  const getUserProfile = () => {
-    getUser()
-    console.log(user)
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: `http://localhost:4200/userdata/${user.id}`,
-    }).then((res) => {
-      setProfile(res.data)
-
-    });
-
+  const getUserProfile = async () => {
+    // getUser()
+    const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
+    const userProfile = await Axios.get(url)
+    setProfile(userProfile.data[0])
+    console.log("Logging getUserProfile function: " + profile._id)
   }
-
 
   return (
     <UserContext.Provider
