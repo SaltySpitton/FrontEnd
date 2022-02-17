@@ -101,7 +101,7 @@ export default function Navigation() {
                                             'aria-labelledby': 'basic-button',
                                         }}
                                     >
-                                        <MenuItem onClick={handleClose}><Link to={'/userdata'}>My account</Link></MenuItem>
+                                        <MenuItem onClick={handleClose}><Link to={`/userdata/${localStorage.getItem("user")}`}>My account</Link></MenuItem>
                                         <MenuItem onClick={handleClose}>Help</MenuItem>
                                         <MenuItem onClick={logout}>Logout</MenuItem>
                                     </Menu>

@@ -6,7 +6,7 @@ import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
 import QuestionEdit from './components/QuestionEdit'
 import AnswersEdit from  './components/AnswersEdit';
-import Dashboard from './components/Dashboard';
+import QuestionForm from './components/QuestionForm';
 import Login from './components/Login';
 import UserDataProfile from './components/UserDataProfile';
 import PageNotFound from './components/PageNotFound';
@@ -49,18 +49,15 @@ function App() {
         <div className="App">
           <ThemeProvider theme={theme}>
             <Routes>
-              <Route path='/' element={<Home />} />
-
               <Route path='/questions' element={<Questions />} />
               <Route path='/questions/:questionId' element={<QuestionView />} />
               <Route path='/answers' element={<Answers />} />
-              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/ask' element={<QuestionForm />} />
               <Route path='/login' element={<Login />} />
               <Route path='/userdata' element={<UserDataProfile />} />
               <Route path='/userdata/:userId' element={<UserDataProfile />} />
               <Route path='/profile' element={<ProfileForm />} />
               <Route path='/tags' element={<TagsDetails />} />
-
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>

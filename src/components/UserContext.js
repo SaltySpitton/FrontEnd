@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
       getUserProfile()
       localStorage.setItem("user", res.data._id)
       console.log(res)
-      navigate("/userdata");
+      navigate("/questions");
     })
       .catch(err => {
         if (err) {
@@ -57,9 +57,9 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/register",
     }).then((res) => {
-      getUser();
-      login();
-      console.log(res);
+      localStorage.setItem("user", res.data._id)
+      console.log(res)
+      navigate("/questions");
     });
   };
 
@@ -73,7 +73,6 @@ export const UserProvider = ({ children }) => {
       console.log(res.data)
       console.log("Logging GetUser Function: " + user);
       return res.data
-      // console.log(`we hit this route`);
     });
   };
 
@@ -84,9 +83,9 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users/logout",
     }).then((res) => {
       setUser(null);
-      getUser();
-      localStorage.removeItem("user")
+      // getUser();
       navigate("/questions");
+      localStorage.removeItem("user")
       // console.log(`we hit this route`);
     });
   };

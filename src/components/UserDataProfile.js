@@ -35,8 +35,7 @@ const UserDataProfile = () => {
   // let createdDate = profile.createdAt.toLocaleString().split(',')[0]
 
   useEffect(() => {
-    // let u = getUser()
-    console.log(localStorage.getItem("user").email)
+    getUser()
     getUserProfile()
   }, [])
 
@@ -48,7 +47,7 @@ const UserDataProfile = () => {
     <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} mb={5}>
             <Grid item xs={3} style={{ maxHeight: "12rem", maxWidth: "12rem" }}>
-              <CardMedia component={'img'} src={profile.avatar} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
+              <CardMedia component={'img'} src={user.avatar} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
           </Grid>
 
             <Grid item xs={9} style={{ display: "flex", flexDirection: 'column', justifyContent: "flex-end" }} >
