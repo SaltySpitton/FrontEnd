@@ -27,7 +27,6 @@ const QuestionForm = () => {
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
-
     const [warningMessage, setWarningMessage] = useState('')
 
     const getQuestion = async (currUser) => {
@@ -36,14 +35,11 @@ const QuestionForm = () => {
             body: questionBody, 
             tags: addTags
         })
-        data.status === 400 ?
-        setWarningMessage('error posting please try again'):
-        console.log(data)
-        
         console.log(data.data)
         setQuestionTitle('')
         setQuestionBody('')
         setAddTags([])
+        navigate(`/questions/${data.data._id}`)
     }
     
     const loginWarning = () => {
@@ -58,6 +54,7 @@ const QuestionForm = () => {
         if(user){
             getQuestion(user)
 
+                   
         } else {
             loginWarning()
             setTimeout(() => {

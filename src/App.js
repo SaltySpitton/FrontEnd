@@ -4,7 +4,8 @@ import Home from './components/Home';
 import TagsDetails from './components/TagsDetails';
 import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
-import Answers from  './components/Answers';
+import QuestionEdit from './components/QuestionEdit'
+import AnswersEdit from  './components/AnswersEdit';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import UserDataProfile from './components/UserDataProfile';
@@ -23,11 +24,11 @@ const theme = createTheme({
     palette: {
         primary: {
         main: '#72b035',
-        light: '#d0e6ba',
+        light: '#EAF4DF',
         dark: '#408000',
         },
           secondary: {
-            main: '#273817',
+            main: '#72b035',
             light: '#50623e',
             dark: '#001300',
           },
@@ -49,6 +50,7 @@ function App() {
           <ThemeProvider theme={theme}>
             <Routes>
               <Route path='/' element={<Home />} />
+
               <Route path='/questions' element={<Questions />} />
               <Route path='/questions/:questionId' element={<QuestionView />} />
               <Route path='/answers' element={<Answers />} />
@@ -58,6 +60,7 @@ function App() {
               <Route path='/userdata/:userId' element={<UserDataProfile />} />
               <Route path='/profile' element={<ProfileForm />} />
               <Route path='/tags' element={<TagsDetails />} />
+
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>
