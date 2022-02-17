@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
 import Home from './components/Home';
-import Tags from './components/Tags';
+import TagsDetails from './components/TagsDetails';
 import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
 import QuestionEdit from './components/QuestionEdit'
@@ -49,16 +49,15 @@ function App() {
         <div className="App">
           <ThemeProvider theme={theme}>
             <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/ask' element={<QuestionForm />} />
-              <Route path='/profile' element={<ProfileForm />} />
-              <Route path='/userdata/:userId' element={<UserDataProfile /> }/>
-              <Route path='/tags' element={<Tags />}/>
               <Route path='/questions' element={<Questions />} />
               <Route path='/questions/:questionId' element={<QuestionView />} />
-              <Route path='/questions/:questionId/edit' element={<QuestionEdit />} />
-              <Route path='/answers/:answerId/edit' element={<AnswersEdit />} />
+              <Route path='/answers' element={<Answers />} />
+              <Route path='/ask' element={<QuestionForm />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/userdata' element={<UserDataProfile />} />
+              <Route path='/userdata/:userId' element={<UserDataProfile />} />
+              <Route path='/profile' element={<ProfileForm />} />
+              <Route path='/tags' element={<TagsDetails />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>
