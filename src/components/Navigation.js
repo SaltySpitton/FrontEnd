@@ -20,6 +20,10 @@ const ImgTag = styled.img`
 height: 2rem;
 margin: 0 0.5rem;
 `
+const NavLink = styled(Link)`
+text-decoration: none;
+color: inherit;
+`
 //test user -------
 const userInfo = {
     id: "prof1",
@@ -42,6 +46,7 @@ export default function Navigation() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
 
     const handleChange = (e) => {
         setSearchString(e.target.value)
@@ -67,8 +72,8 @@ export default function Navigation() {
                         id="outlined-basic"
                         label="Search"
                         variant="outlined"
-value={searchString}
-                onChange={handleChange}
+                        value={searchString}
+                        onChange={handleChange}
                         InputProps={{
                             style: {
                                 backgroundColor: "#fff",
@@ -105,7 +110,7 @@ value={searchString}
                                             'aria-labelledby': 'basic-button',
                                         }}
                                     >
-                                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                                        <MenuItem onClick={handleClose}><Link to={'/userdata'}>My account</Link></MenuItem>
                                         <MenuItem onClick={handleClose}>Help</MenuItem>
                                         <MenuItem onClick={logout}>Logout</MenuItem>
                                     </Menu>

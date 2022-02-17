@@ -1,54 +1,81 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+import { Link } from 'react-router-dom';
+import { Box, Paper, Grid, Container, CardMedia, Typography, IconButton, Button } from '@mui/material';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import EditIcon from '@mui/icons-material/Edit';
+import { useContext, useEffect } from "react";
+import UserContext from './UserContext'
+import Axios from "axios";
+
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'center',
+  // textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
 
 
 const UserDataProfile = () => {
+  const { user, profile, setProfile, getUser } = useContext(UserContext)
+
+  const getUserProfile = async () => {
+    // let u = await getUser()
+
+    const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
+    const userProfile = await Axios.get(url)
+    console.log(userProfile.data[0])
+    await setProfile(userProfile.data[0])
+    // console.log("Logging getUserProfile function: " + profile.id)
+  }
+
+  // let createdDate = profile.createdAt.toLocaleString().split(',')[0]
+
+  useEffect(() => {
+    // let u = getUser()
+    console.log(localStorage.getItem("user").email)
+    getUserProfile()
+  }, [])
+
   return (
-    <div>
-    
+    <Container>
+      {profile ? (
+
+
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={4}>
-         <Grid item xs={3}>
-                Image
-                <Item sx={{
-                    border: 2,
-                    borderRadius: 2,
-                    boxShadow: 3, }}>
-                    Image-content
-                </Item>
+          <Grid container spacing={2} mb={5}>
+            <Grid item xs={3} style={{ maxHeight: "12rem", maxWidth: "12rem" }}>
+              <CardMedia component={'img'} src={profile.avatar} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
           </Grid>
 
-            <Grid item xs={9}>
-            User Data
-            <Item  sx={{
-                    border: 2,
-                    borderRadius: 2,
-                    boxShadow: 0, }}>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Incidunt corporis repellat architecto dolorem porro maiores provident quam quae consectetur voluptatem. Nemo dolores mollitia impedit ad iusto id tenetur. Praesentium, explicabo!
-                </Item>
+            <Grid item xs={9} >
+              <Typography variant='h4' component='h2' my={2} style={{
+                fontWeight: '900'
+              }}>{user.username}</Typography>
+              <Typography variant='body2' component="p" my={3}>Member since: {profile.createdAt}</Typography>
+              <IconButton href={`https://twitter.com/${profile.twitter}`} aria-label='twitter' size='large'><TwitterIcon /></IconButton>
+              <IconButton href={`https://github.com/${profile.github}`} aria-label='twitter' size='large'><GitHubIcon /></IconButton>
+              <IconButton href={`https://linkedin.com/in/${profile.linkedin}`} aria-label='twitter' size='large'><LinkedInIcon /></IconButton>
+              <Button href="/profile" variant="outlined" endIcon={<EditIcon />}>
+                Edit Profile
+              </Button>
             </Grid>
 
-            <Grid item xs={16}  >
+
+            <Grid item xs={12}  >
             About
             <Item sx={{
                     border: 2,
                     borderRadius: 2,
                     boxShadow: 3, }}>
-                    about-content
+                <Typography variant='body2' component="p" my={3}> {profile.about} </Typography>
             </Item>
             </Grid>
 
-            <Grid item xs={16} lg={6}>
+            <Grid item xs={12} md={6}>
             Answers
             <Item sx={{
                     border: 2,
@@ -58,7 +85,7 @@ const UserDataProfile = () => {
                 </Item>
             </Grid>
 
-            <Grid item xs={16} lg={6}>
+            <Grid item xs={12} md={6}>
             Questions
             <Item sx={{
                     border: 2,
@@ -68,7 +95,7 @@ const UserDataProfile = () => {
                 </Item>
             </Grid>
 
-            <Grid item xs={16} lg={6}>
+            <Grid item xs={12} md={6}>
             Votes
             <Item sx={{
                     border: 2,
@@ -78,21 +105,21 @@ const UserDataProfile = () => {
                 </Item>
             </Grid>
             
-            <Grid item xs={16} lg={6}>
+            <Grid item xs={12} md={6}>
             Top tags
             <Item sx={{
                     border: 2,
                     borderRadius: 2,
                     boxShadow: 3, }}>
-                    Top tags-content
+
                 </Item>
             </Grid>
       </Grid>
     </Box>
 
-
-
-  </div>
+      ) : null}
+      <button onClick={getUserProfile}>Load Data</button>
+    </Container>
   )
 }
 

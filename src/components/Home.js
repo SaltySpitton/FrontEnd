@@ -10,15 +10,10 @@ import UserContext from "./UserContext";
 import Axios from 'axios'
 import '../css/homepage.css'
 import logo from '../images/logo.svg'
-import reactIcon from '../images/react-original-wordmark.svg'
-import htmlIcon from '../images/html5-original-wordmark.svg'
-import cssIcon from '../images/css3-original-wordmark.svg'
-import javaIcon from '../images/javascript-original.svg'
-import djangoIcon from '../images/django-original.svg'
-import cplusIcon from '../images/cplusplus-original.svg'
 import qaBubbles from '../images/QA-bubbles.svg'
 import checkMark from "../images/Vector 1.png"
 import upvoted from '../images/votes-up.svg'
+import Marquee from "react-fast-marquee";
 
 
 const Home = () => {
@@ -99,14 +94,26 @@ const Home = () => {
 
       {/* scrolling logos section -------------------------------------------  */}
 
-      <div className="homeIcons">
-        <img className='homeIcon' src={reactIcon} alt="React Icon" />
-        <img className='homeIcon' src={htmlIcon} alt="HTML Icon" />
-        <img className='homeIcon' src={cssIcon} alt="CSS Icon" />
-        <img className='homeIcon' src={javaIcon} alt="Java Icon" />
-        <img className='homeIcon' src={djangoIcon} alt="Django Icon" />
-        <img className='homeIcon' src={cplusIcon} alt="C++ Icon" />
-      </div>
+      <Marquee speed={50}>
+        <div className="homeIcons">
+          <span><i className="devicon-css3-plain"></i></span>
+          <span><i className="devicon-html5-plain"></i></span>
+          <span><i className="devicon-javascript-plain"></i></span>
+          <span><i className="devicon-django-plain"></i></span>
+          <span><i className="devicon-python-plain"></i></span>
+          <span><i className="devicon-github-original"></i></span>
+          <span><i className="devicon-react-original"></i></span>
+          <span><i className="devicon-git-plain"></i></span>
+          <span><i className="devicon-nodejs-plain"></i></span>
+          <span><i className="devicon-java-plain"></i></span>
+          <span><i className="devicon-materialui-plain"></i></span>
+          <span><i className="devicon-csharp-plain-wordmark"></i></span>
+          <span><i className="devicon-php-plain"></i></span>
+          <span><i className="devicon-rails-plain"></i></span>
+          <span><i className="devicon-sass-original"></i></span>
+          <span><i className="devicon-vscode-plain"></i></span>
+        </div>
+      </Marquee>
 
       {/* SUB-SECTION --------------------------------------------------------*/}
       <Box mb={4} sx={{ flexGrow: 1 }}>
