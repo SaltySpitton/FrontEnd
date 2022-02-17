@@ -12,11 +12,14 @@ export const UserProvider = ({ children }) => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [questions, setQuestions] = useState('');
+  const [tagResult, setTagResult] = useState([])
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const login = () => {
+  
+  const login = () => {                                                                                                                                             
     Axios({
       method: "POST",
       data: {
@@ -28,7 +31,7 @@ export const UserProvider = ({ children }) => {
     }).then((res) => {
           getUser()
           console.log(res)
-          navigate("/questions");
+          navigate(-1);
     })
     .catch(err => {
       if(err){
@@ -36,7 +39,7 @@ export const UserProvider = ({ children }) => {
           setTimeout(() => {
              setErrorMessage('')
           }, 2000);
-      }
+      }   
     })
   };
 
@@ -82,6 +85,25 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const getAllQuestions = async() => {
+      setIsLoading(true)
+      const apiUrl = 'http://localhost:4200/questions'
+      let allQuestions = await Axios.get(apiUrl)
+      console.log(allQuestions)
+      await setQuestions(allQuestions.data.questions.docs)
+      console.log(questions)
+      setIsLoading(false)
+  }
+
+  const searchByTag = async(tag) => {
+        setIsLoading(true)
+        let apiUrl = `http://localhost:4200/questions?tags=${tag}` 
+        const tagSearch = await Axios.get(apiUrl)
+        await setTagResult(tagSearch.data.docs)
+        await setQuestions(tagSearch.data.docs)
+        setIsLoading(false)
+  }
+
   return (
     <UserContext.Provider
       value={{
@@ -102,7 +124,13 @@ export const UserProvider = ({ children }) => {
         loginPassword,
         setLoginPassword,
         errorMessage, 
-        setErrorMessage
+        setErrorMessage,
+        isLoading, 
+        setIsLoading,
+        questions, 
+        setQuestions,
+        getAllQuestions,
+        searchByTag
       }}
     >
       {children}

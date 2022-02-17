@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Card, Chip, Container,styled, Box, Paper, Grid, Typography} from '@mui/material';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios'
+import {relativeTime} from './Utils.js'
 import UserContext from './UserContext' 
 import {
   Link,
   useNavigate,
-  Navigate                                          
+  Navigate,
+  useParams                                          
 } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -21,140 +19,191 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const SummaryQuestion = () => {
+        const { user, isLoading, setIsLoading,question, setQuestion, questions, setQuestions, getAllQuestions, tagResult, setTagResult, searchByTag} = useContext(UserContext)
+        const {tagName} = useParams()
+        const [users, setUsers] = useState([])
+
+        useEffect(() => {
+          // tagResult ? 
+          // searchByTag(tagResult) : 
+          getAllQuestions()
+        },[])
+
         
-        const { user} = useContext(UserContext)
-        const [question, setQuestion] = useState('')
-        const [questions, setQuestions] = useState('')
-        const [searchTag, setSearchTag] = useState(false)
-    
-          const getAllQuestions = async() => {
-              const apiUrl = 'http://localhost:4200/questions'
-              let allQuestions = await axios.get(apiUrl)
-              await setQuestions(allQuestions.data)
-          }
-          
-          useEffect(() => {
-              getAllQuestions()
-          },[])
 
         const questionsDisplay = (
-           <Grid container item spacing={2} 
-          xl={12}
-          md={12}
-          xs={12}
-          sx={{
-          boxShadow: 5,
-          border: 2,
-          borderRadius: 1,
-          borderColor: 'secondary.light', }}>
-          {questions && questions.questions.map((q) => {
+          <React.Fragment>
+              {questions && questions.map((q) => {
             return (
-              <Grid 
+              <Grid item key={q._id}
                 xl={12}
+                xs={12}
                 sx={{
-                  borderBottom: 1 
+                  borderBottom: 1,
+                  padding: 2,
+                  display: 'flex', 
+                  flexDirection: 'row',
+                  justifyContent: 'flexStart',
+                  flexGrow: 1,
+                  flexWrap: 'wrap',
+                  marginBottom: 2
                 }}
               >
-                <Grid item xs={4} md={2}>
-                    <Item 
-                      sx={{
-                        boxShadow: 0 
-                      }}>
-                      {q.votes} votes
-                    </Item>
-                    <Item sx={{
-                      boxShadow: 0 }}>
-                      {q.answers.length} answers
-                    </Item>
-                </Grid>
+                  <Grid 
+                    xl={3}
+                    md={2}
+                    xs={12}
+                    container 
+                    sx={{
+                      marginRight: 1,
 
-                <Grid
-                  container direction="row"
-                  // item 
-                  lg={10} xs={10} sm={10}  
-                >
-                    <Item sx={{
-                      boxShadow: 0,
-                      textAlign: 'left' }}> <strong>
-                      <Link
-                          onClick={() => setQuestion(q)} 
-                          to={`/questions/${q._id}`}
-                          question={question}
-                          setQuestion={setQuestion}
-                          >
-                          {q.title}
-                      </Link>
-                      </strong>
-                    </Item>
-                    <Item sx={{
-                      boxShadow: 0,
-                      textAlign: 'left' }}> <strong>
-                      {q.body.length > 100 ? 
-                      q.body.substring(0, 175) + '...' :
-                      q.body
-                      }
-                      </strong>
-                    </Item>
+                  }}>
+                      <Grid container
+                        xl={6}
+                        xs={6}
+                        container sx={{
+                          display: 'flex',
+                          marginRight: 1,
+                          justifyContent: 'center',
+                          flexWrap: 'reverse'
 
-                  {q.tags.map((tag) => {
-                      return (
-                        <Grid 
-                          spacing={2}
-                          lg={3}
-                          md={3}
+                        }}
+                      >
+                        <Item 
+                        sx={{boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF'}}
                         >
-                           <Item
-                            sx={{
-                              marginRight: 1,
-                              backgroundColor: 'primary.light'
-                          }}
-                          >
-                          {tag}
-                          </Item>
-                        </Grid>
-                      )
-                    })}
+                          <Typography sx={{backgroundColor:'#EAF4DF', }}variant="h5">{q.votes}</Typography> <strong>votes</strong> 
+                         
+                        </Item>
+                                        
+                      </Grid>
+                  <Grid container
+                    xl={6}
+                    xs={6}
+                    container sx={{
+                      display: 'flex',
+                      marginRight: 1,
+                      justifyContent: 'center'
+                    }}
+                  >
+                      <Item 
+                        sx={{boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF', marginTop: 1}}
+                      > 
+                          <Typography sx={{backgroundColor:'#EAF4DF', }} variant="h5">{q.answers.length}</Typography> <strong>answers</strong> 
+                         
+                      </Item>
+                    
+                  </Grid>
+                </Grid>
+               <Grid
+                  xl={8}
+                  md={6}
+                  xs={12}
+                container sx={{
+                  
+                }}>
+                  <Grid container
+                      xl={12}
+                      xs={12}
+                      container sx={{
+                      display: 'flex',
+                      flexDirection: 'column', 
+                      justifyContent: 'center', 
+                      alignItems: 'flex-start',
+                      marginBottom: 1
+                      }}
+                  >
+                    <strong>
+                      <Link to={`/questions/${q._id}`}>{q.title}</Link>  
+                    </strong>
+                   
+                  </Grid>
+                  <Grid container
+                      xl={12}
+                      xs={12}
+                      container sx={{
+                      display: 'flex',
+                      flexDirection: 'column', 
+                      justifyContent: 'center', 
+                      alignItems: 'flex-start'
+                      }}
+                  >
+                  { q.body.length > 200 ? 
+                    q.body.substring(0, 175) + '...' :
+                    q.body
+                  }
+                  </Grid>
 
+                   <Grid container
+                    xl={12}
+                    xs={12}
+                    container sx={{
+                    display: 'flex',
+                    flexDirection: 'row', 
+                    justifyContent: 'flex-start', 
+                    alignItems: 'flex-start',
+                    marginTop: 1,
+                    }}
+                  >
+                    { q.tags.map((tagName) => {
+                        return (
+                            <Chip  
+                                key={tagName}
+                                variant="outlined" 
+                                size="large" 
+                                label={tagName} 
+                                onClick={() => {
+                                  searchByTag(tagName)
+                                }}
+                                // to={`/questions/${tagName}`}
+                                clickable 
+                                sx={{marginTop: 2, marginRight: 1}}
+                            />
+                        )
+                    })}
+                  </Grid>
                 </Grid>
                 <Grid 
-                    container direction="row"
-                    item lg={2} 
-                > 
-                    <Item sx={{
-                        boxShadow: 0, }}>
-                        created at
-                    </Item>
+                xl={2} 
+                md={3}
+                xs={12}
+                container sx={{
+                  
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                  marginRight: 1
+          
+                }}>
 
-                      <Item sx={{
-                        boxShadow: 0, }}>
-                        User- goes here
-                      </Item>
-                  </Grid>
-                 
+                    {relativeTime(q.createdAt)}{" "}
+                    <Link to={`/userdata/${q.user._id}`}>By {q.user.username}</Link>
+                </Grid>
+
               </Grid>
             )
           })}
-        </Grid>
+          </React.Fragment>
+
+
         )
-
-
-  return (
-
-  <>
+  return (<>
      <Box sx={{ flexGrow: 1 }}>
-      <Grid 
-        container 
-        xl={12}
-        md={12}
-        xs={12}
-        // spacing={2}
-        sx={{
-          padding: 2,
-          marginLeft: 1 
-        }}
-      >
-       {questions ? questionsDisplay : null}
-     </Grid>
+        <Grid 
+            container 
+            xl={12}
+            md={12}
+            xs={12}
+            sx={{
+              // padding: 2,
+              // marginLeft: 1
+              // backgroundColor: '#EAF4DF'
+            }}
+        >
+          {!isLoading && questionsDisplay}
+          {isLoading && <Typography variant="h2">Loading ...</Typography>}
+      </Grid>
     </Box>
   
   </> 
@@ -165,16 +214,114 @@ export default SummaryQuestion
 
 
 
+//{ !isLoading && questions.questions === 0 &&  <Link to="/dashboard"><Typography variant="h3">No Questions Yet! Click me to add Your Question</Typography></Link> }
+
+
+//  {questions && questions.map((q) => {
+//             return (
+//               <Grid item key={q._id}
+//                 xl={12}
+//                 sx={{
+//                   borderBottom: 1 
+//                 }}
+//               >
+//                 <Grid item xs={4} md={2}>
+//                     <Item 
+//                       sx={{
+//                         boxShadow: 0 
+//                       }}>
+//                       {q.votes} votes
+//                     </Item>
+//                     <Item sx={{
+//                       boxShadow: 0 }}>
+//                       {q.answers.length} answers
+//                     </Item>
+//                 </Grid>
+
+//                 <Grid item 
+//                   container direction="row"
+//                   // item 
+//                   lg={10} xs={10} sm={10}  
+//                 >
+//                     <Item sx={{
+//                       boxShadow: 0,
+//                       textAlign: 'left' }}> <strong>
+//           {/* LINK TO QUSTN VIEW */}
+//                       <Link
+//                       onClick={()=>{
+//                         setQuestion(q._id)
+//                       }}
+//                           to={`/questions/${q._id}`}
+//                       >
+//                       {q.title}
+//                       </Link>
+//                       </strong>
+//                     </Item>
+//                     <Item sx={{
+//                       boxShadow: 0,
+//                       textAlign: 'left' }}> <strong>
+//                       {q.body.length > 200 ? 
+//                       q.body.substring(0, 175) + '...' :
+//                       q.body
+//                       }
+//                       </strong>
+//                     </Item>
+
+//                     { q.tags.map((tagName) => {
+                     
+//                         return (
+//                             <Chip  
+//                                 key={tagName}
+//                                 variant="outlined" 
+//                                 size="large" 
+//                                 label={tagName} 
+//                                 onClick={() => {
+//                                   searchByTag(tagName)
+//                                 }}
+//                                 // to={`/questions/${tagName}`}
+//                                 clickable 
+//                                 sx={{marginRight: 2, marginBottom: 1}}
+//                             />
+//                         )
+//                     })}
+
+//                 </Grid>
+//                 <Grid 
+//                     container direction="row"
+//                     item 
+//                     lg={2} 
+//                 > 
+//                     <Item sx={{
+//                         boxShadow: 0, }}>
+//                         Asked {relativeTime(q.createdAt)}
+//                     </Item>
+
+//                       <Item 
+//                         sx={{
+//                         boxShadow: 0, }}>
+//                         <Link to={`/userdata/${q.user._id}`}>{q.user.username}</Link>
+//                       </Item>
+//                   </Grid>
+                 
+//               </Grid>
+//             )
+//           })}
 
 
 
 
 
-
-
-
-
-
+//  <Grid container item spacing={2} 
+//               xl={12}
+//               md={12}
+//               xs={12}
+//               sx={{
+//               boxShadow: 5,
+//               border: 2,
+//               borderRadius: 1,
+//               borderColor: 'secondary.light', }}>
+         
+//           </Grid>
 
 
 
@@ -196,6 +343,26 @@ export default SummaryQuestion
   
 //   );
 // }
+
+//<Grid item
+                    //   xl={8}
+                    //   xs={12}
+                    //   container sx={{
+                    //   // backgroundColor: 'lightBlue'
+                    //   }}
+                    // >
+                    //   answers
+                    // </Grid>
+
+                  // <Grid item
+                  //         xl={8}
+                  //         xs={12}
+                  //         container sx={{
+                  //         // backgroundColor: 'green'
+                  //         }}
+                  //       >
+                  //         votes
+                  //       </Grid>
 
 
 

@@ -4,7 +4,8 @@ import Home from './components/Home';
 import Tags from './components/Tags';
 import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
-import Answers from  './components/Answers';
+import QuestionEdit from './components/QuestionEdit'
+import AnswersEdit from  './components/AnswersEdit';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
 import UserDataProfile from './components/UserDataProfile';
@@ -50,15 +51,15 @@ function App() {
             <Routes>
 
               <Route path='/' element={<Home />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/userdata' element={<UserDataProfile />} />
+              <Route path='/userdata/:userId' element={<UserDataProfile /> }/>
               <Route path='/tags' element={<Tags />}/>
               <Route path='/questions' element={<Questions />} />
               <Route path='/questions/:questionId' element={<QuestionView />} />
-              <Route path='/answers' element={<Answers />} />
-              <Route path='/dashboard' element={<Dashboard />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/userdata' element={<UserDataProfile />} />
-              <Route path='/userdata/:userId' element={<UserDataProfile /> }/>
-
+              <Route path='/questions/:questionId/edit' element={<QuestionEdit />} />
+              <Route path='/answers/:answerId/edit' element={<AnswersEdit />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </ThemeProvider>
