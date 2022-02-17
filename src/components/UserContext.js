@@ -96,7 +96,7 @@ export const UserProvider = ({ children }) => {
       const apiUrl = 'http://localhost:4200/questions'
       let allQuestions = await Axios.get(apiUrl)
       console.log(allQuestions)
-      await setQuestions(allQuestions.data.questions.docs)
+      await setQuestions(allQuestions.data.questions)
       console.log(questions)
       setIsLoading(false)
   }
@@ -109,6 +109,7 @@ export const UserProvider = ({ children }) => {
         await setQuestions(tagSearch.data.docs)
         setIsLoading(false)
 
+  }
   const getUserProfile = async () => {
     // getUser()
     const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
@@ -143,7 +144,7 @@ export const UserProvider = ({ children }) => {
         questions, 
         setQuestions,
         getAllQuestions,
-        searchByTag
+        searchByTag,
         errorMessage,
         setErrorMessage,
         profile,
@@ -154,6 +155,6 @@ export const UserProvider = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
-};
+}
 
 export default UserContext;

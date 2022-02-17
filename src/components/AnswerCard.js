@@ -61,23 +61,6 @@ const AnswerCard = ({answer, question}) => {
                             {user.id === answer.user && <Link to={`/answers/${answer._id}/edit`}>Edit</Link> }
                             {user.id === answer.user && <Typography variant="link">Delete</Typography>}
                         </Box>
-{/*     
-                        <Box sx={{marginTop: 1}}>
-                            { answer.tags && answer.tags.map((tagName) => {
-                                return (
-                                    <Chip  
-                                        variant="outlined" 
-                                        size="large" 
-                                        label={tagName} 
-                                        onClick={() => {
-                                            searchByTag(tagName)
-                                        }}
-                                        clickable 
-                                        sx={{marginRight: 2, marginBottom: 1}}
-                                    />
-                                )
-                            })}
-                        </Box> */}
 
                         <Box sx={{
                             display: 'flex',
