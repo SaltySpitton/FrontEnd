@@ -39,7 +39,7 @@ const QuestionView = () => {
     return (<Container lg={12} xs={12} sx={{display: 'flex', flexDirection: 'column', flexGrow: 1, margin: 0}}>
         {isLoading &&  <Typography variant="h2">Loading Question ....</Typography>}
         {questionView && <QuestionCard 
-            question={questionView}
+            question={questionView._doc}
             questionUser={questionView.user}
         />}
     {/* {questionView._doc.answers > 0 &&  <h2>Answers!!!</h2> }
