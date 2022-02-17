@@ -16,23 +16,21 @@ const Questions = () => {
     
   return( <>
   
-    <Container sx={{
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      justifyContent: 'space-between',
-      alignItems:'center',
-      marginBottom:1,
-      
-    }}>
-      <h1>Questions</h1>
-      <AppButton onClick={handleAskQuestion} bg="hsla(90, 52%, 58%, 80%)">Ask Question</AppButton>
-    </Container>
-    
-    <SummaryQuestion />
-   
-    <br></br>
+    <Container >
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 1,
 
+      }}>
+        <h1>Questions</h1>
+        <AppButton onClick={handleAskQuestion} bg="hsla(90, 52%, 58%, 80%)">Ask Question</AppButton>
+      </Box>
+      <SummaryQuestion />
+    </Container>
   </>)
 };
 
