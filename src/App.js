@@ -6,7 +6,7 @@ import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
 import QuestionEdit from './components/QuestionEdit'
 import AnswersEdit from  './components/AnswersEdit';
-import Dashboard from './components/Dashboard';
+import QuestionForm from './components/QuestionForm';
 import Login from './components/Login';
 import UserDataProfile from './components/UserDataProfile';
 import PageNotFound from './components/PageNotFound';
@@ -51,7 +51,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home />} />
               <Route path='/login' element={<Login />} />
-              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/ask' element={<QuestionForm />} />
               <Route path='/profile' element={<ProfileForm />} />
               <Route path='/userdata/:userId' element={<UserDataProfile /> }/>
               <Route path='/tags' element={<Tags />}/>
