@@ -57,13 +57,9 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/register",
     }).then((res) => {
-      // getUser();
-      // login();
-      // console.log(res)
       localStorage.setItem("user", res.data._id)
       console.log(res)
       navigate("/questions");
-      // console.log(res);
     });
   };
 
@@ -77,7 +73,6 @@ export const UserProvider = ({ children }) => {
       console.log(res.data)
       console.log("Logging GetUser Function: " + user);
       return res.data
-      // console.log(`we hit this route`);
     });
   };
 
