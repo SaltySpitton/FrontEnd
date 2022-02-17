@@ -8,8 +8,8 @@ import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography';
 import { useState, useContext, useEffect } from 'react';
 import axios from 'axios'
-import RelativeTime from './RelativeTime'
 import UserContext from './UserContext' 
+import {relativeTime} from './Utils.js'
 import {
   Link,
   useNavigate,
@@ -18,49 +18,12 @@ import {
 } from "react-router-dom";
 
 
-const UserTile = ({image, user, createdAt, width}) => {
-    // const displayedTime = RelativeTime(createdAt)
-    
-    //need to export this -> tried to with relative time
-    const dateDifference = (createdAt) => {
-        const showCreatedDate = new Date(createdAt).toLocaleString('en')
-        const createdAtMilisec = new Date(createdAt).getTime()
-
-        const Today = new Date()
-        const today = Today.getTime()  
-
-        const timeDifference = today - createdAtMilisec
-        const hours = (timeDifference / 3600000)
-
-        console.log(showCreatedDate)
-        console.log(createdAtMilisec)
-        console.log(Today)
-        console.log(today)
-        console.log(timeDifference)
-        console.log(hours)
-        
-        if(hours > 12){
-            return showCreatedDate
-        }
-        if(hours > 1 && hours <= 12){
-           return `${Math.floor(hours)} hours ago`
-        } 
-        if(hours < 2 && hours > 1){
-           return `${Math.floor(hours)} hour ago`
-        }
-
-        const minutes = (timeDifference / 60000)
-        const seconds = (timeDifference / 1000)
-         console.log(minutes)
-        console.log(seconds)
-
-        if(minutes < 59 && minutes > 1){
-           return `${Math.floor(minutes)} minutes ago`
-        }
-        if(minutes <= 1){
-            return `${Math.floor(seconds)} seconds ago`
-        }
-    } 
+const UserTile = ({image, user, createdAt, width, input}) => {
+    console.log(user)
+    let verbage;
+    input === 'q' ? 
+    verbage = 'asked' :
+    verbage = 'answered';
   return (
     <>
         <Card 
@@ -73,7 +36,7 @@ const UserTile = ({image, user, createdAt, width}) => {
             }}
             variant="outlined"
         >   
-            <Typography variant="p" color="text.secondary" >asked {dateDifference(createdAt)}</Typography>
+            <Typography variant="p" color="text.secondary" >{verbage} {relativeTime(createdAt)}</Typography>
             <Box 
                 sx={{
                     display:'flex',
@@ -91,10 +54,7 @@ const UserTile = ({image, user, createdAt, width}) => {
                     }}
                     variant="square"
                 />
-                <Link to="/userdata/:userId" >{user.username}</Link>
-                {/* <Typography variant="h5" color="text.primary">
-                    {user.username}
-                </Typography> */}
+                <Link to={`/userdata/${user.id}`} >{user.username}</Link>
             </Box>
         </Card>
     </>

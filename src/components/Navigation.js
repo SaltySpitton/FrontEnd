@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
+import SummaryQuestion from './SummaryQuestion'
 import { useState, useContext } from 'react';
 import UserContext from "./UserContext";
 import { Nav, LightBg } from '../css/Nav.styled';
@@ -31,7 +32,7 @@ const userInfo = {
 }
 
 export default function Navigation() {
-    const { user, logout, getUser } = useContext(UserContext)
+    const { user, logout, getUser, questions, setQuestions, getAllQuestions} = useContext(UserContext)
     useEffect(() => {
         getUser()
     }, [])
@@ -56,11 +57,16 @@ export default function Navigation() {
         console.log(searchString)
         console.log('clicked to search')
     }
+
     return (
         <LightBg>
             <Container>
                 <Nav>
+                <Link to="/questions" onClick={()=> {
+                    getAllQuestions()
+                }} component={<SummaryQuestion />}>
                     <ImgTag src={logo} alt="" />
+                </Link>
                     <TextField
                         fullWidth
                         id="outlined-basic"
@@ -79,6 +85,7 @@ export default function Navigation() {
                             )
                         }}
                     />
+                    <Link to="/dashboard">Ask Question</Link>
                     <Link to="/tags">Tags</Link>
                     <div className="nav-container">
                         {user ?
