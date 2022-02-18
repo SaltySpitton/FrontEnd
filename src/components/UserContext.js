@@ -14,7 +14,8 @@ export const UserProvider = ({ children }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [questions, setQuestions] = useState('');
-  const [tagResult, setTagResult] = useState([])
+  const [tagResult, setTagResult] = useState("")
+  const [userQuestions, setUserQuestions] = useState("")
   const [profile, setProfile] = useState()
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -38,10 +39,11 @@ export const UserProvider = ({ children }) => {
     })
       .catch(err => {
         if (err) {
-          setErrorMessage('Invalid Username or Password, please try again')
-          setTimeout(() => {
-            setErrorMessage('')
-          }, 2000);
+          errorMessenger('Invalid Username or Password, please try again')
+          // setErrorMessage('Invalid Username or Password, please try again')
+          // setTimeout(() => {
+          //   setErrorMessage('')
+          // }, 2000);
       }   
     })
   };
@@ -91,6 +93,15 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const getAllUserQuestions = async(profileUser) => {
+      console.log(profileUser)
+      const url = `http://localhost:4200/users/${profileUser}/questions`
+      const allUserQuestions = await Axios.get(url)
+      console.log(allUserQuestions)
+      await setUserQuestions(allUserQuestions.data)
+      console.log(userQuestions)
+  } 
+
   const getAllQuestions = async() => {
       setIsLoading(true)
       const apiUrl = 'http://localhost:4200/questions'
@@ -101,12 +112,23 @@ export const UserProvider = ({ children }) => {
       setIsLoading(false)
   }
 
+  const errorMessenger = (message) => {
+      setErrorMessage(message)
+      setTimeout(() => {
+        setErrorMessage("")
+      }, 2000)
+  }
+
   const searchByTag = async(tag) => {
         setIsLoading(true)
+        console.log(tag)
         let apiUrl = `http://localhost:4200/questions?tags=${tag}` 
         const tagSearch = await Axios.get(apiUrl)
-        await setTagResult(tagSearch.data.docs)
-        await setQuestions(tagSearch.data.docs)
+        tagSearch.totalItems === 0 ?
+        errorMessenger(`No Current Questions tagged with ${tag}`) : 
+        await setTagResult(tagSearch.data.questions) 
+        console.log(tagResult)
+        // await setQuestions(tagSearch.data.docs)
         setIsLoading(false)
 
   }
@@ -139,6 +161,7 @@ export const UserProvider = ({ children }) => {
         setLoginPassword,
         errorMessage, 
         setErrorMessage,
+        errorMessenger,
         isLoading, 
         setIsLoading,
         questions, 
@@ -149,7 +172,10 @@ export const UserProvider = ({ children }) => {
         setErrorMessage,
         profile,
         setProfile,
-        getUserProfile
+        getUserProfile,
+        userQuestions, 
+        setUserQuestions, 
+        getAllUserQuestions
       }}
     >
       {children}

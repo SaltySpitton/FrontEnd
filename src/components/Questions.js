@@ -9,10 +9,15 @@ import UserContext from "./UserContext";
 import SummaryQuestion from './SummaryQuestion';
 import axios from "axios";
 
+
 const Questions = () => {
+  const navigate = useNavigate()
+  
   const handleAskQuestion = () => {
     console.log('clicked')
+    navigate('/dashboard')
   }
+  const { errorMessage } = useContext(UserContext)
     
   return( <>
   
@@ -25,7 +30,7 @@ const Questions = () => {
       marginBottom:1,
       
     }}>
-      <h1>Questions</h1>
+      <h1>Questions</h1>{errorMessage}
       <AppButton onClick={handleAskQuestion} bg="hsla(90, 52%, 58%, 80%)">Ask Question</AppButton>
     </Container>
     

@@ -54,7 +54,7 @@ const UserTile = ({image, user, createdAt, width, input}) => {
                     }}
                     variant="square"
                 />
-                <Link to={`/userdata/${user.id}`} >{user.username}</Link>
+                <Link to={`/userdata/${user._id}`} >{user.username}</Link>
             </Box>
         </Card>
     </>

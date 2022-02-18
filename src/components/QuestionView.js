@@ -14,7 +14,7 @@ import downVoted from '../images/votes.down.svg'
 
 const QuestionView = () => {
     const {questionId} = useParams()
-    const { user, isLoading, setIsLoading, getAllQuestions, tagResult, setTagResult, searchByTag, questions                                                                             } = useContext(UserContext)
+    const { user, isLoading, setIsLoading, getAllQuestions, tagResult, setTagResult, searchByTag, questions} = useContext(UserContext)
 
     const {navigate} = useNavigate()
     const [questionView, setQuestionView] = useState('')
@@ -23,12 +23,13 @@ const QuestionView = () => {
     
     const retrieveQuestion = async() => {
         setIsLoading(true)
-
         const url = `http://localhost:4200/questions/${questionId}`
         const questionData = await axios.get(url)
         await setQuestionView(questionData.data)
+        console.log(questionData)
+        // console.log(questionView)
         setIsLoading(false)
-        console.log(`question data`, questionData )
+        // console.log(`question data`, questionData )
 
     }
 
@@ -36,9 +37,12 @@ const QuestionView = () => {
         retrieveQuestion()
     }, [])
     
+    console.log(questionView)
     return (<Container lg={12} xs={12} sx={{display: 'flex', flexDirection: 'column', flexGrow: 1, margin: 0}}>
-        {isLoading &&  <Typography variant="h2">Loading Question ....</Typography>}
-        {questionView && <QuestionCard 
+        {isLoading &&  <Typography variant="h2">Loading Question....</Typography>}
+        {isLoading && !questionView}
+        {questionView && 
+        <QuestionCard 
             question={questionView._doc}
             questionUser={questionView.user}
         />}

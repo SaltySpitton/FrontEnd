@@ -37,10 +37,11 @@ const QuestionForm = () => {
             tags: addTags
         })
         console.log(data.data)
+        navigate(`/questions/${data.data._id}`)
         setQuestionTitle('')
         setQuestionBody('')
         setAddTags([])
-        navigate(`/questions/${data.data._id}`)
+        
     }
     
     const loginWarning = () => {
