@@ -76,7 +76,7 @@ export default function Navigation() {
                             )
                         }}
                     />
-                    <Link to="/dashboard">Ask Question</Link>
+                    <Link to="/ask">Ask</Link>
                     <Link to="/tags">Tags</Link>
                     <div className="nav-container">
                         {user ?

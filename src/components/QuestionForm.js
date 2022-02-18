@@ -1,4 +1,4 @@
-import { InputLabel, Autocomplete, TextField} from '@mui/material';
+import { InputLabel, Autocomplete, TextField, Container} from '@mui/material';
 import { AppButton } from '../css/Button.styled';
 import {
   FormStyles,
@@ -72,8 +72,8 @@ const QuestionForm = () => {
  
 
     return (
-        <div>
-            {warningMessage}
+       <Container>
+             {warningMessage}
             <h1>Ask a public question</h1>
             <FormStyles action="">
                 <fieldset>
@@ -120,7 +120,7 @@ const QuestionForm = () => {
                 <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
 
             </FormStyles>
-      </div>
+       </Container>
     )
 }
 
