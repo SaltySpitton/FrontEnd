@@ -1,84 +1,52 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+import { FormInput } from '../css/Form.styled';
+import { AppButton } from '../css/Button.styled';
+import '../css/Login.css'
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
+import UserContext from "./UserContext";
 
-import Axios from "axios";
+// import Axios from "axios";
 
 const Login = () => {
-  const [registerUsername, setRegisterUsername] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [data, setData] = useState(null);
-  const register = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: registerUsername,
-        password: registerPassword,
-        email: registerEmail,
-      },
-      withCredentials: true,
-      url: "http://localhost:4200/users/register",
-    }).then((res) => console.log(res));
-  };
-  const login = () => {
-    Axios({
-      method: "POST",
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-      },
-      withCredentials: true,
-      url: "http://localhost:4200/users/login",
-    }).then((res) => console.log(res));
-  };
-  const getUser = () => {
-    Axios({
-      method: "GET",
-      withCredentials: true,
-      url: "http://localhost:4200/users",
-    }).then((res) => {
-      setData(res.data);
-      console.log(res.data);
-      console.log(`we hit this routr`);
-    });
-  };
+  const { user, setLoginUsername, setLoginPassword, login, getUser, errorMessage} = useContext(UserContext)
+
   return (
-    <div className="App">
-      <div>
-        <h1>Register</h1>
-        <input
-          placeholder="username"
-          onChange={(e) => setRegisterUsername(e.target.value)}
-        />
-        <input
-          placeholder="password"
-          onChange={(e) => setRegisterPassword(e.target.value)}
-        />
-        <input
-          placeholder="email"
-          onChange={(e) => setRegisterEmail(e.target.value)}
-        />
-        <button onClick={register}>Submit</button>
-      </div>
-
-      <div>
-        <h1>Login</h1>
-        <input
-          placeholder="username"
-          onChange={(e) => setLoginUsername(e.target.value)}
-        />
-        <input
-          placeholder="password"
-          onChange={(e) => setLoginPassword(e.target.value)}
-        />
-        <button onClick={login}>Submit</button>
-      </div>
-
-      <div>
-        <h1>Get User</h1>
-        <button onClick={getUser}>Submit</button>
-        {data ? <h1>Welcome Back {data.username}</h1> : null}
+    <div>
+      <div className="login">
+        <h2 className="loginTitle">Choose a Login Method</h2>
+        <div className="wrapper">
+          <div className="left">
+            <div className="loginButton google" >
+              <GoogleIcon />
+              Google
+            </div>
+            <div className="loginButton github" >
+              <GitHubIcon />
+              Github
+            </div>
+          </div>
+          <div className="center">
+            <div className="line" />
+            <div className="or">OR</div>
+          </div>
+          {errorMessage && <div>{errorMessage}</div>}
+          <div className="right">
+            <FormInput width={"60%"}
+              type="text"
+              placeholder="Username"
+              onChange={(e) => setLoginUsername(e.target.value)}
+            />
+            <FormInput
+              width={"60%"}
+              type="password"
+              placeholder="Password"
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+            <AppButton bg="hsla(90, 52%, 58%, 80%)" onClick={login}>Login</AppButton>
+          </div>
+        </div>
       </div>
     </div>
   );

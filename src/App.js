@@ -1,10 +1,21 @@
-import {Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
+import { useState, useEffect, useContext } from 'react';
 import Home from './components/Home';
+import TagsDetails from './components/TagsDetails';
+import Answers from './components/Answers'
 import Questions from './components/Questions';
-import Answers from  './components/Answers';
-import Dashboard from './components/Dashboard';
+import QuestionView from './components/QuestionView';
+import QuestionEdit from './components/QuestionEdit'
+import AnswersEdit from  './components/AnswersEdit';
+import QuestionForm from './components/QuestionForm';
 import Login from './components/Login';
+import UserDataProfile from './components/UserDataProfile';
+import PageNotFound from './components/PageNotFound';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Layout from './components/Layout';
+import { UserProvider } from './components/UserContext';
+import ProfileForm from './components/ProfileForm';
+
 
 
 //link to color picker
@@ -13,44 +24,49 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#a4e265',
-            light: '#d8ff96',
-            dark: '#72b035',
+        main: '#72b035',
+        light: '#EAF4DF',
+        dark: '#408000',
         },
           secondary: {
-            main: '#282828',
-            light: '#505050',
-            dark: '#000000',
+            main: '#72b035',
+            light: '#50623e',
+            dark: '#001300',
           },
         
-    },
-
+  },
     typography: {
       fontFamily: [
         'Roboto Mono',
         'sans-serif',
       ].join(','),
-    },
-})
-
-
+  },
+});
 
 function App() {
   return (
-    <div className="App">
-      <ThemeProvider theme={theme}>
-      <Routes>
-
-        <Route path='/' element={<Home/>}/>
-        <Route path='/questions' element={<Questions/>}/>
-        <Route path='/Answers' element={<Answers/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
-        <Route path='/login' element={<Login/>}/>
-      
-      </Routes>
-      </ThemeProvider>
-    </div>
-  )
+    <UserProvider>
+      <Layout>
+        <div className="App">
+          <ThemeProvider theme={theme}>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/questions' element={<Questions />} />
+              <Route path='/questions/:questionId' element={<QuestionView />} />
+              <Route path='/answers' element={<Answers />} />
+              <Route path='/ask' element={<QuestionForm />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='/userdata' element={<UserDataProfile />} />
+              <Route path='/userdata/:userId' element={<UserDataProfile />} />
+              <Route path='/profile' element={<ProfileForm />} />
+              <Route path='/tags' element={<TagsDetails />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </ThemeProvider>
+        </div>
+      </Layout>
+    </UserProvider>
+  );
 }
 
 export default App;

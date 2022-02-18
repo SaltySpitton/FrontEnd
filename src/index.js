@@ -1,20 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Routes, Route } from 'react-router-dom'
+import './css/index.css'
+// import {Routes, Route } from 'react-router-dom'
 import App from './App';
 import {
   BrowserRouter as Router
 } from "react-router-dom"
-import Layout from './components/Layout'
-import Home from './components/Home';
-import { StyledEngineProvider } from '@mui/material/styles';
+// import Home from './components/Home';
+// import { StyledEngineProvider } from '@mui/material/styles';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Layout>
-        <App />
-      </Layout>
+      <App />
     </Router>
   </React.StrictMode>,
   document.getElementById('root')

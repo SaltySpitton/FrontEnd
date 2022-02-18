@@ -1,12 +1,9 @@
-import React from 'react';
+import React from 'react'
 
 const Answers = () => {
+  return (
+    <div>Answers TBD</div>
+  )
+}
 
-    
-  return( <>
-  
-    <p>Answers</p>
-  </>)
-};
-
-export default Answers;
+export default Answers

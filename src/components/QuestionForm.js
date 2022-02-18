@@ -1,79 +1,85 @@
-import { InputLabel, Autocomplete, TextField, Stack } from '@mui/material';
-import styled from 'styled-components'
+import { InputLabel, Autocomplete, TextField, Container} from '@mui/material';
 import { AppButton } from '../css/Button.styled';
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import { useState } from 'react';
+import {
+  FormStyles,
+  FormInput,
+  BodyTextarea,
+  MarkdownPreviewArea} from "../css/Form.styled";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { useState, useContext } from "react";
+import UserContext from "./UserContext";
+import axios from "axios";
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,  
+  useLocation,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 
-const markdown = `Just a link: https://reactjs.com.`
+const QuestionForm = () => {
+    let navigate = useNavigate();
 
-const Form = styled.form`
-margin: 3rem 1rem;
-width: 90%;
-
-label {
-    font-weight: 700;
-    font-size: 1.5rem;
-    margin: 0;
-    padding: 0;
-}
-p {
-    color: #8D8F8A;
-    font-weight: 200;
-    font-size: 0.8rem;
-    margin: 0.5rem;
-}
-input::placeholder, textarea::placeholder {
-   font-family: inherit;
-   color: #bbb;
-}
-input[type=text]{
-    font-family: inherit;
-    color: #292929;
-    font-weight: 500;
-}
-fieldset {
-    border: none;
-    margin-bottom: 2rem;
-}
-`
-const TitleInput = styled.input`
-background-color: #fff;
-border: 2px solid #292929;
-border-radius: 0.5rem;
-display: block;
-width: 100%;
-padding: 0.8rem;
-`
-
-const BodyTextarea = styled.textarea`
-background-color: #fff;
-border: 2px solid #292929;
-border-radius: 0.5rem;
-display: block;
-width: 100%;
-padding: 0.8rem;
-`
-
-const MarkdownPreviewArea = styled.div`
-padding: 1.3rem;
-background-color: hsla(90, 52%, 58%, 10%);
-border-radius: 0.5rem;
-margin: 1rem 0;
-`
-
-const AskQuestion = () => {
+    const { user, getUser } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
+    const [addTags, setAddTags] = useState([])
+    const [warningMessage, setWarningMessage] = useState('')
+
+    const getQuestion = async (currUser) => {
+        let data = await axios.post(`http://localhost:4200/questions/${currUser.id}`, {
+            title: questionTitle, 
+            body: questionBody, 
+            tags: addTags
+        })
+        console.log(data.data)
+        setQuestionTitle('')
+        setQuestionBody('')
+        setAddTags([])
+        navigate(`/questions/${data.data._id}`)
+    }
+    
+    const loginWarning = () => {
+        setWarningMessage("You must Login to Ask a Question, login or Signup here");
+        setTimeout(() => {
+          setWarningMessage("");
+        }, 3000);
+    };
+
+    const handlePost = (e) => {
+        e.preventDefault()
+        if(user){
+            getQuestion(user)
+
+                   
+        } else {
+            loginWarning()
+            setTimeout(() => {
+                navigate("/login", { replace: true })
+            }, 5000)
+           
+            //Go back button: Do we want to use and what is the best place for this
+            // <Button onClick={() => {
+            //     navigate(-1)
+            // }} text="Go Back">
+            //navigate("/login", { replace: true }, -1)
+            // navigate(-1)
+        }
+    }
+ 
 
     return (
-        <div>
+       <Container>
+             {warningMessage}
             <h1>Ask a public question</h1>
-            <Form action="">
+            <FormStyles action="">
                 <fieldset>
                     <label htmlFor="title">Title</label>
                     <p>Be specific and imagine you're asking a question to another person</p>
-                    <TitleInput
+                    <FormInput
                         type="text"
                         value={questionTitle}
                         onChange={(e) => setQuestionTitle(e.target.value)}
@@ -99,8 +105,8 @@ const AskQuestion = () => {
                         multiple
                         id="tags"
                         options={tags}
-                        getOptionLabel={(option) => option.tag}
-                        defaultValue={[tags[1]]}
+                        getOptionLabel={(option) => option}
+                        onChange={(e, value) => setAddTags(value)}
                         filterSelectedOptions
                         renderInput={(params) => (
                             <TextField
@@ -111,52 +117,52 @@ const AskQuestion = () => {
                         )}
                     />
                 </fieldset>
-                <AppButton bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
+                <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
 
-
-
-                {/* <InputLabel htmlFor='title'>Question Title</InputLabel>
-                <TextField
-                    id='title'
-                    variant='outlined'
-                    color='secondary'
-                    margin='normal'
-                    fullWidth
-                    helperText='Be specific and imagine you’re asking a question to another person'
-                />
-
-                <InputLabel htmlFor='tags'>Select Tags</InputLabel>
-                <Autocomplete
-                    multiple
-                    id="tags"
-                    options={tags}
-                    getOptionLabel={(option) => option.tag}
-                    defaultValue={[tags[1]]}
-                    filterSelectedOptions
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            id='tags'
-                            placeholder="Add up to 5 tags to describe what your question is about"
-                        />
-                    )}
-                /> */}
-
-            </Form>
-        </div>
-    );
+            </FormStyles>
+       </Container>
+    )
 }
 
-// Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
+ 
 const tags = [
-    { tag: 'Javascript' },
-    { tag: 'HTML' },
-    { tag: 'CSS' },
-    { tag: 'ReactJS' },
-    { tag: 'MongoDB' },
-    { tag: 'Express' },
-    { tag: 'NodeJS' },
-    { tag: 'Other' },
-];
+  'c#',
+  'CSS',
+  'JSX', 
+  'sql',
+  'HTML',
+  'ajax',
+  'ruby',
+  'regex',
+  'django',
+  'nodeJS',
+  'python', 
+  'reactJS',
+  'mongoDB',
+  'express',
+  'algorithms', 
+  'components',
+  'javascript',
+  'data structures', 
+  'react-router-v6',
+  'other'
+]
 
-export default AskQuestion
+export default QuestionForm
+
+
+  // const getQuestion = async (currUser) => {
+  //   let data = await axios.post(
+  //     `http://localhost:4200/questions/${currUser.id}`,
+  //     {
+  //       title: questionTitle,
+  //       body: questionBody,
+  //       tags: addTags,
+  //     }
+  //   );
+  //   console.log(data);
+  //   console.log(data.data);
+  //   setQuestionTitle("");
+  //   setQuestionBody("");
+  //   setAddTags([]);
+  // };

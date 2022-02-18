@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
-import { AppButton } from '../css/Button.styled'
+import { LinkButton } from '../css/Button.styled'
 import logo from '../images/logo.svg'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -9,42 +9,26 @@ import SearchIcon from '@mui/icons-material/Search';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { useState } from 'react';
+import SummaryQuestion from './SummaryQuestion'
+import { useState, useContext } from 'react';
+import UserContext from "./UserContext";
+import { Nav, LightBg } from '../css/Nav.styled';
+import { Container, Avatar } from '@mui/material';
 
-
-const Nav = styled.nav`
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 1.5rem;
-background-color: hsla(90, 52%, 58%, 20%);
-padding: 0.5rem 1rem;
-gap: 1rem;
-
-a {
-    color: #292929;
-    font-weight: 700;
-}
-
-.nav-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-`
 
 const ImgTag = styled.img`
 height: 2rem;
 margin: 0 0.5rem;
 `
-const userInfo = {
-    id: "prof1",
-    displayName: "spyBoi",
-    avatar: "https://www.gravatar.com/avatar/0555bd0deb416a320a0069abef08078a?s=256&d=identicon&r=PG&f=1",
-}
+
 
 export default function Navigation() {
+    const { user, logout, getUser, questions, setQuestions, getAllQuestions} = useContext(UserContext)
+    useEffect(() => {
+        getUser()
+    }, [])
+
+    const [searchString, setSearchString] = useState('')
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -54,58 +38,85 @@ export default function Navigation() {
         setAnchorEl(null);
     };
 
+
+    const handleChange = (e) => {
+        setSearchString(e.target.value)
+        console.log(searchString)
+    }
+
+    const handleSearch = (e) => {
+        console.log(searchString)
+        console.log('clicked to search')
+    }
+
     return (
-        <Nav>
-            <ImgTag src={logo} alt="" />
-            <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Search"
-                variant="outlined"
-                InputProps={{
-                    style: {
-                        backgroundColor: "#fff",
-                    },
-                    endAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    )
-                }}
-            />
-            <Link to="/tags">Tags</Link>
-            <div className="nav-container">
-                <ImgTag src={userInfo.avatar} />
-                <div>
-                    <Button
-                        id="basic-button"
-                        aria-controls={open ? 'basic-menu' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClick}
-                    >
-                        {userInfo.displayName}
-                    </Button>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                            'aria-labelledby': 'basic-button',
+        <LightBg>
+            <Container>
+                <Nav>
+                <Link to="/questions" onClick={()=> {
+                    getAllQuestions()
+                }} component={<SummaryQuestion />}>
+                    <ImgTag src={logo} alt="" />
+                </Link>
+                    <TextField
+                        fullWidth
+                        id="outlined-basic"
+                        label="Search"
+                        variant="outlined"
+                        value={searchString}
+                        onChange={handleChange}
+                        InputProps={{
+                            style: {
+                                backgroundColor: "#fff",
+                            },
+                            endAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            )
                         }}
-                    >
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Help</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
-                </div>
-                {/* if user is not logged in */}
-                {/* <AppButton>Login</AppButton>
-            <AppButton bg="hsla(90, 52%, 58%, 80%)">SignUp</AppButton> */}
-            </div>
+                    />
+                    <Link to="/ask">Ask</Link>
+                    <Link to="/tags">Tags</Link>
+                    <div className="nav-container">
+                        {user ?
+                            (<>
+                                <Avatar variant='rounded' src={user.avatar} />
+                                <div>
+                                    <Button
+                                        id="basic-button"
+                                        aria-controls={open ? 'basic-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                        onClick={handleClick}
+                                    >
+                                        {user.username}
+                                    </Button>
+                                    <Menu
+                                        id="basic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                        <MenuItem onClick={handleClose}><Link to={`/userdata/${localStorage.getItem("user")}`}>My account</Link></MenuItem>
+                                        <MenuItem onClick={handleClose}>Help</MenuItem>
+                                        <MenuItem onClick={logout}>Logout</MenuItem>
+                                    </Menu>
+                                </div>
+                            </>)
+                            :
+                            <>
+                                <LinkButton to="/login">Login</LinkButton>
+                                <LinkButton to="/" bg="hsla(90, 52%, 58%, 80%)">SignUp</LinkButton>
+                            </>
+                        }
+                    </div>
+                </Nav>
+            </Container>
+        </LightBg>
 
-
-        </Nav>
     )
 }
