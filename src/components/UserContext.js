@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
       getUserProfile()
       localStorage.setItem("user", res.data._id)
       console.log(res)
-      navigate("/userdata");
+      navigate("/questions");
     })
       .catch(err => {
         if (err) {
@@ -59,9 +59,9 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/register",
     }).then((res) => {
-      getUser();
-      login();
-      console.log(res);
+      localStorage.setItem("user", res.data._id)
+      console.log(res)
+      navigate("/questions");
     });
   };
 
@@ -75,7 +75,6 @@ export const UserProvider = ({ children }) => {
       console.log(res.data)
       console.log("Logging GetUser Function: " + user);
       return res.data
-      // console.log(`we hit this route`);
     });
   };
 
@@ -86,8 +85,8 @@ export const UserProvider = ({ children }) => {
       url: "http://localhost:4200/users/logout",
     }).then((res) => {
       setUser(null);
-      navigate(-1);
-      getUser();
+      // getUser();
+      navigate("/questions");
       localStorage.removeItem("user")
       // console.log(`we hit this route`);
     });
@@ -139,6 +138,38 @@ export const UserProvider = ({ children }) => {
     setProfile(userProfile.data[0])
     console.log("Logging getUserProfile function: " + profile._id)
   }
+  const dateDifference = (createdAt) => {
+    const showCreatedDate = new Date(createdAt).toLocaleString('en')
+    const createdAtMilisec = new Date(createdAt).getTime()
+
+    const Today = new Date()
+    const today = Today.getTime()
+
+    const timeDifference = today - createdAtMilisec
+    const hours = (timeDifference / 3600000)
+
+    if (hours > 12) {
+      return showCreatedDate
+    }
+    if (hours > 1 && hours <= 12) {
+      return `${Math.floor(hours)} hours ago`
+    }
+    if (hours < 2 && hours > 1) {
+      return `${Math.floor(hours)} hour ago`
+    }
+
+    const minutes = (timeDifference / 60000)
+    const seconds = (timeDifference / 1000)
+    console.log(minutes)
+    console.log(seconds)
+
+    if (minutes < 59 && minutes > 1) {
+      return `${Math.floor(minutes)} minutes ago`
+    }
+    if (minutes <= 1) {
+      return `${Math.floor(seconds)} seconds ago`
+    }
+  } 
 
   return (
     <UserContext.Provider
@@ -176,6 +207,7 @@ export const UserProvider = ({ children }) => {
         userQuestions, 
         setUserQuestions, 
         getAllUserQuestions
+        dateDifference
       }}
     >
       {children}

@@ -13,23 +13,14 @@ import SummaryQuestion from './SummaryQuestion'
 import { useState, useContext } from 'react';
 import UserContext from "./UserContext";
 import { Nav, LightBg } from '../css/Nav.styled';
-import { Container } from '@mui/material';
+import { Container, Avatar } from '@mui/material';
 
 
 const ImgTag = styled.img`
 height: 2rem;
 margin: 0 0.5rem;
 `
-const NavLink = styled(Link)`
-text-decoration: none;
-color: inherit;
-`
-//test user -------
-const userInfo = {
-    id: "prof1",
-    displayName: "spyBoi",
-    avatar: "https://www.gravatar.com/avatar/0555bd0deb416a320a0069abef08078a?s=256&d=identicon&r=PG&f=1",
-}
+
 
 export default function Navigation() {
     const { user, logout, getUser, questions, setQuestions, getAllQuestions} = useContext(UserContext)
@@ -90,7 +81,7 @@ export default function Navigation() {
                     <div className="nav-container">
                         {user ?
                             (<>
-                                <ImgTag src={userInfo.avatar} />
+                                <Avatar variant='rounded' src={user.avatar} />
                                 <div>
                                     <Button
                                         id="basic-button"
@@ -110,7 +101,7 @@ export default function Navigation() {
                                             'aria-labelledby': 'basic-button',
                                         }}
                                     >
-                                        <MenuItem onClick={handleClose}><Link to={'/userdata'}>My account</Link></MenuItem>
+                                        <MenuItem onClick={handleClose}><Link to={`/userdata/${localStorage.getItem("user")}`}>My account</Link></MenuItem>
                                         <MenuItem onClick={handleClose}>Help</MenuItem>
                                         <MenuItem onClick={logout}>Logout</MenuItem>
                                     </Menu>

@@ -21,8 +21,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const UserDataProfile = () => {
-  const { user, profile, setProfile, getUser, userQuestions, getAllUserQuestions } = useContext(UserContext)
 
+  const { user, profile, setProfile, getUser, userQuestions,dateDifference, getAllUserQuestions } = useContext(UserContext)
   const {userId} = useParams()
 
   const [currentItems, setCurrentItems] = useState(null)
@@ -67,8 +67,7 @@ const UserDataProfile = () => {
   }
 
   useEffect(() => {
-    // let u = getUser()
-    console.log(localStorage.getItem("user").email)
+    getUser()
     getUserProfile()
   },[])
 
@@ -85,20 +84,24 @@ const UserDataProfile = () => {
     <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} mb={5}>
             <Grid item xs={3} style={{ maxHeight: "12rem", maxWidth: "12rem" }}>
-              <CardMedia component={'img'} src={profile.avatar} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
+              <CardMedia component={'img'} src={user.avatar} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
           </Grid>
 
-            <Grid item xs={9} >
-              <Typography variant='h4' component='h2' my={2} style={{
+            <Grid item xs={9} style={{ display: "flex", flexDirection: 'column', justifyContent: "flex-end" }} >
+              <Typography variant='h4' component='h2' mt={2} style={{
                 fontWeight: '900'
               }}>{user.username}</Typography>
-              <Typography variant='body2' component="p" my={3}>Member since: {profile.createdAt}</Typography>
-              <IconButton href={`https://twitter.com/${profile.twitter}`} aria-label='twitter' size='large'><TwitterIcon /></IconButton>
-              <IconButton href={`https://github.com/${profile.github}`} aria-label='twitter' size='large'><GitHubIcon /></IconButton>
-              <IconButton href={`https://linkedin.com/in/${profile.linkedin}`} aria-label='twitter' size='large'><LinkedInIcon /></IconButton>
-              <Button href="/profile" variant="outlined" endIcon={<EditIcon />}>
-                Edit Profile
-              </Button>
+              <Typography variant='body2' component="p">Member since: {dateDifference(profile.createdAt)}</Typography>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box>
+                  <IconButton href={`https://twitter.com/${profile.twitter}`} aria-label='twitter' size='large'><TwitterIcon /></IconButton>
+                  <IconButton href={`https://github.com/${profile.github}`} aria-label='twitter' size='large'><GitHubIcon /></IconButton>
+                  <IconButton href={`https://linkedin.com/in/${profile.linkedin}`} aria-label='twitter' size='large'><LinkedInIcon /></IconButton>
+                </Box>
+                <Button href="/profile" variant="outlined" endIcon={<EditIcon />}>
+                  Edit Profile
+                </Button>
+              </Box>
             </Grid>
 
 
@@ -155,7 +158,7 @@ const UserDataProfile = () => {
                 </Item>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            {/* <Grid item xs={12} md={6}>
             Votes
             <Item sx={{
                     border: 2,
@@ -170,15 +173,15 @@ const UserDataProfile = () => {
             <Item sx={{
                     border: 2,
                     borderRadius: 2,
-                    boxShadow: 3, }}>
-
+                boxShadow: 3,
+              }}>
+                Tags from user questions or answers
                 </Item>
-            </Grid>
+            </Grid> */}
       </Grid>
     </Box>
 
       ) : null}
-      <button onClick={getUserProfile}>Load Data</button>
     </Container>
   )
 }
