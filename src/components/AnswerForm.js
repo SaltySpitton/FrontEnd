@@ -3,33 +3,46 @@ import { FormStyles, BodyTextarea, MarkdownPreviewArea } from "../css/Form.style
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useContext } from "react";
-import UserContext from "./UserContext";
+// import UserContext from "./UserContext";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
-const QuestionForm = () => {
-    let navigate = useNavigate();
-    const { user, getUser } = useContext(UserContext)
+const AnswerForm = ({ questionId }) => {
+
+    const currentUserId = localStorage.getItem("user")
     const [answer, setAnswer] = useState('')
-    const [warningMessage, setWarningMessage] = useState('')
+    // const [warningMessage, setWarningMessage] = useState('')
+    // const { navigate } = useNavigate()
 
-    const loginWarning = () => {
-        setWarningMessage("You must Login to Ask a Question, login or Signup here");
-        setTimeout(() => {
-            setWarningMessage("");
-        }, 3000);
-    };
+    const getAnswer = async (currUser) => {
+        let data = await axios.post(`http://localhost:4200/answers/${questionId}/${currUser}`, {
+            response: answer,
+        })
+        console.log('%c Post Res:', 'background: #403; color: #fff', data.data)
+        setAnswer('')
+    }
+
+    // const loginWarning = () => {
+    //     setWarningMessage("You must Login to Answer a question, login or Signup here");
+    //     setTimeout(() => {
+    //         setWarningMessage("");
+    //     }, 3000);
+    // };
 
     const handlePost = (e) => {
         e.preventDefault()
-        console.log('form submited')
-        console.log(answer)
-        
+        if (currentUserId) {
+            getAnswer(currentUserId)
+        } else {
+            alert("please login or register")
+        }
+        setAnswer('')
+        console.log('%c answer:', 'background: #555; color: #fff', answer)
     }
 
     return (
-        <div>
-            {warningMessage}
+        < div >
+            {/* {warningMessage} */}
             <FormStyles onSubmit={handlePost}>
                 <BodyTextarea
                     rows={12}
@@ -48,4 +61,4 @@ const QuestionForm = () => {
 }
 
 
-export default QuestionForm
+export default AnswerForm

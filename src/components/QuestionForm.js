@@ -23,7 +23,7 @@ import {
 const QuestionForm = () => {
     let navigate = useNavigate();
 
-    const { user, getUser } = useContext(UserContext)
+    const { user } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
