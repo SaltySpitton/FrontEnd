@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
 import Home from './components/Home';
 import TagsDetails from './components/TagsDetails';
+import Answers from './components/Answers'
 import Questions from './components/Questions';
 import QuestionView from './components/QuestionView';
 import QuestionEdit from './components/QuestionEdit'
@@ -49,6 +50,7 @@ function App() {
         <div className="App">
           <ThemeProvider theme={theme}>
             <Routes>
+              <Route path='/' element={<Home />} />
               <Route path='/questions' element={<Questions />} />
               <Route path='/questions/:questionId' element={<QuestionView />} />
               <Route path='/answers' element={<Answers />} />

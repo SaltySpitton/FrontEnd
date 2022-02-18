@@ -23,6 +23,8 @@ const QuestionForm = () => {
     const handlePost = (e) => {
         e.preventDefault()
         console.log('form submited')
+        console.log(answer)
+        
     }
 
     return (

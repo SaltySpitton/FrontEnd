@@ -4,14 +4,17 @@ import { Card, Chip, Container, Box, Paper, Grid, Typography} from '@mui/materia
 import { Link, useNavigate, useParams, Navigate} from "react-router-dom";
 import '../css/Questions.css'
 import { AppButton } from '../css/Button.styled';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect} from 'react';
 import UserContext from "./UserContext";
 import SummaryQuestion from './SummaryQuestion';
 import axios from "axios";
 
 const Questions = () => {
+  const navigate = useNavigate()
+
   const handleAskQuestion = () => {
     console.log('clicked')
+    navigate('/ask')
   }
     
   return( <>

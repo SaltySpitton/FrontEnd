@@ -57,7 +57,8 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/register",
     }).then((res) => {
-      localStorage.setItem("user", res.data._id)
+      console.log(res)
+      localStorage.setItem("user", res.data)
       console.log(res)
       navigate("/questions");
     });
@@ -78,7 +79,8 @@ export const UserProvider = ({ children }) => {
 
   const logout = () => {
     Axios({
-      method: "GET",
+      // method: "GET",
+      method: "POST",
       withCredentials: true,
       url: "http://localhost:4200/users/logout",
     }).then((res) => {
@@ -94,7 +96,7 @@ export const UserProvider = ({ children }) => {
       setIsLoading(true)
       const apiUrl = 'http://localhost:4200/questions'
       let allQuestions = await Axios.get(apiUrl)
-      console.log(allQuestions)
+      // console.log(allQuestions)
       await setQuestions(allQuestions.data.questions)
       console.log(questions)
       setIsLoading(false)

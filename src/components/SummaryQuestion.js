@@ -39,6 +39,7 @@ const SummaryQuestion = () => {
                 xl={12}
                 xs={12}
                 sx={{
+                  
                   borderBottom: 1,
                   padding: 2,
                   display: 'flex', 
@@ -54,11 +55,14 @@ const SummaryQuestion = () => {
                     md={2}
                   xs={12}
                     sx={{
+                     
                       marginRight: 1,
+                       display: 'flex',
                   }}>
                   <Grid container
                         xs={6}
                     sx={{
+                          
                           display: 'flex',
                           marginRight: 1,
                           justifyContent: 'center',

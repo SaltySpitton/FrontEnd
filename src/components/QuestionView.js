@@ -49,14 +49,15 @@ const QuestionView = () => {
         //temporary
         createdAt={"2020-07-06T20:36:59.414Z"}
         image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
-        user={"TEST"}
+        user={"questionView.user"}
       />
       <Divider variant="middle" />
       <Box sx={{display: "flex", justifyContent: "space-between"}}>
         <Typography variant="h6" component="h3" my={2}><strong>Your Answer</strong></Typography>
         <Button variant="text" >Markdown Cheatsheet</Button>
       </Box>
-      <AnswerForm />
+      <AnswerForm question={questionView._doc}/>
+      {/* <AnswerCard /> */}
     
   </Container>)
 }
