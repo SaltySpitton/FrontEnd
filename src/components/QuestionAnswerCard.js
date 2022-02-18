@@ -18,12 +18,30 @@ import upvoted from '../images/votes-up.svg'
 import downVoted from '../images/votes.down.svg'
 import UserTile from './UserTile';
 
-const QuestionAnswerCard = ({ createdAt, image, user }) => {
+const QuestionAnswerCard = ({ answer, question }) => {
 
-  const testAnswerBody = "```def incrementAge (student): student.age += 3 return student students2 = map(incrementAge, students)``` # here's my answer Note that```students2``` will contain the same```students``` as students though, so you don't really need to capture the output (or return something from ```incrementAge```). My favorite search engine is[Duck Duck Go](https://duckduckgo.com). ## hopefully you like it > don't quote me on this okay ** bold text *** italic test *"
+  const [answerData, setAnswerData] = useState()
+  const [answerUser, setAnswerUser] = useState()
+  const getAnswers = async () => {
+    const url = 'http://localhost:4200/answers/'
+    let answers = await axios.get(`${url}/${answer._id}`)
+    setAnswerData(answers.data)
+    setAnswerUser(answers.data.user)
+    console.log('%c answerUser state:', 'background: #222; color: #fff', answerUser.username)
+    console.log('%c answerData state:', 'background: #523; color: #fff', answerData)
+  }
+
+
+
+  useEffect(() => {
+    getAnswers()
+
+    // console.log('%c questionID:', 'background: #222; color: #bada55', question._id)
+
+  }, [])
 
   return (
-    <>
+    <>     
       <Grid container>
         <Grid item xs={1}>
           <Box
@@ -36,7 +54,7 @@ const QuestionAnswerCard = ({ createdAt, image, user }) => {
             }}>
             {/* the votes and add/deduct buttons */}
             <img className='listIcon' src={upvoted} alt="upArrow" />
-            <Typography variant="h5" component="span" p={3}>5</Typography>
+            <Typography variant="h5" component="span" p={3}>0</Typography>
             <img className='listIcon' src={downVoted} alt="downArrow" />
           </Box>
         </Grid>
@@ -51,8 +69,9 @@ const QuestionAnswerCard = ({ createdAt, image, user }) => {
             margin: 2,
             // padding: 2,
           }}>
+
             <MarkdownPreviewArea>
-              <ReactMarkdown children={testAnswerBody} remarkPlugins={[remarkGfm]} />
+              <ReactMarkdown children={answer.response} remarkPlugins={[remarkGfm]} />
             </MarkdownPreviewArea>
             {/* the edit and delete button for QUESTION */}
             <Box sx={{ marginTop: 1, textAlign: 'right', typography: 'body1' }}>
@@ -61,12 +80,12 @@ const QuestionAnswerCard = ({ createdAt, image, user }) => {
             </Box>
 
             <Box my={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <UserTile
-                image={image}
-                user={user}
-                createdAt={createdAt}
-                width={'40%'}
-              />
+              {/* <UserTile
+                image={answerUser.avatar}
+                user={answerUser.username}
+                createdAt={answerData.createdAt}
+                width={"12rem"}
+              /> */}
             </Box>
 
           </Box>
@@ -77,3 +96,18 @@ const QuestionAnswerCard = ({ createdAt, image, user }) => {
 }
 
 export default QuestionAnswerCard
+
+
+
+// test answer
+/* const testAnswerBody = "
+```def incrementAge(student): student.age += 3 
+return student 
+students2 = map(incrementAge, students)
+``` 
+# here's my answer 
+Note that```students2``` will contain the same```students``` as students though, so you don't really need to capture the output (or return something from ```incrementAge```). 
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com). 
+## hopefully you like it 
+> don't quote me on this okay **bold text** *italic test*" 
+*/

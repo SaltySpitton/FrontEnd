@@ -23,7 +23,6 @@ const Questions = () => {
       <Box sx={{
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 1,

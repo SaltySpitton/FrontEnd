@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Card, Chip, styled, Box, Paper, Grid, Avatar, Typography, } from "@mui/material";
+import { Card, Chip, styled, Box, Paper, Grid, Avatar, Typography, Divider } from "@mui/material";
 import { FormStyles, FormInput, BodyTextarea, MarkdownPreviewArea } from "../css/Form.styled";
 import ReactMarkdown from "react-markdown";
 import { Link as RouterLink, useNavigate, useParams, Navigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import UserContext from "./UserContext";
 import UserTile from "./UserTile";
 import upvoted from "../images/votes-up.svg";
 import downVoted from "../images/votes.down.svg";
-import AnswerCard from "./AnswerCard";
+import QuestionAnswerCard from "./QuestionAnswerCard";
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -30,10 +30,10 @@ const QuestionCard = ({ question, questionUser }) => {
         setTagResults,
         searchByTag,
     } = useContext(UserContext);
-    console.log("question Not user", question);
-    console.log(questionUser);
-    console.log("question", question);
-    console.log("q user", questionUser);
+    // console.log("question Not user", question);
+    // console.log(questionUser);
+    // console.log("questionid:", question._id);
+    // console.log("q user", questionUser);
     return (
         <>
             {question.title && <Typography variant="h5">{question.title}</Typography>}
@@ -131,6 +131,7 @@ const QuestionCard = ({ question, questionUser }) => {
                         </Box>
                     </Box>
                 </Box>
+                <Divider variant="middle" />
                 <Box
                     sx={{
                         display: "flex",
@@ -140,16 +141,14 @@ const QuestionCard = ({ question, questionUser }) => {
                     }}
                 >
                     {question.answers.length > 0 && (
-                        <Typography sx={{ marginBottom: 1 }} variant="h5">
-                            Answers
-                        </Typography>
+                        <Typography variant="h6" component="h3" my={1}><strong>Answers</strong></Typography>
                     )}
                 </Box>
             </Box>
 
             {question.answers.length > 0 &&
                 question.answers.map((answer) => {
-                    return <AnswerCard answer={answer} question={question} />;
+                    return <QuestionAnswerCard answer={answer} question={question} />;
                 })}
         </>
     );

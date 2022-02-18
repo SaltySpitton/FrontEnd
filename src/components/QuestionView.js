@@ -1,34 +1,27 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Card, Chip, Container, Box, Paper, Grid, Typography, Divider, Button } from '@mui/material';
+import { Container, Box, Typography, Divider, Button } from '@mui/material';
 import { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate, useParams, Navigate} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from 'axios'
 import UserContext from './UserContext' 
-import UserTile from './UserTile'
-import SummaryQuestion from './SummaryQuestion'
 import AnswerForm from './AnswerForm'
 import QuestionCard from './QuestionCard'
-import QuestionAnswerCard from './QuestionAnswerCard';
 
 
 const QuestionView = () => {
-    const {questionId} = useParams()
-    const { user, isLoading, setIsLoading, getAllQuestions, tagResult, setTagResult, searchByTag, questions                                                                             } = useContext(UserContext)
-
-    const {navigate} = useNavigate()
-    const [questionView, setQuestionView] = useState('')
-    const [currVotes, setCurrVotes] = useState(null)
+  const { questionId } = useParams()
+  const { isLoading, setIsLoading } = useContext(UserContext)
+  const [questionView, setQuestionView] = useState('')
+    // const [currVotes, setCurrVotes] = useState(null)
     
     
     const retrieveQuestion = async() => {
-        setIsLoading(true)
-
+      setIsLoading(true)
         const url = `http://localhost:4200/questions/${questionId}`
         const questionData = await axios.get(url)
         await setQuestionView(questionData.data)
         setIsLoading(false)
-        console.log(`question data`, questionData )
+      console.log('%c question data:', 'background: #244; color: #bada55', questionData)
 
     }
 
@@ -44,21 +37,11 @@ const QuestionView = () => {
             questionUser={questionView.user}
         />}
       <Divider variant="middle" />
-      <Typography variant="h6" component="h3" my={2}><strong>Answers</strong></Typography>
-      <QuestionAnswerCard
-        //temporary
-        createdAt={"2020-07-06T20:36:59.414Z"}
-        image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
-        user={"questionView.user"}
-      />
-      <Divider variant="middle" />
       <Box sx={{display: "flex", justifyContent: "space-between"}}>
         <Typography variant="h6" component="h3" my={2}><strong>Your Answer</strong></Typography>
         <Button variant="text" >Markdown Cheatsheet</Button>
       </Box>
-      <AnswerForm question={questionView._doc}/>
-      {/* <AnswerCard /> */}
-    
+      <AnswerForm questionId={questionId} />
   </Container>)
 }
 
