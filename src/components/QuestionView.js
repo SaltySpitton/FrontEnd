@@ -24,7 +24,7 @@ const QuestionView = () => {
     const retrieveQuestion = async() => {
         setIsLoading(true)
 
-        const url = `http://localhost:4200/questions/${questionId}`
+        const url = `https://stackdevhelp-backend.herokuapp.com/questions/${questionId}`
         const questionData = await axios.get(url)
         await setQuestionView(questionData.data)
         setIsLoading(false)
