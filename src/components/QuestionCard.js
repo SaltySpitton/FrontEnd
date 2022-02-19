@@ -1,16 +1,16 @@
 import * as React from "react";
-import { Card, Chip, styled, Box, Paper, Grid, Avatar, Typography, Divider } from "@mui/material";
-import { FormStyles, FormInput, BodyTextarea, MarkdownPreviewArea } from "../css/Form.styled";
+import { Chip, styled, Box, Paper, Grid, Typography, Divider } from "@mui/material";
+import { MarkdownPreviewArea } from "../css/Form.styled";
 import ReactMarkdown from "react-markdown";
-import { Link as RouterLink, useNavigate, useParams, Navigate } from "react-router-dom";
+import remarkGfm from "remark-gfm";
 import Link from '@mui/material/Link';
-import { useState, useContext, useEffect } from "react";
-import axios from "axios";
+import { useContext, } from "react";
 import UserContext from "./UserContext";
 import UserTile from "./UserTile";
 import upvoted from "../images/votes-up.svg";
 import downVoted from "../images/votes.down.svg";
 import QuestionAnswerCard from "./QuestionAnswerCard";
+
 
 const Item = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
@@ -20,64 +20,42 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const QuestionCard = ({ question, questionUser }) => {
-    const { user,
-        isLoading,
-        setIsLoading,
-        questions,
-        setQuestions,
-        getAllQuestions,
-        tagResults,
-        setTagResults,
-        searchByTag,
-    } = useContext(UserContext);
-    // console.log("question Not user", question);
-    // console.log(questionUser);
-    // console.log("questionid:", question._id);
-    // console.log("q user", questionUser);
+    const { user, searchByTag, } = useContext(UserContext);
+
     return (
         <>
             {question.title && <Typography variant="h5">{question.title}</Typography>}
-
-            <Box
-                container
-                sx={{
-                    boxShadow: 0,
-                    margin: 2,
-                }}
-            >
-                <Box
-                    sx={{
-                        display: "flex",
-                        marginTop: 1,
-                    }}
-                >
+            <Grid container>
+                <Grid item xs={1}>
                     <Box
                         sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flexStart",
-                            alignItems: "center",
-                        }}
-                    >
-                        {/* Votes and add/deduct buttons */}
-                        <img className="listIcon" src={upvoted} alt="upArrow" />
-                        <Typography variant="h5" component="span" p={3}>{question.votes}</Typography>
-                        <img className="listIcon" src={downVoted} alt="downArrow" />
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'flexStart',
+                            alignItems: 'center',
+                            marginTop: 2,
+                        }}>
+                        {/* the votes and add/deduct buttons */}
+                        <img className='listIcon' src={upvoted} alt="upArrow" />
+                        <Typography variant="h5" component="span" p={3}>0</Typography>
+                        <img className='listIcon' src={downVoted} alt="downArrow" />
                     </Box>
+                </Grid>
+                {/* the question body holder, need to change to primary app light green :) */}
+                <Grid item xs={11} >
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flexStart',
+                        width: '90%',
+                        // alignItems: 'flexStart',
+                        margin: 2,
+                        // padding: 2,
+                    }}>
 
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "flexStart",
-                            width: "90%",
-                            margin: 2,
-                        }}
-                    >
-                        <Box sx={{ backgroundColor: "primary.light", padding: 2 }}>
-                            {question.body}
-                        </Box>
-
+                        <MarkdownPreviewArea>
+                            <ReactMarkdown children={question.body} remarkPlugins={[remarkGfm]} />
+                        </MarkdownPreviewArea>
                         <Box sx={{ marginTop: 1, textAlign: 'right' }}>
                             {user.id === questionUser._id && (
                                 <Link to={`/questions/${question._id}/edit`} style={{ padding: "0 1rem" }}>Edit</Link>
@@ -86,7 +64,6 @@ const QuestionCard = ({ question, questionUser }) => {
                                 <Typography variant="link">Delete</Typography>
                             )}
                         </Box>
-
                         <Box sx={{ marginTop: 1 }}>
                             {question.tags &&
                                 question.tags.map((tagName) => {
@@ -105,32 +82,26 @@ const QuestionCard = ({ question, questionUser }) => {
                                 })}
                         </Box>
 
-                        <Box
-                            sx={{
-                                display: "flex",
-                                width: "100%",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: 'center'
-                            }}
-                        >
-                            {question.answers.length >= 0 && (
-                                <Typography variant="h6" component="p">
-                                    {question.answers.length} Answers
-                                </Typography>
-                            )}
-                            <UserTile
-                                image={
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"
-                                }
-                                user={questionUser}
-                                createdAt={question.createdAt}
-                                width={"40%"}
-                                input={"q"}
-                            />
-                        </Box>
+                        <Grid container mt={1}>
+                            <Grid item xs={12} md={6}>
+                                {question.answers.length >= 0 && (
+                                    <Typography variant="h6" component="p">
+                                        {question.answers.length} Answers
+                                    </Typography>
+                                )}
+                            </Grid>
+                            <Grid item xs={12} md={6} style={{ display: "flex", justifyContent: "flex-end" }}>
+                                <UserTile
+                                    image={questionUser.avatar}
+                                    user={questionUser}
+                                    createdAt={question.createdAt}
+                                    width={"15rem"}
+                                    input={"q"}
+                                />
+                            </Grid>
+                        </Grid>
                     </Box>
-                </Box>
+                </Grid>
                 <Divider variant="middle" />
                 <Box
                     sx={{
@@ -144,11 +115,12 @@ const QuestionCard = ({ question, questionUser }) => {
                         <Typography variant="h6" component="h3" my={1}><strong>Answers</strong></Typography>
                     )}
                 </Box>
-            </Box>
+            </Grid>
 
             {question.answers.length > 0 &&
                 question.answers.map((answer) => {
-                    return <QuestionAnswerCard answer={answer} question={question} />;
+                    console.log(answer.response)
+                    return <QuestionAnswerCard answer={answer} />;
                 })}
         </>
     );

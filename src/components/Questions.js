@@ -17,8 +17,7 @@ const Questions = () => {
     navigate('/ask')
   }
     
-  return( <>
-  
+  return (
     <Container >
       <Box sx={{
         display: 'flex',
@@ -33,7 +32,7 @@ const Questions = () => {
       </Box>
       <SummaryQuestion />
     </Container>
-  </>)
+  )
 };
 
 export default Questions;

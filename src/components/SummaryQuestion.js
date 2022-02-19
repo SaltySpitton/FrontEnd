@@ -16,6 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(1),
   textAlign: 'center',
   color: theme.palette.text.secondary,
+  boxShadow: 0
 }));
 
 const SummaryQuestion = () => {
@@ -31,169 +32,159 @@ const SummaryQuestion = () => {
 
         
 
-        const questionsDisplay = (
-          <React.Fragment>
-              {questions && questions.map((q) => {
-            return (
-              <Grid item key={q._id}
-                xl={12}
-                xs={12}
+  const questionsDisplay = (
+    <React.Fragment>
+      {questions && questions.map((q) => {
+        return (
+          <Grid item key={q._id}
+            xl={12}
+            xs={12}
+            sx={{
+
+              borderBottom: 1,
+              padding: 2,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flexStart',
+              flexGrow: 1,
+              flexWrap: 'wrap',
+              marginBottom: 2,
+            }}
+          >
+            <Grid container
+              xl={2}
+              md={2}
+              xs={12}
+              sx={{
+
+                marginRight: 1,
+                display: 'flex',
+              }}>
+              <Grid container
+                xs={6}
                 sx={{
-                  
-                  borderBottom: 1,
-                  padding: 2,
-                  display: 'flex', 
-                  flexDirection: 'row',
-                  justifyContent: 'flexStart',
-                  flexGrow: 1,
-                  flexWrap: 'wrap',
-                  marginBottom: 2,
+
+                  display: 'flex',
+                  marginRight: 1,
+                  justifyContent: 'center',
+                  flexWrap: 'reverse',
                 }}
               >
-                <Grid container
-                  xl={2}
-                    md={2}
-                  xs={12}
-                    sx={{
-                     
-                      marginRight: 1,
-                       display: 'flex',
-                  }}>
-                  <Grid container
-                        xs={6}
-                    sx={{
-                          
-                          display: 'flex',
-                          marginRight: 1,
-                          justifyContent: 'center',
-                      flexWrap: 'reverse',
-                        }}
-                      >
-                        <Item 
-                        sx={{boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF'}}
-                        >
-                          <Typography sx={{backgroundColor:'#EAF4DF', }}variant="h5">{q.votes}</Typography> <strong>votes</strong> 
-                         
-                        </Item>
-                                        
-                      </Grid>
-                  <Grid container
-                    xl={6}
-                    xs={6}
-                    sx={{
-                      display: 'flex',
-                      marginRight: 1,
-                      justifyContent: 'center',
-                    }}
-                  >
-                      <Item 
-                        sx={{boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF', marginTop: 1}}
-                      > 
-                          <Typography sx={{backgroundColor:'#EAF4DF', }} variant="h5">{q.answers.length}</Typography> <strong>answers</strong> 
-                         
-                      </Item>
-                    
-                  </Grid>
-                </Grid>
-                <Grid container
-                  xl={7}
-                  md={6}
-                  xs={12}
+                <Item
+                  sx={{ boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF' }}
                 >
-                  <Grid item
-                      xs={12}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column', 
-                      justifyContent: 'center', 
-                      alignItems: 'flex-start',
-                      marginBottom: 1
-                      }}
-                  >
-                    <strong>
-                      <Link to={`/questions/${q._id}`}>{q.title}</Link>  
-                    </strong>
-                   
-                  </Grid>
-                  <Grid container
-                      xs={12}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column', 
-                      justifyContent: 'center', 
-                      alignItems: 'flex-start',
-                      }}
-                  >
-                  { q.body.length > 200 ? 
-                    q.body.substring(0, 175) + '...' :
-                    q.body
-                  }
-                  </Grid>
+                  <Typography sx={{ backgroundColor: '#EAF4DF', }} variant="h5">{q.votes}</Typography> <strong>votes</strong>
 
-                  <Grid container
-                    xs={12}
-                    sx={{
-                    display: 'flex',
-                    flexDirection: 'row', 
-                    justifyContent: 'flex-start', 
-                    alignItems: 'flex-start',
-                    marginTop: 1,
-                    }}
-                  >
-                    { q.tags.map((tagName) => {
-                        return (
-                            <Chip  
-                                key={tagName}
-                                variant="outlined" 
-                                size="large" 
-                                label={tagName} 
-                                onClick={() => {
-                                  searchByTag(tagName)
-                                }}
-                                // to={`/questions/${tagName}`}
-                                clickable 
-                                sx={{marginTop: 2, marginRight: 1}}
-                            />
-                        )
-                    })}
-                  </Grid>
-                </Grid>
-                <Grid container
-                  xl={2} 
-                md={3}
-                xs={12}
-                  sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-end',
-                    marginRight: 1,
-                }}>
-
-                    {relativeTime(q.createdAt)}{" "}
-                    <Link to={`/userdata/${q.user._id}`}>By {q.user.username}</Link>
-                </Grid>
+                </Item>
 
               </Grid>
-            )
-          })}
+              <Grid container
+                xl={6}
+                xs={6}
+                sx={{
+                  display: 'flex',
+                  marginRight: 1,
+                  justifyContent: 'center',
+                }}
+              >
+                <Item
+                  sx={{ boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF', marginTop: 1 }}
+                >
+                  <Typography sx={{ backgroundColor: '#EAF4DF', }} variant="h5">{q.answers.length}</Typography> <strong>answers</strong>
+
+                </Item>
+
+              </Grid>
+            </Grid>
+            <Grid container
+              xl={7}
+              md={6}
+              xs={12}
+            >
+              <Grid item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  marginBottom: 1
+                }}
+              >
+                <strong>
+                  <Link to={`/questions/${q._id}`}>{q.title}</Link>
+                </strong>
+
+              </Grid>
+              <Grid container
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }}
+              >
+                {q.body.length > 200 ?
+                  q.body.substring(0, 175) + '...' :
+                  q.body
+                }
+              </Grid>
+
+              <Grid container
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'flex-start',
+                  alignItems: 'flex-start',
+                  marginTop: 1,
+                }}
+              >
+                {q.tags.map((tagName) => {
+                  return (
+                    <Chip
+                      key={tagName}
+                      variant="outlined"
+                      size="large"
+                      label={tagName}
+                      onClick={() => {
+                        searchByTag(tagName)
+                      }}
+                      // to={`/questions/${tagName}`}
+                      clickable
+                      sx={{ marginTop: 2, marginRight: 1 }}
+                    />
+                  )
+                })}
+              </Grid>
+            </Grid>
+            <Grid container
+              xl={2}
+              md={3}
+              xs={12}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                marginRight: 1,
+              }}>
+
+              {relativeTime(q.createdAt)}{" "}
+              <Link to={`/userdata/${q.user._id}`}>By {q.user.username}</Link>
+            </Grid>
+
+          </Grid>
+        )
+      })}
           </React.Fragment>
 
 
         )
   return (<>
      <Box sx={{ flexGrow: 1 }}>
-        <Grid 
-            container 
-            xl={12}
-            md={12}
-            xs={12}
-            sx={{
-              // padding: 2,
-              // marginLeft: 1
-              // backgroundColor: '#EAF4DF'
-            }}
-        >
+      <Grid container>
           {!isLoading && questionsDisplay}
         {isLoading && <Typography variant="h3">Loading ...</Typography>}
       </Grid>

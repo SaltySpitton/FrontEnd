@@ -2,46 +2,53 @@ import * as React from 'react';
 import { MarkdownPreviewArea } from "../css/Form.styled";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Card} from '@mui/material'
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar'
-import Typography from '@mui/material/Typography';
-import { useState, useContext, useEffect } from 'react';
+import { Box, Grid, Typography, Divider, Button } from "@mui/material";
+import { useState, useEffect, useContext, useRef } from 'react';
+import UserContext from "./UserContext";
 import axios from 'axios'
-import UserContext from './UserContext' 
-import { Link as RouterLink, useNavigate, useParams, Navigate } from "react-router-dom";
 import Link from '@mui/material/Link';
 import upvoted from '../images/votes-up.svg'
 import downVoted from '../images/votes.down.svg'
-import UserTile from './UserTile';
-
-const QuestionAnswerCard = ({ answer, question }) => {
-
-  const [answerData, setAnswerData] = useState()
-  const [answerUser, setAnswerUser] = useState()
-  const getAnswers = async () => {
-    const url = 'http://localhost:4200/answers/'
-    let answers = await axios.get(`${url}/${answer._id}`)
-    setAnswerData(answers.data)
-    setAnswerUser(answers.data.user)
-    console.log('%c answerUser state:', 'background: #222; color: #fff', answerUser.username)
-    console.log('%c answerData state:', 'background: #523; color: #fff', answerData)
-  }
+// import UserTile from './UserTile';
 
 
+const QuestionAnswerCard = ({ answer }) => {
+  const { isLoading, setIsLoading } = useContext(UserContext)
+  const [answersData, setAnswersData] = useState(null)
+  const isMounted = useRef(false);
 
   useEffect(() => {
-    getAnswers()
-
-    // console.log('%c questionID:', 'background: #222; color: #bada55', question._id)
-
+    const getAnswersData = async () => {
+      try {
+        const url = 'http://localhost:4200/answers/'
+        let answers = await axios.get(`${url}/${answer._id}`)
+        setAnswersData(answers.data)
+        console.log('%c answersData state:', 'background: #523; color: #fff', answersData)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getAnswersData()
   }, [])
 
+  const getAnswers = (allAnswers) => {
+    console.log('%c this is the useRef try:', 'background: #420; color: #fff', answersData)
+    return answersData
+  }
+
+  useEffect(() => {
+    if (isMounted.current) {
+      getAnswers(answersData)
+    } else {
+      isMounted.current = true
+    }
+  }, [answersData])
+
+// this grandchild component is not rendering answerData.user object!!!
+
   return (
-    <>     
+    <>
+      {/* {console.log(answersData._id)} */}
       <Grid container>
         <Grid item xs={1}>
           <Box
@@ -52,22 +59,18 @@ const QuestionAnswerCard = ({ answer, question }) => {
               alignItems: 'center',
               marginTop: 2,
             }}>
-            {/* the votes and add/deduct buttons */}
             <img className='listIcon' src={upvoted} alt="upArrow" />
             <Typography variant="h5" component="span" p={3}>0</Typography>
             <img className='listIcon' src={downVoted} alt="downArrow" />
           </Box>
         </Grid>
-        {/* the question body holder, need to change to primary app light green :) */}
         <Grid item xs={11} >
           <Box sx={{
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'flexStart',
             width: '90%',
-            // alignItems: 'flexStart',
             margin: 2,
-            // padding: 2,
           }}>
 
             <MarkdownPreviewArea>

@@ -1,33 +1,38 @@
 import * as React from 'react';
 import { Container, Box, Typography, Divider, Button } from '@mui/material';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'axios'
 import UserContext from './UserContext' 
-import AnswerForm from './AnswerForm'
 import QuestionCard from './QuestionCard'
-
+import AnswerForm from './AnswerForm'
 
 const QuestionView = () => {
   const { questionId } = useParams()
   const { isLoading, setIsLoading } = useContext(UserContext)
   const [questionView, setQuestionView] = useState('')
+  const isMounted = useRef(false);
     // const [currVotes, setCurrVotes] = useState(null)
     
-    
-    const retrieveQuestion = async() => {
+  useEffect(() => {
+    const retrieveQuestion = async () => {
       setIsLoading(true)
-        const url = `http://localhost:4200/questions/${questionId}`
-        const questionData = await axios.get(url)
-        await setQuestionView(questionData.data)
-        setIsLoading(false)
-      console.log('%c question data:', 'background: #244; color: #bada55', questionData)
+      const url = `http://localhost:4200/questions/${questionId}`
+      const questionData = await axios.get(url)
+      setQuestionView(questionData.data)
+      setIsLoading(false)
 
     }
-
-    useEffect(() => {
-        retrieveQuestion()
+    retrieveQuestion()
     }, [])
+
+  useEffect(() => {
+    if (isMounted.current) {
+      console.log('%c question data:', 'background: #244; color: #bada55', questionView)
+    } else {
+      isMounted.current = true
+    }
+  }, [questionView])
     
   return (
     <Container>
@@ -35,14 +40,20 @@ const QuestionView = () => {
         {questionView && <QuestionCard 
             question={questionView._doc}
             questionUser={questionView.user}
-        />}
+      />}
       <Divider variant="middle" />
-      <Box sx={{display: "flex", justifyContent: "space-between"}}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h6" component="h3" my={2}><strong>Your Answer</strong></Typography>
         <Button variant="text" >Markdown Cheatsheet</Button>
       </Box>
-      <AnswerForm questionId={questionId} />
-  </Container>)
+      <AnswerForm
+        questionId={questionId}
+      // getAnswers={getAnswers}
+      // answerData={answersData}
+      // setAnswerData={setAnswersData}
+      />
+    </Container>
+  )
 }
 
 export default QuestionView
