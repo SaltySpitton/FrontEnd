@@ -110,13 +110,16 @@ const UserDataProfile = () => {
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Box>
+                  {profile.twitter ? 
                   <IconButton
                     href={`https://twitter.com/${profile.twitter}`}
                     aria-label="twitter"
                     size="large"
-                  >
+                    > 
                     <TwitterIcon />
                   </IconButton>
+                    : null}
+                  {profile.github ? 
                   <IconButton
                     href={`https://github.com/${profile.github}`}
                     aria-label="twitter"
@@ -124,15 +127,18 @@ const UserDataProfile = () => {
                   >
                     <GitHubIcon />
                   </IconButton>
+                    : null}
+                  {profile.linkedin ?
                   <IconButton
                     href={`https://linkedin.com/in/${profile.linkedin}`}
                     aria-label="twitter"
                     size="large"
                   >
                     <LinkedInIcon />
-                  </IconButton>
+                    </IconButton>
+                    : null}
                 </Box>
-                {!loggedinUser && (
+                {loggedinUser === userId ? (
                   <Button
                     href="/profile"
                     variant="outlined"
@@ -140,7 +146,7 @@ const UserDataProfile = () => {
                   >
                     Edit Profile
                   </Button>
-                )}
+                ) : null}
               </Box>
             </Grid>
 
