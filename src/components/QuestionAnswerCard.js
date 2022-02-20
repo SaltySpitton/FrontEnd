@@ -9,46 +9,15 @@ import axios from 'axios'
 import Link from '@mui/material/Link';
 import upvoted from '../images/votes-up.svg'
 import downVoted from '../images/votes.down.svg'
-// import UserTile from './UserTile';
+import UserTile from './UserTile';
 
 
 const QuestionAnswerCard = ({ answer }) => {
-  const { isLoading, setIsLoading } = useContext(UserContext)
-  const [answersData, setAnswersData] = useState(null)
-  const isMounted = useRef(false);
 
-  useEffect(() => {
-    const getAnswersData = async () => {
-      try {
-        const url = 'http://localhost:4200/answers/'
-        let answers = await axios.get(`${url}/${answer._id}`)
-        setAnswersData(answers.data)
-        console.log('%c answersData state:', 'background: #523; color: #fff', answersData)
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getAnswersData()
-  }, [])
-
-  const getAnswers = (allAnswers) => {
-    console.log('%c this is the useRef try:', 'background: #420; color: #fff', answersData)
-    return answersData
-  }
-
-  useEffect(() => {
-    if (isMounted.current) {
-      getAnswers(answersData)
-    } else {
-      isMounted.current = true
-    }
-  }, [answersData])
-
-// this grandchild component is not rendering answerData.user object!!!
 
   return (
     <>
-      {/* {console.log(answersData._id)} */}
+      {console.log(answer.user.username)}
       <Grid container>
         <Grid item xs={1}>
           <Box
@@ -83,12 +52,12 @@ const QuestionAnswerCard = ({ answer }) => {
             </Box>
 
             <Box my={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
-              {/* <UserTile
-                image={answerUser.avatar}
-                user={answerUser.username}
-                createdAt={answerData.createdAt}
-                width={"12rem"}
-              /> */}
+              <UserTile
+                image={answer.user.avatar}
+                user={answer.user}
+                createdAt={answer.createdAt}
+                width={"15rem"}
+              />
             </Box>
 
           </Box>

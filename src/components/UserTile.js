@@ -1,14 +1,8 @@
 import * as React from 'react';
 import { Card } from '@mui/material'
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
 import Avatar from '@mui/material/Avatar'
 import Typography from '@mui/material/Typography';
-import { useState, useContext, useEffect } from 'react';
-import axios from 'axios'
-import UserContext from './UserContext'
 import { relativeTime } from './Utils.js'
 import { Link as RouterLink } from "react-router-dom";
 import Link from '@mui/material/Link';
@@ -50,7 +44,7 @@ const UserTile = ({ image, user, createdAt, width, input }) => {
                         }}
                         variant="square"
                     />
-                    <Link to={`/userdata/${user.id}`} >{user.username}</Link>
+                    <Link href={`/userdata/${user._id}`} >{user.username}</Link>
                 </Box>
             </Card>
         </>

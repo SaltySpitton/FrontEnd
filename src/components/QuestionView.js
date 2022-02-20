@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Container, Box, Typography, Divider, Button } from '@mui/material';
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import axios from 'axios'
 import UserContext from './UserContext' 
@@ -11,28 +11,21 @@ const QuestionView = () => {
   const { questionId } = useParams()
   const { isLoading, setIsLoading } = useContext(UserContext)
   const [questionView, setQuestionView] = useState('')
-  const isMounted = useRef(false);
     // const [currVotes, setCurrVotes] = useState(null)
     
-  useEffect(() => {
-    const retrieveQuestion = async () => {
+
+  const retrieveQuestion = async () => {
       setIsLoading(true)
       const url = `http://localhost:4200/questions/${questionId}`
       const questionData = await axios.get(url)
       setQuestionView(questionData.data)
-      setIsLoading(false)
-
+    setIsLoading(false)
+    console.log('%c question data:', 'background: #244; color: #bada55', questionView)
     }
-    retrieveQuestion()
-    }, [])
 
   useEffect(() => {
-    if (isMounted.current) {
-      console.log('%c question data:', 'background: #244; color: #bada55', questionView)
-    } else {
-      isMounted.current = true
-    }
-  }, [questionView])
+    retrieveQuestion()
+  }, [])
     
   return (
     <Container>

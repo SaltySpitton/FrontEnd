@@ -51,7 +51,7 @@ const SummaryQuestion = () => {
               marginBottom: 2,
             }}
           >
-            <Grid container
+            <Grid container item
               xl={2}
               md={2}
               xs={12}
@@ -60,7 +60,7 @@ const SummaryQuestion = () => {
                 marginRight: 1,
                 display: 'flex',
               }}>
-              <Grid container
+              <Grid container item
                 xs={6}
                 sx={{
 
@@ -78,7 +78,7 @@ const SummaryQuestion = () => {
                 </Item>
 
               </Grid>
-              <Grid container
+              <Grid container item
                 xl={6}
                 xs={6}
                 sx={{
@@ -96,7 +96,7 @@ const SummaryQuestion = () => {
 
               </Grid>
             </Grid>
-            <Grid container
+            <Grid container item
               xl={7}
               md={6}
               xs={12}
@@ -116,7 +116,7 @@ const SummaryQuestion = () => {
                 </strong>
 
               </Grid>
-              <Grid container
+              <Grid container item
                 xs={12}
                 sx={{
                   display: 'flex',
@@ -131,7 +131,7 @@ const SummaryQuestion = () => {
                 }
               </Grid>
 
-              <Grid container
+              <Grid container item
                 xs={12}
                 sx={{
                   display: 'flex',
@@ -159,7 +159,7 @@ const SummaryQuestion = () => {
                 })}
               </Grid>
             </Grid>
-            <Grid container
+            <Grid container item
               xl={2}
               md={3}
               xs={12}
@@ -172,7 +172,7 @@ const SummaryQuestion = () => {
               }}>
 
               {relativeTime(q.createdAt)}{" "}
-              <Link to={`/userdata/${q.user._id}`}>By {q.user.username}</Link>
+              <Link to={`/userdata/${q.user._id}`}>asked by {q.user.username}</Link>
             </Grid>
 
           </Grid>
