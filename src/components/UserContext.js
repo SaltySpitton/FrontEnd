@@ -13,13 +13,13 @@ export const UserProvider = ({ children }) => {
   const [loginPassword, setLoginPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [questions, setQuestions] = useState('');
-  const [tagResult, setTagResult] = useState([])
-  const [profile, setProfile] = useState()
+  const [questions, setQuestions] = useState("");
+  const [tagResult, setTagResult] = useState([]);
+
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const login = () => {
     Axios({
       method: "POST",
@@ -29,21 +29,21 @@ export const UserProvider = ({ children }) => {
       },
       withCredentials: true,
       url: "http://localhost:4200/users/login",
-    }).then((res) => {
-      getUser()
-      getUserProfile()
-      localStorage.setItem("user", res.data._id)
-      console.log(res)
-      navigate("/questions");
     })
-      .catch(err => {
+      .then((res) => {
+        getUser();
+        localStorage.setItem("user", res.data._id);
+        console.log(res);
+        navigate("/questions");
+      })
+      .catch((err) => {
         if (err) {
-          setErrorMessage('Invalid Username or Password, please try again')
+          setErrorMessage("Invalid Username or Password, please try again");
           setTimeout(() => {
-            setErrorMessage('')
+            setErrorMessage("");
           }, 2000);
-      }   
-    })
+        }
+      });
   };
 
   const register = () => {
@@ -57,9 +57,9 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: "http://localhost:4200/users/register",
     }).then((res) => {
-      console.log(res)
-      localStorage.setItem("user", res.data)
-      console.log(res)
+      console.log(res);
+      localStorage.setItem("user", res.data);
+      console.log(res);
       navigate("/questions");
     });
   };
@@ -73,7 +73,7 @@ export const UserProvider = ({ children }) => {
       setUser(res.data);
       // console.log(res.data)
       // console.log("Logging GetUser Function: " + user);
-      return res.data
+      return res.data;
     });
   };
 
@@ -87,37 +87,36 @@ export const UserProvider = ({ children }) => {
       setUser(null);
       // getUser();
       navigate("/questions");
-      localStorage.removeItem("user")
+      localStorage.removeItem("user");
       // console.log(`we hit this route`);
     });
   };
 
-  const getAllQuestions = async() => {
-      setIsLoading(true)
-      const apiUrl = 'http://localhost:4200/questions'
-      let allQuestions = await Axios.get(apiUrl)
-      // console.log(allQuestions)
-      await setQuestions(allQuestions.data.questions)
-      // console.log(questions)
-      setIsLoading(false)
-  }
+  const getAllQuestions = async () => {
+    setIsLoading(true);
+    const apiUrl = "http://localhost:4200/questions";
+    let allQuestions = await Axios.get(apiUrl);
+    // console.log(allQuestions)
+    await setQuestions(allQuestions.data.questions);
+    // console.log(questions)
+    setIsLoading(false);
+  };
 
-  const searchByTag = async(tag) => {
-        setIsLoading(true)
-        let apiUrl = `http://localhost:4200/questions?tags=${tag}` 
-        const tagSearch = await Axios.get(apiUrl)
-        await setTagResult(tagSearch.data.docs)
-        await setQuestions(tagSearch.data.docs)
-        setIsLoading(false)
-
-  }
-  const getUserProfile = async () => {
-    // getUser()
-    const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
-    const userProfile = await Axios.get(url)
-    setProfile(userProfile.data[0])
-    console.log("Logging getUserProfile function: " + profile._id)
-  }
+  const searchByTag = async (tag) => {
+    setIsLoading(true);
+    let apiUrl = `http://localhost:4200/questions?tags=${tag}`;
+    const tagSearch = await Axios.get(apiUrl);
+    await setTagResult(tagSearch.data.docs);
+    await setQuestions(tagSearch.data.docs);
+    setIsLoading(false);
+  };
+  // const getUserProfile = async () => {
+  //   // getUser()
+  //   const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
+  //   const userProfile = await Axios.get(url)
+  //   setProfile(userProfile.data[0])
+  //   console.log("Logging getUserProfile function: " + profile._id)
+  // }
 
   return (
     <UserContext.Provider
@@ -138,24 +137,21 @@ export const UserProvider = ({ children }) => {
         setLoginUsername,
         loginPassword,
         setLoginPassword,
-        errorMessage, 
+        errorMessage,
         setErrorMessage,
-        isLoading, 
+        isLoading,
         setIsLoading,
-        questions, 
+        questions,
         setQuestions,
         getAllQuestions,
         searchByTag,
         errorMessage,
         setErrorMessage,
-        profile,
-        setProfile,
-        getUserProfile,
       }}
     >
       {children}
     </UserContext.Provider>
   );
-}
+};
 
 export default UserContext;
