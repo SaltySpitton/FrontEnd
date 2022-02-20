@@ -13,6 +13,7 @@ import {
   TextField,
   InputLabel,
 } from "@mui/material";
+import UserContext from './UserContext'
 
 import { useState, useContext, useEffect } from "react";
 import arrayofTags from "./arrayofTags/arrayofTags";
@@ -24,6 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const TagsDetails = () => {
+  const {setSearchTag} = useContext(UserContext)
   const [backgroundColor, setbackgroundColor] = useState("#d0e6ba");
   const [display, setDisplay] = useState("inline-block");
 
@@ -56,7 +58,10 @@ const TagsDetails = () => {
                       display: display,
                     }}
                   >
-                    <strong>{nameTag}</strong>
+                  <Link onClick={()=>{
+                    setSearchTag(nameTag)
+                  }} to="/questions"><strong>{nameTag}</strong></Link>
+                    
                   </div>
                 </Item>
 

@@ -8,7 +8,9 @@ import {
   Link,
   useNavigate,
   Navigate,
-  useParams                                          
+  useParams, 
+  useSearchParams,
+  generatePath,                                         
 } from "react-router-dom";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -18,22 +20,37 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const SummaryQuestion = () => {
-        const { user, isLoading, setIsLoading,question, setQuestion, questions, setQuestions, getAllQuestions, tagResult, setTagResult, searchByTag} = useContext(UserContext)
-        const {tagName} = useParams()
-        const [users, setUsers] = useState([])
+const SummaryQuestion = ({selection, page}) => {
+        const { user, 
+        isLoading, setIsLoading,
+        question, setQuestion,
+        questions, setQuestions, getAllQuestions, 
+        searchTag, setSearchTag,
+        searchByTag,
+        searchParams, setSearchParams, setDisplayQuestions,
+        displayQuestions} = useContext(UserContext)
 
-        useEffect(() => {
-          // tagResult ? 
-          // searchByTag(tagResult) : 
-          getAllQuestions()
-        },[])
+        //** */ const [searchParams, setSearchParams] = useSearchParams()
+        //** */ let isActive = searchParams.get("tags") === searchTag
 
         
-
+        const handleTagClick = (tagName) => {
+          setSearchTag(tagName)
+        }
+        
+        useEffect(() => {
+          searchByTag(searchTag)
+     
+        },[searchTag, page])
+       
         const questionsDisplay = (
+          
           <React.Fragment>
-              {questions && questions.map((q) => {
+              {/* {displayQuestions && displayQuestions.map((q) => {   */}
+              {/* {questions && questions.map((q) => { */}
+              {/* {selection && selection.map((q) => { */}
+              {questions && questions.map((q) => { 
+
             return (
               <Grid item key={q._id}
                 xl={12}
@@ -70,9 +87,9 @@ const SummaryQuestion = () => {
                         }}
                       >
                         <Item 
-                        sx={{boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF'}}
+                        sx={{boxShadow: 0, width: '10rem', border: q.votes === 0 && '1px solid grey' || q.votes < 0 && '1px solid red', backgroundColor: q.votes > 0 && '#EAF4DF'}}
                         >
-                          <Typography sx={{backgroundColor:'#EAF4DF', }}variant="h5">{q.votes}</Typography> <strong>votes</strong> 
+                          <Typography sx={{backgroundColor: q.votes > 0 && '#EAF4DF', }}variant="h5">{q.votes}</Typography> <strong>votes</strong> 
                          
                         </Item>
                                         
@@ -87,9 +104,9 @@ const SummaryQuestion = () => {
                     }}
                   >
                       <Item 
-                        sx={{boxShadow: 0, width: '10rem', backgroundColor: '#EAF4DF', marginTop: 1}}
+                        sx={{boxShadow: 0, width: '10rem', border: q.answers.length === 0 && '1px solid grey',backgroundColor: q.answers.length > 0 && '#EAF4DF', marginTop: 1}}
                       > 
-                          <Typography sx={{backgroundColor:'#EAF4DF', }} variant="h5">{q.answers.length}</Typography> <strong>answers</strong> 
+                          <Typography sx={{backgroundColor: q.answers.length > 0 && '#EAF4DF' }} variant="h5">{q.answers.length}</Typography> <strong>answers</strong> 
                          
                       </Item>
                     
@@ -140,7 +157,9 @@ const SummaryQuestion = () => {
                     marginTop: 1,
                     }}
                   >
+                  
                     { q.tags.map((tagName) => {
+                        let fillColor;
                         return (
                             <Chip  
                                 key={tagName}
@@ -148,11 +167,12 @@ const SummaryQuestion = () => {
                                 size="large" 
                                 label={tagName} 
                                 onClick={() => {
-                                  searchByTag(tagName)
+                                  handleTagClick(tagName)
+                                  // setSearchParams(tagName)
                                 }}
+                                sx={{marginTop: 2, marginRight: 1}}
                                 // to={`/questions/${tagName}`}
                                 clickable 
-                                sx={{marginTop: 2, marginRight: 1}}
                             />
                         )
                     })}
@@ -188,11 +208,7 @@ const SummaryQuestion = () => {
             xl={12}
             md={12}
             xs={12}
-            sx={{
-              // padding: 2,
-              // marginLeft: 1
-              // backgroundColor: '#EAF4DF'
-            }}
+
         >
           {!isLoading && questionsDisplay}
         {isLoading && <Typography variant="h3">Loading ...</Typography>}

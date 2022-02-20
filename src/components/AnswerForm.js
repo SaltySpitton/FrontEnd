@@ -8,10 +8,10 @@ import axios from "axios";
 // import { useNavigate } from 'react-router-dom';
 
 const AnswerForm = ({ questionId }) => {
-
+    //const {errorMessage, errorMessenger} = useContext(UserContext)
     const currentUserId = localStorage.getItem("user")
     const [answer, setAnswer] = useState('')
-    // const [warningMessage, setWarningMessage] = useState('')
+
     // const { navigate } = useNavigate()
 
     const getAnswer = async (currUser) => {
@@ -21,13 +21,6 @@ const AnswerForm = ({ questionId }) => {
         console.log('%c Post Res:', 'background: #403; color: #fff', data.data)
         setAnswer('')
     }
-
-    // const loginWarning = () => {
-    //     setWarningMessage("You must Login to Answer a question, login or Signup here");
-    //     setTimeout(() => {
-    //         setWarningMessage("");
-    //     }, 3000);
-    // };
 
     const handlePost = (e) => {
         e.preventDefault()
@@ -42,7 +35,6 @@ const AnswerForm = ({ questionId }) => {
 
     return (
         < div >
-            {/* {warningMessage} */}
             <FormStyles onSubmit={handlePost}>
                 <BodyTextarea
                     rows={12}

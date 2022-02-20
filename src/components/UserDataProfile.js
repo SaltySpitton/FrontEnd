@@ -9,7 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useContext, useEffect } from "react";
 import UserContext from './UserContext'
 import Axios from "axios";
-
+import {relativeTime} from './Utils.js'
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const UserDataProfile = () => {
-  const { user, profile, setProfile, getUser, dateDifference } = useContext(UserContext)
+  const { user, profile, setProfile, getUser,} = useContext(UserContext)
 
   const getUserProfile = async () => {
     // let u = await getUser()
@@ -38,7 +38,7 @@ const UserDataProfile = () => {
     getUser()
     getUserProfile()
   }, [])
-
+  console.log(user)
   return (
     <Container>
       {profile ? (
@@ -47,14 +47,14 @@ const UserDataProfile = () => {
     <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} mb={5}>
             <Grid item xs={3} style={{ maxHeight: "12rem", maxWidth: "12rem" }}>
-              <CardMedia component={'img'} src={user.avatar} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
+              <CardMedia component={'img'} src={user.avatar ? user.avatar : null} style={{ borderRadius: 0, objectFit: 'cover', aspectRatio: "1/1", maxHeight: "12rem", maxWidth: "12rem" }} />
           </Grid>
 
             <Grid item xs={9} style={{ display: "flex", flexDirection: 'column', justifyContent: "flex-end" }} >
               <Typography variant='h4' component='h2' mt={2} style={{
                 fontWeight: '900'
               }}>{user.username}</Typography>
-              <Typography variant='body2' component="p">Member since: {dateDifference(profile.createdAt)}</Typography>
+              <Typography variant='body2' component="p">Member since: {relativeTime(profile.createdAt)}</Typography>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Box>
                   <IconButton href={`https://twitter.com/${profile.twitter}`} aria-label='twitter' size='large'><TwitterIcon /></IconButton>

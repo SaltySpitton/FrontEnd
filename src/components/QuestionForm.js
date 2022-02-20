@@ -10,6 +10,7 @@ import remarkGfm from "remark-gfm";
 import { useState, useContext } from "react";
 import UserContext from "./UserContext";
 import axios from "axios";
+import WarningModal from './WarningModal'
 import {
   Routes,
   Route,
@@ -23,11 +24,12 @@ import {
 const QuestionForm = () => {
     let navigate = useNavigate();
 
-    const { user } = useContext(UserContext)
+    const { user,errorMessenger, errorMessage } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
-    const [warningMessage, setWarningMessage] = useState('')
+    const [open, setOpen] = useState(false)
+    
 
     const getQuestion = async (currUser) => {
         let data = await axios.post(`http://localhost:4200/questions/${currUser.id}`, {
@@ -42,42 +44,40 @@ const QuestionForm = () => {
         navigate(`/questions/${data.data._id}`)
     }
     
-    const loginWarning = () => {
-        setWarningMessage("You must Login to Ask a Question, login or Signup here");
-        setTimeout(() => {
-          setWarningMessage("");
-        }, 3000);
-    };
+    // const loginWarning = () => {
+    //     setWarningMessage("You must Login to Ask a Question, login or Signup here");
+    //     setTimeout(() => {
+    //       setWarningMessage("");
+    //     }, 3000);
+    // };
 
     const handlePost = (e) => {
         e.preventDefault()
         if(user){
+            if(!questionTitle || !questionBody || addTags.length === 0 || addTags.length > 5){
+                return errorMessenger("Questions need a Title, Body, and between One to Five Tags.", 5000)
+            }
             getQuestion(user)
-
-                   
         } else {
-            loginWarning()
-            setTimeout(() => {
-                navigate("/login", { replace: true })
-            }, 5000)
-           
-            //Go back button: Do we want to use and what is the best place for this
-            // <Button onClick={() => {
-            //     navigate(-1)
-            // }} text="Go Back">
-            //navigate("/login", { replace: true }, -1)
-            // navigate(-1)
+            errorMessenger("You must Login to Ask a Question, login or Signup here")
+            setOpen(true)
         }
     }
  
 
     return (
        <Container>
-             {warningMessage}
+
+            <WarningModal 
+                open={open}
+                setOpen={setOpen}
+                title={"Login or Register"}
+                error={"To Ask a Question, you must Login or Register"}
+            />
             <h1>Ask a public question</h1>
             <FormStyles action="">
                 <fieldset>
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="title">Title</label> {errorMessage}
                     <p>Be specific and imagine you're asking a question to another person</p>
                     <FormInput
                         type="text"
@@ -87,11 +87,11 @@ const QuestionForm = () => {
                         placeholder='e.g. Is there an R function for finding the index of an element in a vector?' />
                 </fieldset>
                 <fieldset>
-                    <label htmlFor="title">Body</label>
+                    <label htmlFor="title">Body</label> 
                     <p>Include all the information someone would need to answer your question</p>
                     <BodyTextarea
                         rows={12}
-                        id='title'
+                        id='body'
                         value={questionBody}
                         onChange={(e) => setQuestionBody(e.target.value)}
                         placeholder='You can use markedown here and preview below: ``` code ```, **bold**, *italic*, >quote' />
@@ -118,6 +118,7 @@ const QuestionForm = () => {
                     />
                 </fieldset>
                 <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
+                {errorMessage}
 
             </FormStyles>
        </Container>

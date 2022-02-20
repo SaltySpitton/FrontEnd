@@ -14,6 +14,13 @@ import { useState, useContext } from 'react';
 import UserContext from "./UserContext";
 import { Nav, LightBg } from '../css/Nav.styled';
 import { Container, Avatar } from '@mui/material';
+import {
+  useNavigate,
+  Navigate,
+  useParams, 
+  useSearchParams,
+  generatePath,                                         
+} from "react-router-dom";
 
 
 const ImgTag = styled.img`
@@ -23,7 +30,19 @@ margin: 0 0.5rem;
 
 
 export default function Navigation() {
-    const { user, logout, getUser, questions, setQuestions, getAllQuestions} = useContext(UserContext)
+    const navigate = useNavigate()
+    const { 
+        user, 
+        logout, 
+        getUser, 
+        questions, 
+        setQuestions, 
+        getAllQuestions, 
+        searchTag,
+        searchByTag, 
+        setSearchTag, 
+    } = useContext(UserContext)
+
     useEffect(() => {
         getUser()
     }, [])
@@ -45,8 +64,11 @@ export default function Navigation() {
     }
 
     const handleSearch = (e) => {
-        console.log(searchString)
-        console.log('clicked to search')
+        setSearchTag(searchString)
+        searchByTag(searchTag)
+        navigate('/questions')
+        setSearchString("")
+
     }
 
     return (
@@ -54,7 +76,8 @@ export default function Navigation() {
             <Container>
                 <Nav>
                 <Link to="/questions" onClick={()=> {
-                    getAllQuestions()
+                    setSearchTag("")
+                    searchByTag()
                 }} component={<SummaryQuestion />}>
                     <ImgTag src={logo} alt="" />
                 </Link>
@@ -70,7 +93,7 @@ export default function Navigation() {
                                 backgroundColor: "#fff",
                             },
                             endAdornment: (
-                                <InputAdornment position="start">
+                                <InputAdornment onClick={handleSearch} position="start">
                                     <SearchIcon />
                                 </InputAdornment>
                             )

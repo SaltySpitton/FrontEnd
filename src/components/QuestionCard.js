@@ -2,8 +2,8 @@ import * as React from "react";
 import { Card, Chip, styled, Box, Paper, Grid, Avatar, Typography, Divider } from "@mui/material";
 import { FormStyles, FormInput, BodyTextarea, MarkdownPreviewArea } from "../css/Form.styled";
 import ReactMarkdown from "react-markdown";
-import { Link as RouterLink, useNavigate, useParams, Navigate } from "react-router-dom";
-import Link from '@mui/material/Link';
+import {useNavigate, useParams, Navigate, Link } from "react-router-dom";
+// import Link from '@mui/material/Link';
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import UserContext from "./UserContext";
@@ -19,8 +19,9 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const QuestionCard = ({ question, questionUser }) => {
-    const { user,
+const QuestionCard = ({ question, questionUser, upVotes, downVotes}) => {
+    const { 
+        user,
         isLoading,
         setIsLoading,
         questions,
@@ -30,10 +31,9 @@ const QuestionCard = ({ question, questionUser }) => {
         setTagResults,
         searchByTag,
     } = useContext(UserContext);
-    // console.log("question Not user", question);
-    // console.log(questionUser);
-    // console.log("questionid:", question._id);
-    // console.log("q user", questionUser);
+    
+
+
     return (
         <>
             {question.title && <Typography variant="h5">{question.title}</Typography>}
@@ -60,9 +60,13 @@ const QuestionCard = ({ question, questionUser }) => {
                         }}
                     >
                         {/* Votes and add/deduct buttons */}
-                        <img className="listIcon" src={upvoted} alt="upArrow" />
+                        <img className="listIcon" onClick={()=>{
+                            upVotes(question, 'q')
+                        }} src={upvoted} alt="upArrow" />
                         <Typography variant="h5" component="span" p={3}>{question.votes}</Typography>
-                        <img className="listIcon" src={downVoted} alt="downArrow" />
+                        <img className="listIcon" onClick={()=>{
+                            downVotes(question, 'q')
+                        }} src={downVoted} alt="downArrow" />
                     </Box>
 
                     <Box
@@ -78,6 +82,7 @@ const QuestionCard = ({ question, questionUser }) => {
                             {question.body}
                         </Box>
 
+                    { user && user._id === questionUser._id &&
                         <Box sx={{ marginTop: 1, textAlign: 'right' }}>
                             {user.id === questionUser._id && (
                                 <Link to={`/questions/${question._id}/edit`} style={{ padding: "0 1rem" }}>Edit</Link>
@@ -86,6 +91,7 @@ const QuestionCard = ({ question, questionUser }) => {
                                 <Typography variant="link">Delete</Typography>
                             )}
                         </Box>
+                    }
 
                         <Box sx={{ marginTop: 1 }}>
                             {question.tags &&
@@ -119,10 +125,11 @@ const QuestionCard = ({ question, questionUser }) => {
                                     {question.answers.length} Answers
                                 </Typography>
                             )}
+                             
                             <UserTile
-                                image={
-                                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"
-                                }
+                                // image={
+                                //    questionUser.avatar
+                                // }
                                 user={questionUser}
                                 createdAt={question.createdAt}
                                 width={"40%"}
@@ -148,12 +155,26 @@ const QuestionCard = ({ question, questionUser }) => {
 
             {question.answers.length > 0 &&
                 question.answers.map((answer) => {
-                    return <QuestionAnswerCard answer={answer} question={question} />;
+                    return <QuestionAnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes}/>;
                 })}
         </>
     );
 };
 export default QuestionCard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* votes container */
 // <Grid container

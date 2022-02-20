@@ -10,16 +10,25 @@ import { useState, useContext, useEffect } from 'react';
 import axios from 'axios'
 import UserContext from './UserContext'
 import { relativeTime } from './Utils.js'
-import { Link as RouterLink } from "react-router-dom";
-import Link from '@mui/material/Link';
+import { Link } from "react-router-dom";
+// import { Link as RouterLink } from "react-router-dom";
+// import Link from '@mui/material/Link';
 
 
-const UserTile = ({ image, user, createdAt, width, input }) => {
+// const UserTile = ({ image, user, createdAt, width, input }) => {
+    const UserTile = ({user, createdAt, width, input }) => {
+    const {getUserProfile} = useContext(UserContext)
+        
+    const handleProfileClick = () => {
+        getUserProfile(user._id)
+    }
+
     console.log(user)
     let verbage;
     input === 'q' ?
         verbage = 'asked' :
         verbage = 'answered';
+
     return (
         <>
             <Card
@@ -42,15 +51,15 @@ const UserTile = ({ image, user, createdAt, width, input }) => {
                 >
                     <Avatar
                         alt={user.username}
-                        src={image}
+                        src={user.avatar}
                         sx={{
                             width: 40,
                             height: 40,
                             marginRight: 2
                         }}
                         variant="square"
-                    />
-                    <Link to={`/userdata/${user.id}`} >{user.username}</Link>
+                    >{user.username}</Avatar>
+                    <Link onClick={handleProfileClick} to={`/userdata/${user._id}`} >{user.username}</Link>
                 </Box>
             </Card>
         </>

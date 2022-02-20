@@ -18,8 +18,9 @@ import upvoted from '../images/votes-up.svg'
 import downVoted from '../images/votes.down.svg'
 import UserTile from './UserTile';
 
-const QuestionAnswerCard = ({ answer, question }) => {
 
+const QuestionAnswerCard = ({key, answer, question, upVotes, downVotes }) => {
+  const { user } = useContext(UserContext);
   const [answerData, setAnswerData] = useState()
   const [answerUser, setAnswerUser] = useState()
   const getAnswers = async () => {
@@ -31,14 +32,15 @@ const QuestionAnswerCard = ({ answer, question }) => {
     console.log('%c answerData state:', 'background: #523; color: #fff', answerData)
   }
 
-
-
   useEffect(() => {
     getAnswers()
 
     // console.log('%c questionID:', 'background: #222; color: #bada55', question._id)
 
   }, [])
+
+  console.log('answercard answer',answer)
+  console.log('answercard question',question)
 
   return (
     <>     
@@ -53,9 +55,14 @@ const QuestionAnswerCard = ({ answer, question }) => {
               marginTop: 2,
             }}>
             {/* the votes and add/deduct buttons */}
-            <img className='listIcon' src={upvoted} alt="upArrow" />
-            <Typography variant="h5" component="span" p={3}>0</Typography>
-            <img className='listIcon' src={downVoted} alt="downArrow" />
+            <img className='listIcon' onClick={()=>{
+                            upVotes(answer, 'a')
+                        }} src={upvoted} alt="upArrow" />
+            <Typography variant="h5" component="span" p={3}>{answer.votes}</Typography>
+            <img className='listIcon' onClick={()=>{
+                            downVotes(answer, 'a')
+
+                        }} src={downVoted} alt="downArrow" />
           </Box>
         </Grid>
         {/* the question body holder, need to change to primary app light green :) */}
@@ -74,18 +81,21 @@ const QuestionAnswerCard = ({ answer, question }) => {
               <ReactMarkdown children={answer.response} remarkPlugins={[remarkGfm]} />
             </MarkdownPreviewArea>
             {/* the edit and delete button for QUESTION */}
-            <Box sx={{ marginTop: 1, textAlign: 'right', typography: 'body1' }}>
-              <Link to="/questions/:questionId/edit">Edit</Link>{" "}
-              <Typography variant="link">Delete</Typography>
-            </Box>
-
+ 
+    {user && user._id === answer.user._id &&    
+     <Box sx={{ marginTop: 1, textAlign: 'right', typography: 'body1' }}>
+            <Link to="/questions/:questionId/edit">Edit</Link>{" "}
+            <Typography variant="link">Delete</Typography>
+          </Box>
+    }
             <Box my={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
-              {/* <UserTile
-                image={answerUser.avatar}
-                user={answerUser.username}
-                createdAt={answerData.createdAt}
+              <UserTile
+                // image={answer.user.avatar}
+                user={answer.user}
+                createdAt={answer.createdAt}
                 width={"12rem"}
-              /> */}
+                input={"a"}
+              />
             </Box>
 
           </Box>
