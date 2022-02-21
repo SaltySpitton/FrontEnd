@@ -6,6 +6,8 @@ import Axios from "axios";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  const [getEnvUrl, Seturl] = useState()
+
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -19,6 +21,12 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(()=>{
+
+    const getEnvUrl = process.env.REACT_APP_ENV === 'production' ? 'https://stackdevhelp-backend.herokuapp.com' : 'http://localhost:4200' 
+    Seturl(getEnvUrl) 
+  })
   
   const login = () => {                                                                                                                                             
     Axios({
@@ -183,6 +191,7 @@ export const UserProvider = ({ children }) => {
         profile,
         setProfile,
         getUserProfile,
+        getEnvUrl,
         dateDifference
       }}
     >
