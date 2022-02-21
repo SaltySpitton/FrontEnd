@@ -91,7 +91,7 @@ const QuestionCard = ({ question, questionUser }) => {
                             </Grid>
                             <Grid item xs={12} md={6} style={{ display: "flex", justifyContent: "flex-end" }}>
                                 <UserTile
-                                    image={questionUser.avatar}
+                                    // image={questionUser.avatar}
                                     user={questionUser}
                                     createdAt={question.createdAt}
                                     width={"15rem"}

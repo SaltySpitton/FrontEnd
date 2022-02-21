@@ -1,6 +1,6 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams , useNavigate} from "react-router-dom";
 import {
   Box,
   Paper,
@@ -17,7 +17,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EditIcon from "@mui/icons-material/Edit";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "./UserContext";
-import Axios from "axios";
+import axios from "axios";
 import { relativeTime } from "./Utils.js";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -30,11 +30,16 @@ const Item = styled(Paper)(({ theme }) => ({
 const UserDataProfile = () => {
   // const { user,getUser, dateDifference } =
   //   useContext(UserContext);
-  const { isLoading, setIsLoading } = useContext(UserContext);
+  const navigate = useNavigate()
+  const { isLoading, setIsLoading, errorMessage, setErrorMessage } = useContext(UserContext);
   const [profile, setProfile] = useState(null);
   const { userId } = useParams();
   const loggedinUser = localStorage.getItem("user");
+  console.log('userId of user the tile was clicked on',userId)
+  console.log('the current logged in user is : ', loggedinUser)
 
+  
+  //getUserProfile(loggedinUser, userId)
   // const getLoggedUserProfile = async () => {
 
   //   const url = `http://localhost:4200/userdata/${loggedinUser}`;
@@ -46,30 +51,44 @@ const UserDataProfile = () => {
 
   const findUser = async () => {
     if (loggedinUser === userId) {
+      console.log(loggedinUser)
       setIsLoading(true);
       const url = `http://localhost:4200/userdata/${loggedinUser}`;
-      const userProfile = await Axios.get(url);
+      const userProfile = await axios.get(url);
       console.log(userProfile.data[0]);
-      await setProfile(userProfile.data[0]);
+      userProfile && 
+      await setProfile(userProfile.data[0]) 
       setIsLoading(false);
-    } else {
+    }
+    if(loggedinUser !== userId){
       setIsLoading(true);
       const url = `http://localhost:4200/userdata/${userId}`;
-      const findUserProfile = await Axios.get(url);
-      console.log(findUserProfile.data[0]);
-      await setProfile(findUserProfile.data[0]);
-      setIsLoading(false);
+      const findUserProfile = await axios.get(url);
+      await setProfile(findUserProfile.data[0]) 
+      setIsLoading(false)
     }
   };
 
   useEffect(() => {
-    findUser();
+    findUser()
   }, []);
+
+  console.log(profile)
+  const handleGoBackClick = ()=>{
+    setErrorMessage("")
+    navigate(-1)
+  }
 
   return (
     <Container>
-      {console.log(profile)}
-      {profile ? (
+      {(!isLoading) && (!profile) &&
+        <Box sx={{width:'100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', flexGrow: 1}}>
+          <Button sx={{ marginLeft: 1, backgroundColor: "#A5D477", color: "black", width: '20%'}} variant="outlined" onClick={handleGoBackClick}>Go Back</Button>
+          <Typography variant="h1">{errorMessage}</Typography>
+          
+        </Box>
+      }
+      {profile && (
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2} mb={5}>
             <Grid item xs={3} style={{ maxHeight: "12rem", maxWidth: "12rem" }}>
@@ -115,6 +134,7 @@ const UserDataProfile = () => {
                     href={`https://twitter.com/${profile.twitter}`}
                     aria-label="twitter"
                     size="large"
+                    target="_blank"
                     > 
                     <TwitterIcon />
                   </IconButton>
@@ -122,6 +142,7 @@ const UserDataProfile = () => {
                   {profile.github ? 
                   <IconButton
                     href={`https://github.com/${profile.github}`}
+                    target="_blank"
                     aria-label="twitter"
                     size="large"
                   >
@@ -133,6 +154,7 @@ const UserDataProfile = () => {
                     href={`https://linkedin.com/in/${profile.linkedin}`}
                     aria-label="twitter"
                     size="large"
+                    target="_blank"
                   >
                     <LinkedInIcon />
                     </IconButton>
@@ -150,7 +172,7 @@ const UserDataProfile = () => {
               </Box>
             </Grid>
 
-            <Grid item xs={12}>
+           {profile.about && <Grid item xs={12}>
               About
               <Item
                 sx={{
@@ -164,7 +186,7 @@ const UserDataProfile = () => {
                   {profile.about}{" "}
                 </Typography>
               </Item>
-            </Grid>
+            </Grid>}
 
             <Grid item xs={12} md={6}>
               Answers
@@ -214,9 +236,10 @@ const UserDataProfile = () => {
             </Grid> */}
           </Grid>
         </Box>
-      ) : (
-        <Typography variant="h2">Loading Profile ....</Typography>
-      )}
+      )  
+      }
+      {isLoading && (!profile) && <Typography variant="h2">Loading Profile ...</Typography>}
+      {(!isLoading) && (!profile) && setErrorMessage("No Profile Exists")}
     </Container>
   );
 };

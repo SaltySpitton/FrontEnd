@@ -13,11 +13,11 @@ import UserTile from './UserTile';
 
 
 const QuestionAnswerCard = ({ answer }) => {
-
+console.log(answer)
 
   return (
     <>
-      {console.log(answer.user.username)}
+      
       <Grid container>
         <Grid item xs={1}>
           <Box
@@ -52,12 +52,14 @@ const QuestionAnswerCard = ({ answer }) => {
             </Box>
 
             <Box my={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
+            {answer.user && 
               <UserTile
-                image={answer.user.avatar}
+                // image={answer.user.avatar}
                 user={answer.user}
                 createdAt={answer.createdAt}
                 width={"15rem"}
-              />
+                input={"a"}
+              />}
             </Box>
 
           </Box>

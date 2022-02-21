@@ -8,7 +8,7 @@ import { Link as RouterLink } from "react-router-dom";
 import Link from '@mui/material/Link';
 
 
-const UserTile = ({ image, user, createdAt, width, input }) => {
+const UserTile = ({ user, createdAt, width, input }) => {
     console.log(user)
     let verbage;
     input === 'q' ?
@@ -36,7 +36,7 @@ const UserTile = ({ image, user, createdAt, width, input }) => {
                 >
                     <Avatar
                         alt={user.username}
-                        src={image}
+                        src={user.avatar}
                         sx={{
                             width: 40,
                             height: 40,
@@ -44,6 +44,7 @@ const UserTile = ({ image, user, createdAt, width, input }) => {
                         }}
                         variant="square"
                     />
+        
                     <Link href={`/userdata/${user._id}`} >{user.username}</Link>
                 </Box>
             </Card>

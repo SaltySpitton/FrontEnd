@@ -30,6 +30,7 @@ const ProfileForm = () => {
     const getUserProfile = async () => {
         console.log(localStorage.getItem("user"))
         const userProfile = await axios.get(`${baseURL}/${localStorage.getItem("user")}`)
+        console.log(userProfile.data)
         console.log(userProfile.data[0])
         setProfile(userProfile.data[0])
         console.log(profile)
@@ -47,16 +48,16 @@ const ProfileForm = () => {
         // console.log(profile)
     }, [])
 
-    const handleProfileEdit = (e) => {
+    const handleProfileEdit = async(e) => {
         e.preventDefault()
         const updatedProfile = {
-            name: e.target.value,
+            name: displayName,
             about: about,
             github: github,
             linkedin: linkedin,
             twitter: twitter
         }
-        axios.put(`${baseURL}/${profile._id}/${localStorage.getItem("user")}`, updatedProfile)
+        await axios.put(`${baseURL}/${profile._id}/${localStorage.getItem("user")}`, updatedProfile)
             .then(res => {
                 console.log(res)
                 navigate('/userdata')
@@ -67,7 +68,6 @@ const ProfileForm = () => {
 
     return (
         <Container>
-            <button onClick={getUserProfile}>LOAD DATA</button>
             <Typography variant='h4' component='h2' my={2} style={{
                 fontWeight: '900', color: "secondary"
             }}>User Profile</Typography>
