@@ -64,7 +64,7 @@ export const UserProvider = ({ children }) => {
         email: registerEmail,
       },
       withCredentials: true,
-      url: "http://localhost:4200/users/register",
+      url: `${getEnvUrl}/users/register`,
     }).then((res) => {
       console.log(res)
       localStorage.setItem("user", res.data)
@@ -77,7 +77,7 @@ export const UserProvider = ({ children }) => {
     Axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:4200/users",
+      url: `${getEnvUrl}/users`,
     }).then((res) => {
       setUser(res.data);
       console.log(res.data)
@@ -91,7 +91,7 @@ export const UserProvider = ({ children }) => {
       // method: "GET",
       method: "POST",
       withCredentials: true,
-      url: "http://localhost:4200/users/logout",
+      url: `${getEnvUrl}/users/logout`,
     }).then((res) => {
       setUser(null);
       // getUser();
@@ -103,7 +103,7 @@ export const UserProvider = ({ children }) => {
 
   const getAllQuestions = async() => {
       setIsLoading(true)
-      const apiUrl = 'http://localhost:4200/questions'
+      const apiUrl = `${getEnvUrl}/questions`
       let allQuestions = await Axios.get(apiUrl)
       // console.log(allQuestions)
       await setQuestions(allQuestions.data.questions)
@@ -113,7 +113,7 @@ export const UserProvider = ({ children }) => {
 
   const searchByTag = async(tag) => {
         setIsLoading(true)
-        let apiUrl = `http://localhost:4200/questions?tags=${tag}` 
+        let apiUrl = `${getEnvUrl}/questions?tags=${tag}` 
         const tagSearch = await Axios.get(apiUrl)
         await setTagResult(tagSearch.data.docs)
         await setQuestions(tagSearch.data.docs)
@@ -122,7 +122,7 @@ export const UserProvider = ({ children }) => {
   }
   const getUserProfile = async () => {
     // getUser()
-    const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
+    const url = `${getEnvUrl}/userdata/${localStorage.getItem("user")}`
     const userProfile = await Axios.get(url)
     setProfile(userProfile.data[0])
     console.log("Logging getUserProfile function: " + profile._id)
