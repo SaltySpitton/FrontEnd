@@ -5,7 +5,7 @@ import Axios from "axios";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [getEnvUrl, setGetEnvUrl] = useState()
+  const [getEnvUrl, setGetEnvUrl] = useState("")
 
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
