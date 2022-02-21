@@ -36,12 +36,13 @@ export const UserProvider = ({ children }) => {
         password: loginPassword,
       },
       withCredentials: true,
-      url: "http://localhost:4200/users/login",
+      url: `${getEnvUrl}/users/login`,
     }).then((res) => {
       getUser()
       getUserProfile()
       localStorage.setItem("user", res.data._id)
       console.log(res)
+      console.log('here is your environment' + getEnvUrl)
       navigate("/questions");
     })
       .catch(err => {
