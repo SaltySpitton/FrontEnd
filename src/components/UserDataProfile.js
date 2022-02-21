@@ -20,12 +20,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 const UserDataProfile = () => {
-  const { user, profile, setProfile, getUser, dateDifference } = useContext(UserContext)
+  const { user, profile, setProfile, getUser, dateDifference, getEnvUrl } = useContext(UserContext)
 
   const getUserProfile = async () => {
     // let u = await getUser()
 
-    const url = `http://localhost:4200/userdata/${localStorage.getItem("user")}`
+    const url = `${getEnvUrl}/userdata/${localStorage.getItem("user")}`
     const userProfile = await Axios.get(url)
     console.log(userProfile.data[0])
     await setProfile(userProfile.data[0])

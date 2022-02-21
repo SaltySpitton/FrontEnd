@@ -48,6 +48,7 @@ export const UserProvider = ({ children }) => {
       .catch(err => {
         if (err) {
           setErrorMessage('Invalid Username or Password, please try again')
+          console.log('here is your environment error' + getEnvUrl)
           setTimeout(() => {
             setErrorMessage('')
           }, 2000);

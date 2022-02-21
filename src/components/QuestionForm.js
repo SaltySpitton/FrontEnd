@@ -23,14 +23,14 @@ import {
 const QuestionForm = () => {
     let navigate = useNavigate();
 
-    const { user, getUser } = useContext(UserContext)
+    const { user, getUser, getEnvUrl } = useContext(UserContext)
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
     const [warningMessage, setWarningMessage] = useState('')
 
     const getQuestion = async (currUser) => {
-        let data = await axios.post(`http://localhost:4200/questions/${currUser.id}`, {
+        let data = await axios.post(`${getEnvUrl}/questions/${currUser.id}`, {
             title: questionTitle, 
             body: questionBody, 
             tags: addTags
