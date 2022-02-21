@@ -9,6 +9,7 @@ import QuestionEdit from './components/QuestionEdit'
 import AnswersEdit from  './components/AnswersEdit';
 import QuestionForm from './components/QuestionForm';
 import Login from './components/Login';
+import Productiontest from './components/arrayofTags/Productiontest';
 import UserDataProfile from './components/UserDataProfile';
 import PageNotFound from './components/PageNotFound';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -61,6 +62,7 @@ function App() {
               <Route path='/profile' element={<ProfileForm />} />
               <Route path='/tags' element={<TagsDetails />} />
               <Route path="*" element={<PageNotFound />} />
+              <Route path='/testme' element={<Productiontest/>}/>
             </Routes>
           </ThemeProvider>
         </div>
