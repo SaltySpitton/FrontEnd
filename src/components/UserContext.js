@@ -78,7 +78,9 @@ export const UserProvider = ({ children }) => {
       url: `${getEnvUrl}/users`,
     }).then((res) => {
       setUser(res.data);
+      console.log('here is the get user response' +res)
       console.log(res.data)
+      console.log('here is the get user environment' +getEnvUrl)
       console.log("Logging GetUser Function: " + user);
       return res.data
     });
