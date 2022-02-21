@@ -1,12 +1,11 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import Axios from "axios";
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [getEnvUrl, Seturl] = useState()
+  const [getEnvUrl, setGetEnvUrl] = useState()
 
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -25,8 +24,8 @@ export const UserProvider = ({ children }) => {
   useEffect(()=>{
 
     const getEnvUrl = process.env.REACT_APP_ENV === 'production' ? 'https://stackdevhelp-backend.herokuapp.com' : 'http://localhost:4200' 
-    Seturl(getEnvUrl) 
-  })
+    setGetEnvUrl(getEnvUrl) 
+  },[])
   
   const login = () => {                                                                                                                                             
     Axios({
@@ -42,13 +41,11 @@ export const UserProvider = ({ children }) => {
       getUserProfile()
       localStorage.setItem("user", res.data._id)
       console.log(res)
-      console.log('here is your environment' + getEnvUrl)
       navigate("/questions");
     })
       .catch(err => {
         if (err) {
           setErrorMessage('Invalid Username or Password, please try again')
-          console.log('here is your environment error' + getEnvUrl)
           setTimeout(() => {
             setErrorMessage('')
           }, 2000);
