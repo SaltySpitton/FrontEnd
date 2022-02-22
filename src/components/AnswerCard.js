@@ -9,6 +9,11 @@ import UserTile from './UserTile'
 import upvoted from '../images/votes-up.svg'
 import downVoted from '../images/votes.down.svg'
 
+
+// NOT USING => REPLACED WITH QuestionAnswerCard
+
+
+
 const AnswerCard = ({answer, question}) => {
     const { user, isLoading, setIsLoading, questions, setQuestions, getAllQuestions, tagResults, setTagResults, searchByTag} = useContext(UserContext)
 
@@ -71,9 +76,8 @@ const AnswerCard = ({answer, question}) => {
                         }}>
                         <Box>
                         </Box>
-                        {/* need to get the user name to populate on the answers nested in the question :)  */}
                             <UserTile 
-                                image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
+                                // image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE37YbH_wRd_dbCX8X-EB-I1zqA0Rb0Jju8g&usqp=CAU"}
                                 user={user}
                                 createdAt={answer.createdAt}
                                 width={'40%'}

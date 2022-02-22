@@ -1,5 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { useState, useEffect, useContext } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { UserProvider } from './components/UserContext';
 import Home from './components/Home';
 import TagsDetails from './components/TagsDetails';
 import Answers from './components/Answers'
@@ -12,11 +14,8 @@ import Login from './components/Login';
 import Productiontest from './components/arrayofTags/Productiontest';
 import UserDataProfile from './components/UserDataProfile';
 import PageNotFound from './components/PageNotFound';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Layout from './components/Layout';
-import { UserProvider } from './components/UserContext';
 import ProfileForm from './components/ProfileForm';
-
+import Layout from './components/Layout';
 
 
 //link to color picker

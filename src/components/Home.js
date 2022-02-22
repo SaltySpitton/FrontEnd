@@ -7,7 +7,6 @@ import { AppButton } from '../css/Button.styled';
 import { Box } from '@mui/system';
 import { Container, Grid, Typography } from '@mui/material';
 import UserContext from "./UserContext";
-import Axios from 'axios'
 import '../css/homepage.css'
 import logo from '../images/logo.svg'
 import qaBubbles from '../images/QA-bubbles.svg'

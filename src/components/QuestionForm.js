@@ -1,33 +1,31 @@
-import { InputLabel, Autocomplete, TextField, Container} from '@mui/material';
+import { InputLabel, Autocomplete, TextField, Container, Typography} from '@mui/material';
 import { AppButton } from '../css/Button.styled';
 import {
   FormStyles,
   FormInput,
   BodyTextarea,
-  MarkdownPreviewArea} from "../css/Form.styled";
+  MarkdownPreviewArea 
+} from "../css/Form.styled";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useState, useContext } from "react";
 import UserContext from "./UserContext";
 import axios from "axios";
-import {
-  Routes,
-  Route,
-  Link,
-  useNavigate,  
-  useLocation,
-  Navigate,
-  Outlet,
-} from "react-router-dom";
+import WarningModal from './WarningModal'
 
 const QuestionForm = () => {
     let navigate = useNavigate();
 
-    const { user, getUser, getEnvUrl } = useContext(UserContext)
+
+    // SYLVIE ADD START:
+    const { user,errorMessenger, errorMessage, setErrorMessage, getEnvUrl } = useContext(UserContext)
+
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
-    const [warningMessage, setWarningMessage] = useState('')
+    const [open, setOpen] = useState(false)
+    //SYLVIE ADD PAUSE
 
     const getQuestion = async (currUser) => {
         let data = await axios.post(`${getEnvUrl}/questions/${currUser.id}`, {
@@ -42,42 +40,49 @@ const QuestionForm = () => {
         navigate(`/questions/${data.data._id}`)
     }
     
-    const loginWarning = () => {
-        setWarningMessage("You must Login to Ask a Question, login or Signup here");
-        setTimeout(() => {
-          setWarningMessage("");
-        }, 3000);
-    };
+//SYLVIE COMMENT OUT THIS: (BUT WAS HERE BEFORE)
+    // const loginWarning = () => {
+    //     setWarningMessage("You must Login to Ask a Question, login or Signup here");
+    //     setTimeout(() => {
+    //       setWarningMessage("");
+    //     }, 3000);
+    // };
 
     const handlePost = (e) => {
         e.preventDefault()
         if(user){
+            if(!questionTitle || !questionBody || addTags.length === 0 || addTags.length > 5){
+                return errorMessenger("Questions need a Title, Body, and between One to Five Tags.", 5000)
+            }
             getQuestion(user)
-
-                   
         } else {
-            loginWarning()
-            setTimeout(() => {
-                navigate("/login", { replace: true })
-            }, 5000)
-           
-            //Go back button: Do we want to use and what is the best place for this
-            // <Button onClick={() => {
-            //     navigate(-1)
-            // }} text="Go Back">
-            //navigate("/login", { replace: true }, -1)
-            // navigate(-1)
+//SYLVIE COMMENT OUT THIS: (BUT WAS HERE BEFORE)
+            // loginWarning()
+            // setTimeout(() => {
+            //     navigate("/login", { replace: true })
+            // }, 5000)
+
+// sylvie add here
+            errorMessenger("You must Login to Ask a Question, login or Signup here")
+            setOpen(true)
         }
     }
  
 
     return (
        <Container>
-             {warningMessage}
+             <WarningModal 
+                open={open}
+                setOpen={setOpen}
+                title={"Login or Register"}
+                error={"To Ask a Question, you must Login or Register"}
+            />
             <h1>Ask a public question</h1>
+
             <FormStyles action="">
                 <fieldset>
-                    <label htmlFor="title">Title</label>
+{/* sylvie added error message holder */}
+                    <label htmlFor="title">Title</label><Typography varian="h4" color="red">{errorMessage}</Typography>
                     <p>Be specific and imagine you're asking a question to another person</p>
                     <FormInput
                         type="text"
@@ -118,7 +123,8 @@ const QuestionForm = () => {
                     />
                 </fieldset>
                 <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Question</AppButton>
-
+      {/* sylvie added error message */}
+                <Typography varian="h4" color="red">{errorMessage}</Typography>         
             </FormStyles>
        </Container>
     )
@@ -145,24 +151,11 @@ const tags = [
   'javascript',
   'data structures', 
   'react-router-v6',
+  'REST', 
+  'MERN',
+  'hooks',
+  'devLife', 
   'other'
 ]
 
 export default QuestionForm
-
-
-  // const getQuestion = async (currUser) => {
-  //   let data = await axios.post(
-  //     `http://localhost:4200/questions/${currUser.id}`,
-  //     {
-  //       title: questionTitle,
-  //       body: questionBody,
-  //       tags: addTags,
-  //     }
-  //   );
-  //   console.log(data);
-  //   console.log(data.data);
-  //   setQuestionTitle("");
-  //   setQuestionBody("");
-  //   setAddTags([]);
-  // };
