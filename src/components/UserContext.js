@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(()=>{
 
-    const getEnvUrl = process.env.REACT_APP_ENV === 'production' ? 'https://stackdevhelp-backend.herokuapp.com' : 'http://localhost:4200' 
+    const getEnvUrl = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_API : 'http://localhost:4200' 
     setGetEnvUrl(getEnvUrl) 
   },[])
   
