@@ -15,7 +15,7 @@ const Login = () => {
   return (
     <div>
       <div className="login">
-        <h2 className="loginTitle">Choose a Login Method</h2>
+        {/* <h2 className="loginTitle">Choose a Login Method</h2> */}
         <div className="wrapper">
           <div className="left">
             <div className="loginButton google" >
