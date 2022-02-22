@@ -1,7 +1,7 @@
 import logoWhite from '../images/logo-white.svg'
 import styled from "styled-components"
 import { FooterStyles } from '../css/Footer.styled'
-import { Box } from '@mui/system';
+// import { Box } from '@mui/system';
 import { Container, Grid, Typography } from '@mui/material';
 
 
