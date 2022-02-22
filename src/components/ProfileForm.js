@@ -16,7 +16,7 @@ const PhotoInput = styled('input')({
 
 
 const ProfileForm = () => {
-    const { user, getUser } = useContext(UserContext)
+    const { user, getUser, getEnvUrl } = useContext(UserContext)
     const [profile, setProfile] = useState({})
     const [displayName, setDisplayName] = useState("")
     const [avatar, setAvatar] = useState("")
@@ -26,7 +26,7 @@ const ProfileForm = () => {
     const [twitter, setTwitter] = useState("")
     const navigate = useNavigate();
 
-    const baseURL = "http://localhost:4200/userdata"
+    const baseURL = `${getEnvUrl}/userdata`
 
     const getUserProfile = async () => {
         const userProfile = await axios.get(`${baseURL}/${localStorage.getItem("user")}`)

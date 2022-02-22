@@ -28,9 +28,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const UserDataProfile = () => {
+
   const navigate = useNavigate()
   const { userId } = useParams();
-  const { isLoading, setIsLoading, errorMessage, setErrorMessage, errorMessenger } = useContext(UserContext);
+  const { isLoading, setIsLoading, errorMessage, setErrorMessage, errorMessenger, getEnvUrl } = useContext(UserContext);
 
   const [profile, setProfile] = useState("");
   const [profileAnswers, setProfileAnswers] = useState("")
@@ -41,21 +42,15 @@ const UserDataProfile = () => {
   console.log('the current logged in user is : ', loggedinUser)
 
   
-  //getUserProfile(loggedinUser, userId)
-  // const getLoggedUserProfile = async () => {
 
-  //   const url = `http://localhost:4200/userdata/${loggedinUser}`;
-  //   const userProfile = await Axios.get(url);
-  //   console.log(userProfile.data[0]);
-  //   await setProfile(userProfile.data[0]);
-  //   // console.log("Logging getUserProfile function: " + profile.id)
-  // };
+
+
 
   const findUser = async () => {
     if (loggedinUser === userId) {
       console.log(loggedinUser)
       setIsLoading(true);
-      const url = `http://localhost:4200/userdata/${loggedinUser}`;
+      const url = `${getEnvUrl}/userdata/${loggedinUser}`;
       const userProfile = await axios.get(url);
       console.log(userProfile.data[0]);
       userProfile && 
@@ -65,7 +60,7 @@ const UserDataProfile = () => {
     }
     if(loggedinUser !== userId){
       setIsLoading(true);
-      const url = `http://localhost:4200/userdata/${userId}`;
+      const url = `${getEnvUrl}/userdata/${userId}`;
       const findUserProfile = await axios.get(url);
       await setProfile(findUserProfile.data[0]) 
       console.log('profile', profile)
@@ -74,6 +69,7 @@ const UserDataProfile = () => {
     console.log(profile)
     await getProfileQuestions(profile.user._id)
     await getProfileAnswers(profile.user._id)
+
   }
 
   const getProfileAnswers = async(profileUser) => {

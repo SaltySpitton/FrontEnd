@@ -8,25 +8,27 @@ import AnswerForm from './AnswerForm'
 import axios from 'axios'
 
 const QuestionView = () => {
+
   const { questionId } = useParams()
-  const { isLoading, setIsLoading } = useContext(UserContext)
+  const { isLoading, setIsLoading,  getEnvUrl } = useContext(UserContext)
   const [questionView, setQuestionView] = useState('')
   
   const retrieveQuestion = async () => {
       setIsLoading(true)
-      const url = `http://localhost:4200/questions/${questionId}`
+      const url = `${getEnvUrl}/questions/${questionId}`
       const questionData = await axios.get(url)
       setQuestionView(questionData.data)
       setIsLoading(false)
+
     }
-// sylvie ADD
+
     const handleAddVote = async(item, inputType) => {
       let path;
       console.log('votes plus 1')
       inputType === 'q' ?
       path = 'questions' : 
       path = 'answers'
-      let url = `http://localhost:4200/${path}/${item._id}`
+      let url = `${getEnvUrl}/${path}/${item._id}`
       const updatedVotes = await axios.put(url, {votes: item.votes + 1})
       updatedVotes && setQuestionView(updatedVotes)
       console.log(updatedVotes)
@@ -37,13 +39,13 @@ const QuestionView = () => {
       inputType === 'q' ?
       path = 'questions' : 
       path = 'answers'
-      let url = `http://localhost:4200/${path}/${item._id}`
+      let url = `${getEnvUrl}/${path}/${item._id}`
       const updatedVotes = await axios.put(url, {votes: item.votes - 1})
       updatedVotes && setQuestionView(updatedVotes)
       console.log(updatedVotes)
       console.log(path)
   }
-// end sylvie add
+
 
   useEffect(() => {
     retrieveQuestion()

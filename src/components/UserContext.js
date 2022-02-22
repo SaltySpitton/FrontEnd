@@ -1,12 +1,18 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
 import axios from "axios";
+
 
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [getEnvUrl, setGetEnvUrl] = useState("")
+
 
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
@@ -15,6 +21,7 @@ export const UserProvider = ({ children }) => {
   const [loginPassword, setLoginPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const [totalPages, setTotalPages] = useState(0);
   const [questions, setQuestions] = useState("");
   const [searchTag, setSearchTag] = useState("");
@@ -22,6 +29,12 @@ export const UserProvider = ({ children }) => {
   const [profile, setProfile] = useState();
   const [user, setUser] = useState("");
   const [displayQuestions, setDisplayQuestions] = useState("");
+  
+   useEffect(()=>{
+
+    const getEnvUrl = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_API : 'http://localhost:4200' 
+    setGetEnvUrl(getEnvUrl) 
+  },[])
 
   const login = () => {
     axios({
@@ -31,7 +44,8 @@ export const UserProvider = ({ children }) => {
         password: loginPassword,
       },
       withCredentials: true,
-      url: "http://localhost:4200/users/login",
+
+      url: `${getEnvUrl}/users/login`,
     })
       .then((res) => {
         getUser()
@@ -54,7 +68,7 @@ export const UserProvider = ({ children }) => {
         email: registerEmail,
       },
       withCredentials: true,
-      url: "http://localhost:4200/users/register",
+      url: `${getEnvUrl}/users/register`,
     }).then((res) => {
       console.log(res)
       localStorage.setItem("user", res.data)
@@ -66,11 +80,13 @@ export const UserProvider = ({ children }) => {
     axios({
       method: "GET",
       withCredentials: true,
-      url: "http://localhost:4200/users",
+      url: `${getEnvUrl}/users`,
     }).then((res) => {
+
       setUser(res.data)
       console.log(res.data)
       return user
+
     });
   };
 
@@ -78,7 +94,7 @@ export const UserProvider = ({ children }) => {
     axios({
       method: "POST",
       withCredentials: true,
-      url: "http://localhost:4200/users/logout",
+      url: `${getEnvUrl}/users/logout`,
     }).then((res) => {
       setUser(null)
       navigate("/questions")
@@ -86,15 +102,17 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+
   const searchByTag = async(tag) => {
     let returnQuestions
     setIsLoading(true)
     tag ? 
-    returnQuestions = await axios.get(`http://localhost:4200/questions?tags=${tag}`) : 
-    returnQuestions = await axios.get(`http://localhost:4200/questions`)
+    returnQuestions = await axios.get(`${getEnvUrl}/questions?tags=${tag}`) : 
+    returnQuestions = await axios.get(`${getEnvUrl}/questions`)
     console.log('return questions', returnQuestions)
     await setQuestions(returnQuestions.data.questions)
     setIsLoading(false)
+
   }
 
   const errorMessenger = (message, time=2000) => {
@@ -138,7 +156,9 @@ export const UserProvider = ({ children }) => {
         setTotalPages,
         searchTag, 
         setSearchTag, 
+        getEnvUrl,
         searchByTag,
+
       }}
     >
       {children}
