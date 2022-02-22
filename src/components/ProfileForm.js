@@ -1,12 +1,12 @@
-import { styled } from "@mui/system"
-import { Container, Typography, Grid, IconButton, Box } from "@mui/material"
-import { CustomInput } from './CustomInput'
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import { styled } from "@mui/system";
 import { AppButton } from "../css/Button.styled";
+import { CustomInput } from "./CustomInput";
+import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
+import { Container, Typography, Grid, IconButton, Box } from "@mui/material";
 import axios from "axios";
 import UserContext from './UserContext'
-import { useNavigate } from "react-router-dom";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 const PhotoInput = styled('input')({
     display: 'none',
@@ -19,6 +19,7 @@ const ProfileForm = () => {
     const { user, getUser } = useContext(UserContext)
     const [profile, setProfile] = useState({})
     const [displayName, setDisplayName] = useState("")
+    const [avatar, setAvatar] = useState("")
     const [about, setAbout] = useState("")
     const [github, setGithub] = useState("")
     const [linkedin, setLinkedin] = useState("")
@@ -28,24 +29,22 @@ const ProfileForm = () => {
     const baseURL = "http://localhost:4200/userdata"
 
     const getUserProfile = async () => {
-        console.log(localStorage.getItem("user"))
         const userProfile = await axios.get(`${baseURL}/${localStorage.getItem("user")}`)
-        console.log(userProfile.data)
-        console.log(userProfile.data[0])
         setProfile(userProfile.data[0])
-        console.log(profile)
         setDisplayName(userProfile.data[0].name)
         setAbout(userProfile.data[0].about)
         setGithub(userProfile.data[0].github)
         setLinkedin(userProfile.data[0].github)
         setTwitter(userProfile.data[0].twitter)
-        console.log("Logging getUserProfile function: " + profile)
+        console.log(userProfile)
+        // console.log(userProfile.data[0])
+        // console.log(localStorage.getItem("user"))
+        // console.log("Logging getUserProfile function: " + profile)
     }
 
     useEffect(() => {
         getUser()
         getUserProfile()
-        // console.log(profile)
     }, [])
 
     const handleProfileEdit = async(e) => {
@@ -55,16 +54,25 @@ const ProfileForm = () => {
             about: about,
             github: github,
             linkedin: linkedin,
-            twitter: twitter
+            twitter: twitter, 
         }
         await axios.put(`${baseURL}/${profile._id}/${localStorage.getItem("user")}`, updatedProfile)
             .then(res => {
                 console.log(res)
-                navigate('/userdata')
+                navigate(`/userdata/${profile.user._id}`)
             }).catch(error => {
                 console.log(error)
             })
     }
+    // const handlePicUpdate = async(e) => {
+    //     e.preventDefault()
+    //     console.log(avatar)
+    //     const updatePic = await {
+    //         avatar: avatar.slice(12)
+    //     }
+    //     console.log(updatedPic)
+    //     let updatedPic = await axios.put(`http://localhost:4200/users/${localStorage.getItem("user")}`,updatePic)
+    // }
 
     return (
         <Container>
@@ -105,7 +113,11 @@ const ProfileForm = () => {
                                 <PhotoInput
                                     accept="image/*"
                                     id="avatar"
-                                    type="file" />
+                                    type="file" 
+                                    onChangeCapture={(e) => {
+                                        setAvatar(e.target.value)
+                                    }}
+                                />
                                 <IconButton color="primary" aria-label="upload picture" component="span">
                                     <AddAPhotoIcon />
                                 </IconButton>

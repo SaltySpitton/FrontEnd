@@ -1,10 +1,12 @@
 import * as React from "react";
 import { Chip, styled, Box, Paper, Grid, Typography, Divider } from "@mui/material";
+import { Link , useNavigate } from "react-router-dom";
 import { MarkdownPreviewArea } from "../css/Form.styled";
+import { useContext, } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import Link from '@mui/material/Link';
-import { useContext, } from "react";
+// import Link from '@mui/material/Link';
+import axios from "axios";
 import UserContext from "./UserContext";
 import UserTile from "./UserTile";
 import upvoted from "../images/votes-up.svg";
@@ -19,29 +21,68 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const QuestionCard = ({ question, questionUser }) => {
-    const { user, searchByTag, } = useContext(UserContext);
+const QuestionCard = ({  question, questionUser, upVotes, downVotes }) => {
+    // const { user, searchByTag, } = useContext(UserContext);
+    // sylvie add in:
+    const navigate = useNavigate()
+    const { 
+        user,
+        isLoading,
+        setIsLoading,
+        questions,
+        setQuestions,
+        getAllQuestions,
+        searchByTag, 
+        searchTag,
+        setSearchTag, 
+    } = useContext(UserContext);
+
+    //end sylvie add in
+    const handleClickTag = (nameTag) => {
+        setSearchTag(nameTag)
+        navigate("/questions")
+    }
+
 
     return (
         <>
             {question.title && <Typography variant="h5">{question.title}</Typography>}
             <Grid container>
                 <Grid item xs={1}>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'flexStart',
-                            alignItems: 'center',
-                            marginTop: 2,
-                        }}>
-                        {/* the votes and add/deduct buttons */}
-                        <img className='listIcon' src={upvoted} alt="upArrow" />
-                        <Typography variant="h5" component="span" p={3}>0</Typography>
-                        <img className='listIcon' src={downVoted} alt="downArrow" />
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flexStart',
+                        alignItems: 'center',
+                        marginTop: 2,
+                        }}
+                    >
+{/* the votes and add/deduct buttons */}
+                        <img 
+                            className="listIcon" 
+                            onClick={()=>{
+                            upVotes(question, 'q')
+                            }} 
+                            src={upvoted} 
+                            alt="upArrow" 
+                        />
+                        <Typography 
+                            variant="h5" 
+                            component="span" 
+                            p={3}>
+                        {question.votes}
+                        </Typography>
+                        <img 
+                            className="listIcon" 
+                            onClick={()=>{
+                            downVotes(question, 'q')
+                            }} 
+                            src={downVoted} 
+                            alt="downArrow" 
+                        />
                     </Box>
                 </Grid>
-                {/* the question body holder, need to change to primary app light green :) */}
+{/* the question body holder, need to change to primary app light green :) */}
                 <Grid item xs={11} >
                     <Box sx={{
                         display: 'flex',
@@ -55,14 +96,25 @@ const QuestionCard = ({ question, questionUser }) => {
                         <MarkdownPreviewArea>
                             <ReactMarkdown children={question.body} remarkPlugins={[remarkGfm]} />
                         </MarkdownPreviewArea>
-                        <Box sx={{ marginTop: 1, textAlign: 'right' }}>
-                            {user.id === questionUser._id && (
-                                <Link to={`/questions/${question._id}/edit`} style={{ padding: "0 1rem" }}>Edit</Link>
-                            )}
-                            {user.id === questionUser._id && (
-                                <Typography variant="link">Delete</Typography>
-                            )}
+
+                        <Box sx={{ 
+                            marginTop: 1, 
+                            textAlign: 'right' 
+                            }}
+                        >
+                        {user.id === questionUser._id && (
+                            <Link 
+                                to={`/questions/${question._id}/edit`} 
+                                style={{ padding: "0 1rem" }}
+                            >
+                            Edit
+                            </Link>
+                        )}
+                        {user.id === questionUser._id && (
+                            <Typography variant="link">Delete</Typography>
+                        )}
                         </Box>
+
                         <Box sx={{ marginTop: 1 }}>
                             {question.tags &&
                                 question.tags.map((tagName) => {
@@ -72,7 +124,7 @@ const QuestionCard = ({ question, questionUser }) => {
                                             size="large"
                                             label={tagName}
                                             onClick={() => {
-                                                searchByTag(tagName);
+                                                handleClickTag(tagName)
                                             }}
                                             clickable
                                             sx={{ marginRight: 2, marginBottom: 1 }}
@@ -98,6 +150,37 @@ const QuestionCard = ({ question, questionUser }) => {
                                     input={"q"}
                                 />
                             </Grid>
+
+                    {/* SYLVIE ADD ? */}
+                        {/* <Box
+                            sx={{
+                                display: "flex",
+                                width: "100%",
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                                alignItems: 'center'
+                            }}
+                        >
+                            {question.answers.length >= 0 && (
+                                <Typography variant="h6" component="p">
+                                    {question.answers.length} Answers
+                                </Typography>
+                            )}
+                             
+                            <UserTile
+                                // image={
+                                //    questionUser.avatar
+                                // }
+                                user={questionUser}
+                                createdAt={question.createdAt}
+                                width={"40%"}
+                                input={"q"}
+                            />
+                        </Box> */}
+
+
+
+
                         </Grid>
                     </Box>
                 </Grid>
@@ -115,12 +198,12 @@ const QuestionCard = ({ question, questionUser }) => {
                     )}
                 </Box>
             </Grid>
-
+{/* ANSWERS GO HERE */}
             {question.answers.length > 0 &&
                 question.answers.map((answer) => {
-                    console.log(answer.response)
-                    return <QuestionAnswerCard answer={answer} />;
-                })}
+                    return <QuestionAnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes}/>;
+                })
+            }
         </>
     );
 };
