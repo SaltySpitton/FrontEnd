@@ -1,11 +1,11 @@
-import { AppButton } from '../css/Button.styled';
-import { FormStyles, BodyTextarea, MarkdownPreviewArea } from "../css/Form.styled";
+import { AppButton } from '../styled/Button.styled';
+import { FormStyles, BodyTextarea, MarkdownPreviewArea } from "../styled/Form.styled";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState, useContext, useRef } from "react";
 import axios from "axios";
-import UserContext from "./UserContext";
-import WarningModal from './WarningModal'
+import UserContext from "../UserContext";
+import WarningModal from '../WarningModal'
 import { useNavigate } from 'react-router-dom';
 
 const AnswerForm = ({ questionId, getAnswers, answersData, setAnswersData }) => {
@@ -41,11 +41,11 @@ const AnswerForm = ({ questionId, getAnswers, answersData, setAnswersData }) => 
 
     const handlePost = (e) => {
         e.preventDefault()
-        if (currentUserId &&  answer.length > 0) {
+        if (currentUserId && answer.length > 0) {
             postAnswer(currentUserId)
             navigate(`/questions/${questionId}`)
         }
-        if(!currentUserId){
+        if (!currentUserId) {
             errorMessenger("You must Login to Ask a Question, login or Signup here")
             setOpen(true)
         }
@@ -55,7 +55,7 @@ const AnswerForm = ({ questionId, getAnswers, answersData, setAnswersData }) => 
 
     return (
         < div >
-            <WarningModal 
+            <WarningModal
                 open={open}
                 setOpen={setOpen}
                 title={"Login or Register"}

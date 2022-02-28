@@ -1,8 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
 import axios from "axios";
-
 
 const UserContext = createContext();
 
@@ -12,8 +10,6 @@ export const UserProvider = ({ children }) => {
   const location = useLocation();
 
   const [getEnvUrl, setGetEnvUrl] = useState("")
-
-
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");

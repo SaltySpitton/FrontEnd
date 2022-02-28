@@ -1,37 +1,37 @@
 import React, { useEffect } from 'react'
 import styled from "styled-components"
 import { Link } from 'react-router-dom';
-import { LinkButton } from '../css/Button.styled'
-import logo from '../images/logo.svg'
+import { LinkButton } from '../styled/Button.styled'
+import logo from '../../images/logo.svg'
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import SearchIcon from '@mui/icons-material/Search';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import SummaryQuestion from './SummaryQuestion'
+import SummaryQuestion from '../Questions/SummaryQuestion'
 import { useState, useContext } from 'react';
-import UserContext from "./UserContext";
-import { Nav, LightBg } from '../css/Nav.styled';
+import UserContext from "../UserContext";
+import { Nav, LightBg } from '../styled/Nav.styled';
 import { Container, Avatar } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-  
+
 const ImgTag = styled.img`
 height: 2rem;
 margin: 0 0.5rem;
 `
 export default function Navigation() {
     const navigate = useNavigate()
-    const { 
-        user, 
-        logout, 
-        getUser, 
+    const {
+        user,
+        logout,
+        getUser,
         // questions, 
         // setQuestions, 
         // getAllQuestions, 
         searchTag,
-        searchByTag, 
-        setSearchTag, 
+        searchByTag,
+        setSearchTag,
     } = useContext(UserContext)
 
     useEffect(() => {
@@ -63,12 +63,12 @@ export default function Navigation() {
         <LightBg>
             <Container>
                 <Nav>
-                <Link to="/questions" onClick={()=> {
-                    setSearchTag("")
-                    searchByTag()
-                }} component={<SummaryQuestion />}>
-                    <ImgTag src={logo} alt="" />
-                </Link>
+                    <Link to="/questions" onClick={() => {
+                        setSearchTag("")
+                        searchByTag()
+                    }} component={<SummaryQuestion />}>
+                        <ImgTag src={logo} alt="" />
+                    </Link>
                     <TextField
                         fullWidth
                         id="outlined-basic"

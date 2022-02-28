@@ -1,11 +1,11 @@
 import { styled } from "@mui/system";
-import { AppButton } from "../css/Button.styled";
-import { CustomInput } from "./CustomInput";
+import { AppButton } from "../styled/Button.styled";
+import { CustomInput } from "../styled/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { Container, Typography, Grid, IconButton, Box } from "@mui/material";
 import axios from "axios";
-import UserContext from './UserContext'
+import UserContext from '../UserContext'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 const PhotoInput = styled('input')({
@@ -16,7 +16,7 @@ const PhotoInput = styled('input')({
 
 
 const ProfileForm = () => {
-    const { user, getUser, getEnvUrl } = useContext(UserContext)
+    const { getUser, isLoading, setIsLoading } = useContext(UserContext)
     const [profile, setProfile] = useState({})
     const [displayName, setDisplayName] = useState("")
     const [avatar, setAvatar] = useState("")
@@ -26,9 +26,10 @@ const ProfileForm = () => {
     const [twitter, setTwitter] = useState("")
     const navigate = useNavigate();
 
-    const baseURL = `${getEnvUrl}/userdata`
+    const baseURL = `${process.env.REACT_APP_API}/userdata`
 
     const getUserProfile = async () => {
+        setIsLoading(true)
         const userProfile = await axios.get(`${baseURL}/${localStorage.getItem("user")}`)
         setProfile(userProfile.data[0])
         setDisplayName(userProfile.data[0].name)
@@ -37,9 +38,7 @@ const ProfileForm = () => {
         setLinkedin(userProfile.data[0].github)
         setTwitter(userProfile.data[0].twitter)
         console.log(userProfile)
-        // console.log(userProfile.data[0])
-        // console.log(localStorage.getItem("user"))
-        // console.log("Logging getUserProfile function: " + profile)
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -47,14 +46,14 @@ const ProfileForm = () => {
         getUserProfile()
     }, [])
 
-    const handleProfileEdit = async(e) => {
+    const handleProfileEdit = async (e) => {
         e.preventDefault()
         const updatedProfile = {
             name: displayName,
             about: about,
             github: github,
             linkedin: linkedin,
-            twitter: twitter, 
+            twitter: twitter,
         }
         await axios.put(`${baseURL}/${profile._id}/${localStorage.getItem("user")}`, updatedProfile)
             .then(res => {
@@ -64,23 +63,15 @@ const ProfileForm = () => {
                 console.log(error)
             })
     }
-    // const handlePicUpdate = async(e) => {
-    //     e.preventDefault()
-    //     console.log(avatar)
-    //     const updatePic = await {
-    //         avatar: avatar.slice(12)
-    //     }
-    //     console.log(updatedPic)
-    //     let updatedPic = await axios.put(`http://localhost:4200/users/${localStorage.getItem("user")}`,updatePic)
-    // }
+
 
     return (
         <Container>
             <Typography variant='h4' component='h2' my={2} style={{
                 fontWeight: '900', color: "secondary"
             }}>User Profile</Typography>
-
-            <Grid container mb={4}>
+            {isLoading && <Typography variant="h2">Loading Profile ....</Typography>}
+            {getUserProfile && <Grid container mb={4}>
                 <Grid item xs={12} sm={8} >
                     <form onSubmit={handleProfileEdit}>
                         <CustomInput
@@ -113,7 +104,7 @@ const ProfileForm = () => {
                                 <PhotoInput
                                     accept="image/*"
                                     id="avatar"
-                                    type="file" 
+                                    type="file"
                                     onChangeCapture={(e) => {
                                         setAvatar(e.target.value)
                                     }}
@@ -160,7 +151,7 @@ const ProfileForm = () => {
                     </form>
 
                 </Grid>
-            </Grid>
+            </Grid>}
 
         </Container>
     )

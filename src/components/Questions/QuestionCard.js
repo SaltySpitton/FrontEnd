@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Chip, styled, Box, Paper, Grid, Typography, Divider } from "@mui/material";
-import { Link , useNavigate } from "react-router-dom";
-import { MarkdownPreviewArea } from "../css/Form.styled";
+import { Link, useNavigate } from "react-router-dom";
+import { MarkdownPreviewArea } from "../styled/Form.styled";
 import { useContext, } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 // import Link from '@mui/material/Link';
 import axios from "axios";
-import UserContext from "./UserContext";
-import UserTile from "./UserTile";
-import upvoted from "../images/votes-up.svg";
-import downVoted from "../images/votes.down.svg";
-import QuestionAnswerCard from "./QuestionAnswerCard";
+import UserContext from "../UserContext";
+import UserTile from "../Profile/UserTile";
+import upvoted from "../../images/votes-up.svg";
+import downVoted from "../../images/votes.down.svg";
+import QuestionAnswerCard from "./AnswerCard";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -21,20 +21,20 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
 }));
 
-const QuestionCard = ({  question, questionUser, upVotes, downVotes }) => {
+const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
     // const { user, searchByTag, } = useContext(UserContext);
     // sylvie add in:
     const navigate = useNavigate()
-    const { 
+    const {
         user,
         isLoading,
         setIsLoading,
         questions,
         setQuestions,
         getAllQuestions,
-        searchByTag, 
+        searchByTag,
         searchTag,
-        setSearchTag, 
+        setSearchTag,
     } = useContext(UserContext);
 
     //end sylvie add in
@@ -55,34 +55,34 @@ const QuestionCard = ({  question, questionUser, upVotes, downVotes }) => {
                         justifyContent: 'flexStart',
                         alignItems: 'center',
                         marginTop: 2,
-                        }}
+                    }}
                     >
-{/* the votes and add/deduct buttons */}
-                        <img 
-                            className="listIcon" 
-                            onClick={()=>{
-                            upVotes(question, 'q')
-                            }} 
-                            src={upvoted} 
-                            alt="upArrow" 
+                        {/* the votes and add/deduct buttons */}
+                        <img
+                            className="listIcon"
+                            onClick={() => {
+                                upVotes(question, 'q')
+                            }}
+                            src={upvoted}
+                            alt="upArrow"
                         />
-                        <Typography 
-                            variant="h5" 
-                            component="span" 
+                        <Typography
+                            variant="h5"
+                            component="span"
                             p={3}>
-                        {question.votes}
+                            {question.votes}
                         </Typography>
-                        <img 
-                            className="listIcon" 
-                            onClick={()=>{
-                            downVotes(question, 'q')
-                            }} 
-                            src={downVoted} 
-                            alt="downArrow" 
+                        <img
+                            className="listIcon"
+                            onClick={() => {
+                                downVotes(question, 'q')
+                            }}
+                            src={downVoted}
+                            alt="downArrow"
                         />
                     </Box>
                 </Grid>
-{/* the question body holder, need to change to primary app light green :) */}
+                {/* the question body holder, need to change to primary app light green :) */}
                 <Grid item xs={11} >
                     <Box sx={{
                         display: 'flex',
@@ -97,22 +97,22 @@ const QuestionCard = ({  question, questionUser, upVotes, downVotes }) => {
                             <ReactMarkdown children={question.body} remarkPlugins={[remarkGfm]} />
                         </MarkdownPreviewArea>
 
-                        <Box sx={{ 
-                            marginTop: 1, 
-                            textAlign: 'right' 
-                            }}
+                        <Box sx={{
+                            marginTop: 1,
+                            textAlign: 'right'
+                        }}
                         >
-                        {user.id === questionUser._id && (
-                            <Link 
-                                to={`/questions/${question._id}/edit`} 
-                                style={{ padding: "0 1rem" }}
-                            >
-                            Edit
-                            </Link>
-                        )}
-                        {user.id === questionUser._id && (
-                            <Typography variant="link">Delete</Typography>
-                        )}
+                            {user.id === questionUser._id && (
+                                <Link
+                                    to={`/questions/${question._id}/edit`}
+                                    style={{ padding: "0 1rem" }}
+                                >
+                                    Edit
+                                </Link>
+                            )}
+                            {user.id === questionUser._id && (
+                                <Typography variant="link">Delete</Typography>
+                            )}
                         </Box>
 
                         <Box sx={{ marginTop: 1 }}>
@@ -151,8 +151,8 @@ const QuestionCard = ({  question, questionUser, upVotes, downVotes }) => {
                                 />
                             </Grid>
 
-                    {/* SYLVIE ADD ? */}
-                        {/* <Box
+                            {/* SYLVIE ADD ? */}
+                            {/* <Box
                             sx={{
                                 display: "flex",
                                 width: "100%",
@@ -198,10 +198,10 @@ const QuestionCard = ({  question, questionUser, upVotes, downVotes }) => {
                     )}
                 </Box>
             </Grid>
-{/* ANSWERS GO HERE */}
+            {/* ANSWERS GO HERE */}
             {question.answers.length > 0 &&
                 question.answers.map((answer) => {
-                    return <QuestionAnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes}/>;
+                    return <QuestionAnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes} />;
                 })
             }
         </>

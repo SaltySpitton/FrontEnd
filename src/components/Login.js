@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 // import { useNavigate } from "react-router-dom";
-import { FormInput } from '../css/Form.styled';
-import { AppButton } from '../css/Button.styled';
+import { FormInput } from './styled/Form.styled';
+import { AppButton } from './styled/Button.styled';
 import '../css/Login.css'
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';

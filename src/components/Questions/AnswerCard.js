@@ -1,19 +1,19 @@
 import * as React from 'react';
-import { MarkdownPreviewArea } from "../css/Form.styled";
+import { MarkdownPreviewArea } from "../styled/Form.styled";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Box, Grid, Typography, Divider, Button } from "@mui/material";
 import { useState, useEffect, useContext, useRef } from 'react';
-import UserContext from "./UserContext";
+import UserContext from "../UserContext";
 import axios from 'axios'
 import Link from '@mui/material/Link';
-import upvoted from '../images/votes-up.svg'
-import downVoted from '../images/votes.down.svg'
-import UserTile from './UserTile';
+import upvoted from '../../images/votes-up.svg'
+import downVoted from '../../images/votes.down.svg'
+import UserTile from '../Profile/UserTile';
 
-const QuestionAnswerCard = ({key, answer, question, upVotes, downVotes }) => {
-console.log(answer)
-//sylvie add:
+const QuestionAnswerCard = ({ key, answer, question, upVotes, downVotes }) => {
+  console.log(answer)
+  //sylvie add:
   const { user } = useContext(UserContext);
   // const [answerData, setAnswerData] = useState()
   // const [answerUser, setAnswerUser] = useState()
@@ -36,7 +36,7 @@ console.log(answer)
 
   return (
     <>
-      
+
       <Grid container>
         <Grid item xs={1}>
           <Box
@@ -51,21 +51,21 @@ console.log(answer)
             <Typography variant="h5" component="span" p={3}>0</Typography>
             <img className='listIcon' src={downVoted} alt="downArrow" /> */}
 
-            
-            <img 
-                className='listIcon' 
-                onClick={()=>{
-                  upVotes(answer, 'a')
-                }} src={upvoted} alt="upArrow" 
+
+            <img
+              className='listIcon'
+              onClick={() => {
+                upVotes(answer, 'a')
+              }} src={upvoted} alt="upArrow"
             />
             <Typography variant="h5" component="span" p={3}>{answer.votes}</Typography>
-            <img 
-                className='listIcon' 
-                onClick={()=>{
-                    downVotes(answer, 'a')
-                }} src={downVoted} alt="downArrow" 
+            <img
+              className='listIcon'
+              onClick={() => {
+                downVotes(answer, 'a')
+              }} src={downVoted} alt="downArrow"
             />
-           
+
 
           </Box>
         </Grid>
@@ -82,21 +82,21 @@ console.log(answer)
               <ReactMarkdown children={answer.response} remarkPlugins={[remarkGfm]} />
             </MarkdownPreviewArea>
             {/* the edit and delete button for QUESTION */}
-    {user && user._id === answer.user._id &&    
-          <Box sx={{ marginTop: 1, textAlign: 'right', typography: 'body1' }}>
-            <Link to="/questions/:questionId/edit">Edit</Link>{" "}
-            <Typography variant="link">Delete</Typography>
-          </Box>
-    }
+            {user && user._id === answer.user._id &&
+              <Box sx={{ marginTop: 1, textAlign: 'right', typography: 'body1' }}>
+                <Link to="/questions/:questionId/edit">Edit</Link>{" "}
+                <Typography variant="link">Delete</Typography>
+              </Box>
+            }
             <Box my={2} sx={{ display: "flex", justifyContent: "flex-end" }}>
-            {answer.user && 
-              <UserTile
-                // image={answer.user.avatar}
-                user={answer.user}
-                createdAt={answer.createdAt}
-                width={"15rem"}
-                input={"a"}
-              />}
+              {answer.user &&
+                <UserTile
+                  // image={answer.user.avatar}
+                  user={answer.user}
+                  createdAt={answer.createdAt}
+                  width={"15rem"}
+                  input={"a"}
+                />}
             </Box>
 
           </Box>

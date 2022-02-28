@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useContext } from "react";
-import { FormInput } from '../css/Form.styled';
-import { AppButton } from '../css/Button.styled';
+import { FormInput } from './styled/Form.styled';
+import { AppButton } from './styled/Button.styled';
 import { Card, styled, Grid , Button, Typography, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
 import '../css/Login.css'
 import Axios from 'axios'

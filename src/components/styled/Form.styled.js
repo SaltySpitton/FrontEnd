@@ -115,6 +115,4 @@ blockquote {
     border-left: 3px solid #72b035;
 }
 
-a
-
 `

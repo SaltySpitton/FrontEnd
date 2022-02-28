@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useContext } from 'react'
-import { LinkButton } from '../css/Button.styled';
-import { FormInput } from '../css/Form.styled';
-import { AppButton } from '../css/Button.styled';
+import { LinkButton } from './styled/Button.styled';
+import { FormInput } from './styled/Form.styled';
+import { AppButton } from './styled/Button.styled';
 import { Box } from '@mui/system';
 import { Container, Grid, Typography } from '@mui/material';
 import UserContext from "./UserContext";
@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <Container >
-      <Box mb={4} sx={{ flexGrow: 1 }}>
+      <Box mb={4} component="header" sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={12} md={8} sx={{
             marginTop: "1rem",
@@ -93,8 +93,8 @@ const Home = () => {
 
       {/* scrolling logos section -------------------------------------------  */}
 
-      <Marquee speed={50}>
-        <div className="homeIcons">
+      <Marquee speed={40} pauseOnHover={true} gradientWidth={50}>
+        <section className="homeIcons">
           <span><i className="devicon-css3-plain"></i></span>
           <span><i className="devicon-html5-plain"></i></span>
           <span><i className="devicon-javascript-plain"></i></span>
@@ -111,11 +111,11 @@ const Home = () => {
           <span><i className="devicon-rails-plain"></i></span>
           <span><i className="devicon-sass-original"></i></span>
           <span><i className="devicon-vscode-plain"></i></span>
-        </div>
+        </section>
       </Marquee>
 
       {/* SUB-SECTION --------------------------------------------------------*/}
-      <Box mb={4} sx={{ flexGrow: 1 }}>
+      <Box mb={4} component="section" sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={12} md={8} style={{ marginTop: "1rem", width: "100%" }}>
             <Typography variant='h4' component='h2' my={2} style={{
