@@ -1,25 +1,27 @@
-import { styled } from "@mui/system";
+// import { styled } from "@mui/system";
 import { AppButton } from "../styled/Button.styled";
 import { CustomInput } from "../styled/CustomInput";
 import { useNavigate } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
-import { Container, Typography, Grid, IconButton, Box } from "@mui/material";
+import {
+    Container,
+    Typography,
+    Grid,
+    // IconButton, Box
+} from "@mui/material";
 import axios from "axios";
 import UserContext from '../UserContext'
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+// import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
-const PhotoInput = styled('input')({
-    display: 'none',
-});
-
-//need state for name, about, github, linkedin, twitter, avatar
-
+// const PhotoInput = styled('input')({
+//     display: 'none',
+// });
 
 const ProfileForm = () => {
     const { getUser, isLoading, setIsLoading } = useContext(UserContext)
     const [profile, setProfile] = useState({})
     const [displayName, setDisplayName] = useState("")
-    const [avatar, setAvatar] = useState("")
+    // const [avatar, setAvatar] = useState("")
     const [about, setAbout] = useState("")
     const [github, setGithub] = useState("")
     const [linkedin, setLinkedin] = useState("")
@@ -98,7 +100,7 @@ const ProfileForm = () => {
                                 shrink: true,
                             }}
                         />
-                        <Box sx={{ display: "flex", alignItems: "center", padding: "1rem 0" }}>
+                        {/* <Box sx={{ display: "flex", alignItems: "center", padding: "1rem 0" }}>
                             <Typography>Add a profile photo</Typography>
                             <label htmlFor="avatar">
                                 <PhotoInput
@@ -113,7 +115,7 @@ const ProfileForm = () => {
                                     <AddAPhotoIcon />
                                 </IconButton>
                             </label>
-                        </Box>
+                        </Box> */}
                         <CustomInput
                             label="Github"
                             id="github"

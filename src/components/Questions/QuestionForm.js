@@ -1,4 +1,4 @@
-import { InputLabel, Autocomplete, TextField, Container, Typography } from '@mui/material';
+import { InputLabel, Autocomplete, TextField, Container, Typography, Button, Box } from '@mui/material';
 import { AppButton } from '../styled/Button.styled'
 import {
     FormStyles,
@@ -19,16 +19,17 @@ const QuestionForm = () => {
 
 
     // SYLVIE ADD START:
-    const { user, errorMessenger, errorMessage, setErrorMessage, getEnvUrl } = useContext(UserContext)
+    const { user, errorMessenger, errorMessage, setErrorMessage } = useContext(UserContext)
 
     const [questionTitle, setQuestionTitle] = useState('')
     const [questionBody, setQuestionBody] = useState('')
     const [addTags, setAddTags] = useState([])
     const [open, setOpen] = useState(false)
+    const baseURL = process.env.REACT_APP_API
     //SYLVIE ADD PAUSE
 
     const getQuestion = async (currUser) => {
-        let data = await axios.post(`${getEnvUrl}/questions/${currUser.id}`, {
+        let data = await axios.post(`${baseURL}/questions/${currUser.id}`, {
             title: questionTitle,
             body: questionBody,
             tags: addTags
@@ -93,7 +94,12 @@ const QuestionForm = () => {
                 </fieldset>
                 <fieldset>
                     <label htmlFor="title">Body</label>
-                    <p>Include all the information someone would need to answer your question</p>
+                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                        <p>Include all the information someone would need to answer your question</p>
+                        <Button href="https://www.markdownguide.org/cheat-sheet/" target={"_blank"} variant="text">
+                            Markdown Cheatsheet
+                        </Button>
+                    </Box>
                     <BodyTextarea
                         rows={12}
                         id='title'

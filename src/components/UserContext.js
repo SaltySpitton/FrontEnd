@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { createContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UserContext = createContext();
@@ -7,9 +7,8 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 
   const navigate = useNavigate();
-  const location = useLocation();
+  const baseURL = process.env.REACT_APP_API
 
-  const [getEnvUrl, setGetEnvUrl] = useState("")
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [registerEmail, setRegisterEmail] = useState("");
@@ -17,20 +16,12 @@ export const UserProvider = ({ children }) => {
   const [loginPassword, setLoginPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const [totalPages, setTotalPages] = useState(0);
   const [questions, setQuestions] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [perPage, setPerPage] = useState(15);
-  const [profile, setProfile] = useState();
   const [user, setUser] = useState("");
-  const [displayQuestions, setDisplayQuestions] = useState("");
-  
-   useEffect(()=>{
 
-    const getEnvUrl = process.env.REACT_APP_ENV === 'production' ? process.env.REACT_APP_API : 'http://localhost:4200' 
-    setGetEnvUrl(getEnvUrl) 
-  },[])
 
   const login = () => {
     axios({
@@ -41,7 +32,7 @@ export const UserProvider = ({ children }) => {
       },
       withCredentials: true,
 
-      url: `${getEnvUrl}/users/login`,
+      url: `${baseURL}/users/login`,
     })
       .then((res) => {
         getUser()
@@ -64,7 +55,7 @@ export const UserProvider = ({ children }) => {
         email: registerEmail,
       },
       withCredentials: true,
-      url: `${getEnvUrl}/users/register`,
+      url: `${baseURL}/users/register`,
     }).then((res) => {
       console.log(res)
       localStorage.setItem("user", res.data)
@@ -76,13 +67,11 @@ export const UserProvider = ({ children }) => {
     axios({
       method: "GET",
       withCredentials: true,
-      url: `${getEnvUrl}/users`,
+      url: `${baseURL}/users`,
     }).then((res) => {
-
       setUser(res.data)
       console.log(res.data)
       return user
-
     });
   };
 
@@ -90,7 +79,7 @@ export const UserProvider = ({ children }) => {
     axios({
       method: "POST",
       withCredentials: true,
-      url: `${getEnvUrl}/users/logout`,
+      url: `${baseURL}/users/logout`,
     }).then((res) => {
       setUser(null)
       navigate("/questions")
@@ -103,8 +92,8 @@ export const UserProvider = ({ children }) => {
     let returnQuestions
     setIsLoading(true)
     tag ? 
-    returnQuestions = await axios.get(`${getEnvUrl}/questions?tags=${tag}`) : 
-    returnQuestions = await axios.get(`${getEnvUrl}/questions`)
+      returnQuestions = await axios.get(`${baseURL}/questions?tags=${tag}`) :
+      returnQuestions = await axios.get(`${baseURL}/questions`)
     console.log('return questions', returnQuestions)
     await setQuestions(returnQuestions.data.questions)
     setIsLoading(false)
@@ -152,7 +141,6 @@ export const UserProvider = ({ children }) => {
         setTotalPages,
         searchTag, 
         setSearchTag, 
-        getEnvUrl,
         searchByTag,
 
       }}

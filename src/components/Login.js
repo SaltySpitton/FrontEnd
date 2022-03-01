@@ -10,7 +10,7 @@ import UserContext from "./UserContext";
 // import Axios from "axios";
 
 const Login = () => {
-  const { user, setLoginUsername, setLoginPassword, login, getUser, errorMessage} = useContext(UserContext)
+  const { setLoginUsername, setLoginPassword, login, errorMessage } = useContext(UserContext)
 
   return (
     <div>

@@ -55,12 +55,12 @@ const AnswerForm = ({ questionId, getAnswers, answersData, setAnswersData }) => 
 
     return (
         < div >
-            <WarningModal
+            {/* <WarningModal
                 open={open}
                 setOpen={setOpen}
                 title={"Login or Register"}
                 error={"To Answer a Question, you must Login or Register"}
-            />
+            /> */}
             <FormStyles onSubmit={handlePost}>
                 <BodyTextarea
                     rows={12}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Box, Typography, Divider, Button } from '@mui/material';
+import { Container, Box, Typography, Divider, Button, LinearProgress } from '@mui/material';
 import { useState, useContext, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import QuestionCard from './QuestionCard'
@@ -10,12 +10,13 @@ import axios from 'axios'
 const QuestionView = () => {
 
   const { questionId } = useParams()
-  const { isLoading, setIsLoading, getEnvUrl } = useContext(UserContext)
+  const { isLoading, setIsLoading } = useContext(UserContext)
   const [questionView, setQuestionView] = useState('')
+  const baseURL = process.env.REACT_APP_API
 
   const retrieveQuestion = async () => {
     setIsLoading(true)
-    const url = `${getEnvUrl}/questions/${questionId}`
+    const url = `${baseURL}/questions/${questionId}`
     const questionData = await axios.get(url)
     setQuestionView(questionData.data)
     setIsLoading(false)
@@ -28,7 +29,7 @@ const QuestionView = () => {
     inputType === 'q' ?
       path = 'questions' :
       path = 'answers'
-    let url = `${getEnvUrl}/${path}/${item._id}`
+    let url = `${baseURL}/${path}/${item._id}`
     const updatedVotes = await axios.put(url, { votes: item.votes + 1 })
     updatedVotes && setQuestionView(updatedVotes)
     console.log(updatedVotes)
@@ -39,7 +40,7 @@ const QuestionView = () => {
     inputType === 'q' ?
       path = 'questions' :
       path = 'answers'
-    let url = `${getEnvUrl}/${path}/${item._id}`
+    let url = `${baseURL}/${path}/${item._id}`
     const updatedVotes = await axios.put(url, { votes: item.votes - 1 })
     updatedVotes && setQuestionView(updatedVotes)
     console.log(updatedVotes)
@@ -53,7 +54,9 @@ const QuestionView = () => {
 
   return (
     <Container>
-      {isLoading && <Typography variant="h2">Loading Question ....</Typography>}
+      {isLoading && <Box sx={{ width: '100%', height: '80vh' }}>
+        <LinearProgress />
+      </Box>}
       {questionView &&
         <QuestionCard
           key={questionView._id}
@@ -70,7 +73,7 @@ const QuestionView = () => {
           <strong>Your Answer</strong>
         </Typography>
 
-        <Button variant="text">
+        <Button href="https://www.markdownguide.org/cheat-sheet/" target={"_blank"} variant="text">
           Markdown Cheatsheet
         </Button>
 

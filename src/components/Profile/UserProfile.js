@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link as RouterLink } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { relativeTime } from "../utils/Utils";
 import {
@@ -11,7 +11,10 @@ import {
   Typography,
   IconButton,
   Button,
-  styled
+  styled,
+  Link,
+  List,
+  ListItem
 } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -31,59 +34,55 @@ const UserDataProfile = () => {
 
   const navigate = useNavigate()
   const { userId } = useParams();
-  const { isLoading, setIsLoading, errorMessage, setErrorMessage, errorMessenger, getEnvUrl } = useContext(UserContext);
+  const { isLoading, setIsLoading, errorMessage, setErrorMessage, errorMessenger } = useContext(UserContext);
 
   const [profile, setProfile] = useState("");
   const [profileAnswers, setProfileAnswers] = useState("")
   const [profileQuestions, setProfileQuestions] = useState("")
   const loggedinUser = localStorage.getItem("user");
+  const baseURL = process.env.REACT_APP_API
 
-  console.log('userId of user the tile was clicked on', userId)
-  console.log('the current logged in user is : ', loggedinUser)
-
-
-
-
-
+  // console.log('userId of user the tile was clicked on', userId)
+  // console.log('the current logged in user is : ', loggedinUser)
 
   const findUser = async () => {
     if (loggedinUser === userId) {
       console.log(loggedinUser)
       setIsLoading(true);
-      const url = `${getEnvUrl}/userdata/${loggedinUser}`;
+      const url = `${baseURL}/userdata/${loggedinUser}`;
       const userProfile = await axios.get(url);
       console.log(userProfile.data[0]);
       userProfile &&
         await setProfile(userProfile.data[0])
-      console.log('profile', profile)
+      // console.log('profile', profile)
       setIsLoading(false);
     }
     if (loggedinUser !== userId) {
       setIsLoading(true);
-      const url = `${getEnvUrl}/userdata/${userId}`;
+      const url = `${baseURL}/userdata/${userId}`;
       const findUserProfile = await axios.get(url);
       await setProfile(findUserProfile.data[0])
-      console.log('profile', profile)
+      // console.log('profile', profile)
       setIsLoading(false)
     }
-    console.log(profile)
-    await getProfileQuestions(profile.user._id)
-    await getProfileAnswers(profile.user._id)
+    // console.log(profile)
+    await getProfileQuestions(userId)
+    await getProfileAnswers(userId)
 
   }
 
   const getProfileAnswers = async (profileUser) => {
-    const url = `http://localhost:4200/users/${profileUser}/answers`;
+    const url = `${baseURL}/users/${profileUser}/answers`;
     const returnAnswers = await axios.get(url)
-    console.log(returnAnswers)
+    // console.log(returnAnswers)
     returnAnswers &&
       setProfileAnswers(returnAnswers.data)
   }
 
   const getProfileQuestions = async (profileUser) => {
-    const url = `http://localhost:4200/users/${profileUser}/questions`;
+    const url = `${baseURL}/users/${profileUser}/questions`;
     const returnQuestions = await axios.get(url)
-    console.log(returnQuestions)
+    console.log(returnQuestions.data)
     returnQuestions &&
       setProfileQuestions(returnQuestions.data)
   }
@@ -92,7 +91,7 @@ const UserDataProfile = () => {
     findUser()
   }, []);
 
-  console.log('currentUser is : ', loggedinUser, 'and the current Profile is of this persons:  ', userId)
+  // console.log('currentUser is : ', loggedinUser, 'and the current Profile is of this persons:  ', userId)
 
   const handleGoBackClick = () => {
     setErrorMessage("")
@@ -213,10 +212,10 @@ const UserDataProfile = () => {
                 {profileAnswers &&
                   profileAnswers.map((answer) => {
                     return (
-                      <Typography>{answer.response}</Typography>
+                      <Typography variant="body2" key={answer._id}>{answer.response}</Typography>
                     )
                   })}
-                {profileAnswers.length === 0 && <Typography variant="h6">Answers Coming</Typography>}
+                {profileAnswers.length === 0 && <Typography variant="body2">No answers to show</Typography>}
 
               </Item>
             </Grid>
@@ -229,19 +228,19 @@ const UserDataProfile = () => {
                   borderRadius: 2,
                   boxShadow: 3,
                 }}
-              >
+              ><List>
                 {profileQuestions &&
+
                   profileQuestions.map((question) => {
                     return (
-
-                      // <Item>
-                      //   <Typography>{question.answers.length}</Typography>
-                      <Typography variant="h3" component="Link">{question.title}</Typography>
-                      // </Item>
+                      <ListItem key={question._id}>
+                        <Link href={`/questions/${question._id}`}>{question.title}</Link>
+                      </ListItem>
                     )
                   })
                 }
-                {profileQuestions.length === 0 && <Typography variant="h6">Questions Coming</Typography>}
+                  {profileQuestions.length === 0 && <Typography variant="body2">No questions to show</Typography>}
+                </List>
               </Item>
             </Grid>
 

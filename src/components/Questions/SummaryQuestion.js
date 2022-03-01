@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Card, Chip, Container, styled, Box, Paper, Grid, Typography } from '@mui/material';
+import { Card, Chip, Container, styled, Box, Paper, Grid, Typography, LinearProgress } from '@mui/material';
 import { useState, useContext, useEffect } from 'react';
 import { relativeTime } from '../utils/Utils'
 import { Link } from "react-router-dom";
@@ -235,7 +235,9 @@ const SummaryQuestion = ({ selection, page }) => {
         xl={12}
       >
         {!isLoading && questionsDisplay}
-        {isLoading && <Typography variant="h3">Loading ...</Typography>}
+        {isLoading && <Box sx={{ width: '100%', height: '80vh' }}>
+          <LinearProgress />
+        </Box>}
       </Grid>
     </Box>
 
