@@ -13,12 +13,19 @@ const QuestionView = () => {
   const { isLoading, setIsLoading } = useContext(UserContext)
   const [questionView, setQuestionView] = useState('')
   const baseURL = process.env.REACT_APP_API
+  const [answerList, setAnswerList] = useState([])
+
+  const updateAnswers = (newAnswer) => {
+    setAnswerList(answerList.concat(newAnswer))
+  }
 
   const retrieveQuestion = async () => {
     setIsLoading(true)
     const url = `${baseURL}/questions/${questionId}`
     const questionData = await axios.get(url)
     setQuestionView(questionData.data)
+    setAnswerList(questionData.data._doc.answers)
+    // console.log(answerList)
     setIsLoading(false)
 
   }
@@ -63,25 +70,11 @@ const QuestionView = () => {
           question={questionView._doc}
           questionUser={questionView.user}
           upVotes={handleAddVote}
-          downVotes={handleDownVote}
+        downVotes={handleDownVote}
+        refreshFunction={updateAnswers}
+        answerList={answerList}
         />
       }
-      <Divider variant="middle" />
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-
-        <Typography variant="h6" component="h3" my={2}>
-          <strong>Your Answer</strong>
-        </Typography>
-
-        <Button href="https://www.markdownguide.org/cheat-sheet/" target={"_blank"} variant="text">
-          Markdown Cheatsheet
-        </Button>
-
-      </Box>
-
-      <AnswerForm
-        questionId={questionId}
-      />
     </Container>
   )
 }

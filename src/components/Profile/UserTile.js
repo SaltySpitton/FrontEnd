@@ -3,7 +3,7 @@ import { Card, Box, Avatar, Typography, Link } from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
 import { relativeTime } from "../utils/Utils"
 const UserTile = ({ user, createdAt, width, input }) => {
-    console.log(user)
+    // console.log(user)
 
     let verbage;
     input === "q" ?

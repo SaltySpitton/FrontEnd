@@ -8,59 +8,34 @@ import UserContext from "../UserContext";
 import WarningModal from '../WarningModal'
 import { useNavigate } from 'react-router-dom';
 
-const AnswerForm = ({ questionId, getAnswers, answersData, setAnswersData }) => {
-    const navigate = useNavigate()
-    const { user, errorMessenger } = useContext(UserContext)
+const AnswerForm = ({ questionId, refreshFunction, answerList }) => {
     const currentUserId = localStorage.getItem("user")
     const [answer, setAnswer] = useState('')
-    const [open, setOpen] = useState(false)
-
-    // const [warningMessage, setWarningMessage] = useState('')
-    // const { navigate } = useNavigate()
-
-    //  adding from Sylvie :
-    // const getAnswer = async (currUser) => {
-    //     let data = await axios.post(`http://localhost:4200/answers/${questionId}/${currUser}`, {
-    //         response: answer,
-    //     })
-    //     console.log('%c Post Res:', 'background: #403; color: #fff', data.data)
-    //     setAnswer('')
-    // }
+    const baseURL = process.env.REACT_APP_API
 
 
-
-
-    const postAnswer = async (currUser) => {
-        let data = await axios.post(`http://localhost:4200/answers/${questionId}/${currUser}`, {
-            response: answer,
-        })
-        setAnswer('')
-        getAnswers()
-        console.log('%c Post Res:', 'background: #403; color: #fff', data.data)
-    }
-
-    const handlePost = (e) => {
+    const handlePost = async (e) => {
         e.preventDefault()
-        if (currentUserId && answer.length > 0) {
-            postAnswer(currentUserId)
-            navigate(`/questions/${questionId}`)
+        if (currentUserId) {
+            const answerData = {
+                response: answer,
+            }
+            const response = await axios.post(`${baseURL}/answers/${questionId}/${currentUserId}`, answerData)
+            if (response.data) {
+                setAnswer('')
+                refreshFunction(response.data)
+                console.log('%c Post Res:', 'background: #555; color: #fff', response.data)
+            } else {
+                console.log('%c Post Res:', 'background: #555; color: #fff', 'Failed to save answer')
+            }
         }
         if (!currentUserId) {
-            errorMessenger("You must Login to Ask a Question, login or Signup here")
-            setOpen(true)
+            alert("You must Login to Ask a Question, login or Signup here")
         }
-        setAnswer('')
-        console.log('%c answer:', 'background: #555; color: #fff', answer)
     }
 
     return (
-        < div >
-            {/* <WarningModal
-                open={open}
-                setOpen={setOpen}
-                title={"Login or Register"}
-                error={"To Answer a Question, you must Login or Register"}
-            /> */}
+        < section >
             <FormStyles onSubmit={handlePost}>
                 <BodyTextarea
                     rows={12}
@@ -71,10 +46,10 @@ const AnswerForm = ({ questionId, getAnswers, answersData, setAnswersData }) => 
                 <MarkdownPreviewArea>
                     <ReactMarkdown children={answer} remarkPlugins={[remarkGfm]} />
                 </MarkdownPreviewArea>
-                <AppButton type='submit' bg="hsla(90, 52%, 58%, 80%)">Post Your Answer</AppButton>
+                <AppButton onClick={handlePost} bg="hsla(90, 52%, 58%, 80%)">Post Your Answer</AppButton>
 
             </FormStyles>
-        </div>
+        </section>
     )
 }
 

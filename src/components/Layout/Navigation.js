@@ -21,6 +21,7 @@ height: 2rem;
 margin: 0 0.5rem;
 `
 export default function Navigation() {
+    const loggedInUserId = localStorage.getItem("user")
     const navigate = useNavigate()
     const {
         user,
@@ -33,6 +34,7 @@ export default function Navigation() {
 
     useEffect(() => {
         getUser()
+        console.log("this is user:", user)
     }, [])
 
     const [searchString, setSearchString] = useState('')
@@ -87,7 +89,7 @@ export default function Navigation() {
                     <Link to="/ask">Ask</Link>
                     <Link to="/tags">Tags</Link>
                     <div className="nav-container">
-                        {user ?
+                        {loggedInUserId ?
                             (<>
                                 <Avatar variant='rounded' src={user.avatar} />
                                 <div>
@@ -109,7 +111,7 @@ export default function Navigation() {
                                             'aria-labelledby': 'basic-button',
                                         }}
                                     >
-                                        <MenuItem onClick={handleClose}><Link to={`/userdata/${localStorage.getItem("user")}`}>My account</Link></MenuItem>
+                                        <MenuItem onClick={handleClose}><Link to={`/userdata/${loggedInUserId}`}>My account</Link></MenuItem>
                                         <MenuItem onClick={handleClose}>Help</MenuItem>
                                         <MenuItem onClick={logout}>Logout</MenuItem>
                                     </Menu>

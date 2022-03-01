@@ -20,7 +20,7 @@ export const UserProvider = ({ children }) => {
   const [questions, setQuestions] = useState("");
   const [searchTag, setSearchTag] = useState("");
   const [perPage, setPerPage] = useState(15);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
 
 
   const login = () => {
@@ -81,9 +81,10 @@ export const UserProvider = ({ children }) => {
       withCredentials: true,
       url: `${baseURL}/users/logout`,
     }).then((res) => {
-      setUser(null)
-      navigate("/questions")
+      setUser({})
       localStorage.removeItem("user")
+      navigate("/questions")
+      console.log(user)
     });
   };
 

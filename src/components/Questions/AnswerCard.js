@@ -12,32 +12,13 @@ import downVoted from '../../images/votes.down.svg'
 import UserTile from '../Profile/UserTile';
 
 const QuestionAnswerCard = ({ key, answer, question, upVotes, downVotes }) => {
-  console.log(answer)
-  //sylvie add:
   const { user } = useContext(UserContext);
-  // const [answerData, setAnswerData] = useState()
-  // const [answerUser, setAnswerUser] = useState()
-  // const getAnswers = async () => {
-  //   const url = 'http://localhost:4200/answers/'
-  //   let answers = await axios.get(`${url}/${answer._id}`)
-  //   setAnswerData(answers.data)
-  //   setAnswerUser(answers.data.user)
-  //   console.log('%c answerUser state:', 'background: #222; color: #fff', answerUser.username)
-  //   console.log('%c answerData state:', 'background: #523; color: #fff', answerData)
-  // }
-  // useEffect(() => {
-  //   getAnswers()
 
-  //   // console.log('%c questionID:', 'background: #222; color: #bada55', question._id)
-
-  // }, [])
-  // console.log('answercard answer',answer)
-  // console.log('answercard question',question)
 
   return (
     <>
 
-      <Grid container>
+      <Grid container key={key} component={'section'}>
         <Grid item xs={1}>
           <Box
             sx={{

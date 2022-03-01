@@ -54,6 +54,7 @@ const SummaryQuestion = ({ selection, page }) => {
         return (
           <Grid
             item
+            component={'section'}
             key={q._id}
             xl={12}
             xs={12}

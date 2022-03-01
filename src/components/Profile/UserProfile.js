@@ -14,7 +14,8 @@ import {
   styled,
   Link,
   List,
-  ListItem
+  ListItem,
+  LinearProgress
 } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -275,7 +276,9 @@ const UserDataProfile = () => {
 
         </Box>
       }
-      {isLoading && (!profile) && <Typography variant="h2">Loading Profile ...</Typography>}
+      {isLoading && (!profile) && <Box sx={{ width: '100%', height: '80vh' }}>
+        <LinearProgress />
+      </Box>}
       {(!isLoading) && (!profile) && errorMessenger("No Profile Exists")}
     </Container>
   );

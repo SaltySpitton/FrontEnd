@@ -1,43 +1,25 @@
 import * as React from "react";
-import { Chip, styled, Box, Paper, Grid, Typography, Divider } from "@mui/material";
+import { Chip, styled, Box, Paper, Grid, Typography, Divider, Button } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { MarkdownPreviewArea } from "../styled/Form.styled";
-import { useContext, } from "react";
+import { useContext } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 // import Link from '@mui/material/Link';
-import axios from "axios";
+// import axios from "axios";
 import UserContext from "../UserContext";
 import UserTile from "../Profile/UserTile";
 import upvoted from "../../images/votes-up.svg";
 import downVoted from "../../images/votes.down.svg";
-import QuestionAnswerCard from "./AnswerCard";
+import AnswerCard from "./AnswerCard";
+import AnswerForm from "./AnswerForm";
 
 
-const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-}));
 
-const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
-    // const { user, searchByTag, } = useContext(UserContext);
-    // sylvie add in:
+const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refreshFunction, answerList }) => {
     const navigate = useNavigate()
-    const {
-        user,
-        isLoading,
-        setIsLoading,
-        questions,
-        setQuestions,
-        getAllQuestions,
-        searchByTag,
-        searchTag,
-        setSearchTag,
-    } = useContext(UserContext);
+    const { user, setSearchTag } = useContext(UserContext);
 
-    //end sylvie add in
     const handleClickTag = (nameTag) => {
         setSearchTag(nameTag)
         navigate("/questions")
@@ -46,8 +28,8 @@ const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
 
     return (
         <>
-            {question.title && <Typography variant="h5">{question.title}</Typography>}
-            <Grid container>
+            {question && <Typography variant="h5">{question.title}</Typography>}
+            <Grid container component={'section'}>
                 <Grid item xs={1}>
                     <Box sx={{
                         display: 'flex',
@@ -117,9 +99,10 @@ const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
 
                         <Box sx={{ marginTop: 1 }}>
                             {question.tags &&
-                                question.tags.map((tagName) => {
+                                question.tags.map((tagName, idx) => {
                                     return (
                                         <Chip
+                                            key={idx}
                                             variant="outlined"
                                             size="large"
                                             label={tagName}
@@ -135,9 +118,9 @@ const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
 
                         <Grid container mt={1}>
                             <Grid item xs={12} md={6}>
-                                {question.answers.length >= 0 && (
+                                {answerList.length >= 0 && (
                                     <Typography variant="h6" component="p">
-                                        {question.answers.length} Answers
+                                        {answerList.length} Answers
                                     </Typography>
                                 )}
                             </Grid>
@@ -150,37 +133,6 @@ const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
                                     input={"q"}
                                 />
                             </Grid>
-
-                            {/* SYLVIE ADD ? */}
-                            {/* <Box
-                            sx={{
-                                display: "flex",
-                                width: "100%",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: 'center'
-                            }}
-                        >
-                            {question.answers.length >= 0 && (
-                                <Typography variant="h6" component="p">
-                                    {question.answers.length} Answers
-                                </Typography>
-                            )}
-                             
-                            <UserTile
-                                // image={
-                                //    questionUser.avatar
-                                // }
-                                user={questionUser}
-                                createdAt={question.createdAt}
-                                width={"40%"}
-                                input={"q"}
-                            />
-                        </Box> */}
-
-
-
-
                         </Grid>
                     </Box>
                 </Grid>
@@ -193,17 +145,33 @@ const QuestionCard = ({ question, questionUser, upVotes, downVotes }) => {
                         alignItems: "center",
                     }}
                 >
-                    {question.answers.length > 0 && (
+                    {answerList.length > 0 && (
                         <Typography variant="h6" component="h3" my={1}><strong>Answers</strong></Typography>
                     )}
                 </Box>
             </Grid>
-            {/* ANSWERS GO HERE */}
-            {question.answers.length > 0 &&
-                question.answers.map((answer) => {
-                    return <QuestionAnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes} />;
+            {answerList &&
+                answerList.map((answer) => {
+                    return <AnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes} />;
                 })
             }
+            <Divider variant="middle" />
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+
+                <Typography variant="h6" component="h3" my={2}>
+                    <strong>Your Answer</strong>
+                </Typography>
+
+                <Button href="https://www.markdownguide.org/cheat-sheet/" target={"_blank"} variant="text">
+                    Markdown Cheatsheet
+                </Button>
+
+            </Box>
+            {question && <AnswerForm
+                questionId={question._id}
+                refreshFunction={refreshFunction}
+                answerList={answerList}
+            />}
         </>
     );
 };
