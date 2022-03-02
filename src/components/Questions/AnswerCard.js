@@ -2,7 +2,8 @@ import * as React from 'react';
 import { MarkdownPreviewArea } from "../styled/Form.styled";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Box, Grid, Typography, Divider, Button } from "@mui/material";
+import { Box, Grid, Typography, IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useState, useEffect, useContext, useRef } from 'react';
 import UserContext from "../UserContext";
 import axios from 'axios'
@@ -11,8 +12,26 @@ import upvoted from '../../images/votes-up.svg'
 import downVoted from '../../images/votes.down.svg'
 import UserTile from '../Profile/UserTile';
 
-const QuestionAnswerCard = ({ key, answer, question, upVotes, downVotes }) => {
+const QuestionAnswerCard = ({ key, answer, question, upVotes, downVotes, answerList, setAnswerList }) => {
   const { user } = useContext(UserContext);
+  const currentUserId = localStorage.getItem("user")
+  const baseURL = process.env.REACT_APP_API
+
+  const deleteAnswer = async (id) => {
+    const response = await axios.delete(`${baseURL}/answers/${question._id}/${id}`)
+    console.log(response)
+    if (response.status === 200) {
+      const updatedAnswers = answerList.filter(a => {
+        if (a._id !== answer._id) {
+          return a
+        }
+      })
+      setAnswerList(updatedAnswers)
+    } else {
+      console.log("failed")
+    }
+  }
+
 
 
   return (
@@ -63,10 +82,11 @@ const QuestionAnswerCard = ({ key, answer, question, upVotes, downVotes }) => {
               <ReactMarkdown children={answer.response} remarkPlugins={[remarkGfm]} />
             </MarkdownPreviewArea>
             {/* the edit and delete button for QUESTION */}
-            {user && user._id === answer.user._id &&
+            {currentUserId === answer.user._id &&
               <Box sx={{ marginTop: 1, textAlign: 'right', typography: 'body1' }}>
-                <Link to="/questions/:questionId/edit">Edit</Link>{" "}
-                <Typography variant="link">Delete</Typography>
+                <IconButton aria-label="delete" size='small' onClick={() => deleteAnswer(answer._id)}>
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
               </Box>
             }
             <Box my={2} sx={{ display: "flex", justifyContent: "flex-end" }}>

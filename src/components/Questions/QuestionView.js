@@ -73,6 +73,7 @@ const QuestionView = () => {
         downVotes={handleDownVote}
         refreshFunction={updateAnswers}
         answerList={answerList}
+        setAnswerList={setAnswerList}
         />
       }
     </Container>

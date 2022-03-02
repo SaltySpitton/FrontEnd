@@ -1,12 +1,13 @@
 import * as React from "react";
-import { Chip, styled, Box, Paper, Grid, Typography, Divider, Button } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Chip, Box, Grid, Typography, Divider, Button, IconButton } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from "react-router-dom";
 import { MarkdownPreviewArea } from "../styled/Form.styled";
 import { useContext } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 // import Link from '@mui/material/Link';
-// import axios from "axios";
+import axios from "axios";
 import UserContext from "../UserContext";
 import UserTile from "../Profile/UserTile";
 import upvoted from "../../images/votes-up.svg";
@@ -16,9 +17,22 @@ import AnswerForm from "./AnswerForm";
 
 
 
-const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refreshFunction, answerList }) => {
+const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refreshFunction, answerList, setAnswerList }) => {
     const navigate = useNavigate()
     const { user, setSearchTag } = useContext(UserContext);
+    const currentUserId = localStorage.getItem("user")
+    const baseURL = process.env.REACT_APP_API
+
+    const deleteQuestion = async (id) => {
+        const response = await axios.delete(`${baseURL}/questions/${id}`)
+        console.log(response)
+        if (response.status === 200) {
+            navigate("/questions")
+        } else {
+            console.log("failed")
+        }
+    }
+
 
     const handleClickTag = (nameTag) => {
         setSearchTag(nameTag)
@@ -84,16 +98,10 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
                             textAlign: 'right'
                         }}
                         >
-                            {user.id === questionUser._id && (
-                                <Link
-                                    to={`/questions/${question._id}/edit`}
-                                    style={{ padding: "0 1rem" }}
-                                >
-                                    Edit
-                                </Link>
-                            )}
-                            {user.id === questionUser._id && (
-                                <Typography variant="link">Delete</Typography>
+                            {currentUserId === questionUser._id && (
+                                <IconButton aria-label="delete" onClick={() => deleteQuestion(question._id)}>
+                                    <DeleteIcon />
+                                </IconButton>
                             )}
                         </Box>
 
@@ -152,7 +160,7 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
             </Grid>
             {answerList &&
                 answerList.map((answer) => {
-                    return <AnswerCard key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes} />;
+                    return <AnswerCard answerList={answerList} setAnswerList={setAnswerList} key={answer._id} answer={answer} question={question} upVotes={upVotes} downVotes={downVotes} />;
                 })
             }
             <Divider variant="middle" />
