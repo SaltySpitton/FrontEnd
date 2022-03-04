@@ -15,6 +15,7 @@ import UserContext from "../UserContext";
 import { Nav, LightBg } from '../styled/Nav.styled';
 import { Container, Avatar } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ImgTag = styled.img`
 height: 2rem;
@@ -22,23 +23,27 @@ margin: 0 0.5rem;
 `
 export default function Navigation() {
     const loggedInUserId = localStorage.getItem("user")
+    const baseURL = process.env.REACT_APP_API
     const navigate = useNavigate()
     const {
         user,
         logout,
         getUser,
-        searchTag,
         searchByTag,
         setSearchTag,
+        setQuestions,
+        setIsLoading,
+
     } = useContext(UserContext)
 
     useEffect(() => {
         getUser()
-        console.log("this is user:", user)
+        // console.log("this is user:", user)
     }, [])
 
     const [searchString, setSearchString] = useState('')
     const [anchorEl, setAnchorEl] = useState(null);
+    const [searchResult, setSearchResult] = useState([])
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -51,9 +56,32 @@ export default function Navigation() {
         setSearchString(e.target.value)
     }
 
-    const handleSearch = (e) => {
-        setSearchTag(searchString)
-        searchByTag(searchTag)
+
+    const keyPress = (e) => {
+        if (e.keyCode === 13) {
+            handleSearch()
+        }
+    }
+
+    const handleSearch = async (e) => {
+        setIsLoading(true)
+        setSearchTag(searchString.toLowerCase())
+        const allQuestions = await axios.get(`${baseURL}/questions`)
+        if (allQuestions.status === 200) {
+            const questionsResult = allQuestions.data.questions
+            const query = questionsResult.filter((data) => {
+                // console.log(data.title, data.body)
+                return (
+                    data.title.toLowerCase().includes(searchString) ||
+                    data.body.toLowerCase().includes(searchString)
+                )
+            })
+            // console.log(query)
+            setQuestions(query)
+            setIsLoading(false)
+        } else {
+            console.log("Search Query Failed")
+        }
         navigate('/questions')
         setSearchString("")
     }
@@ -75,6 +103,7 @@ export default function Navigation() {
                         variant="outlined"
                         value={searchString}
                         onChange={handleChange}
+                        onKeyDown={keyPress}
                         InputProps={{
                             style: {
                                 backgroundColor: "#fff",

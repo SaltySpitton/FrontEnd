@@ -24,11 +24,10 @@ const theme = createTheme({
         dark: '#408000',
         },
           secondary: {
-            main: '#72b035',
+            main: '#273817',
             light: '#50623e',
             dark: '#001300',
-          },
-        
+    },
   },
     typography: {
       fontFamily: [
@@ -36,6 +35,7 @@ const theme = createTheme({
         'sans-serif',
       ].join(','),
   },
+
 });
 
 function App() {

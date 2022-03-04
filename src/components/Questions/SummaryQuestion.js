@@ -51,7 +51,6 @@ const SummaryQuestion = ({ selection, page }) => {
   const questionsDisplay = (
     <React.Fragment>
       {questions && questions.map((q) => {
-        console.log(q)
         return (
           <Grid
             item

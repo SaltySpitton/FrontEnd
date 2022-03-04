@@ -131,9 +131,8 @@ const UserDataProfile = () => {
                 variant="h4"
                 component="h2"
                 mt={2}
-                style={{
-                  fontWeight: "900",
-                }}
+                color={"secondary"}
+                fontWeight={700}
               >
                 {profile.user.username}
               </Typography>
@@ -213,10 +212,10 @@ const UserDataProfile = () => {
                 {profileAnswers &&
                   profileAnswers.map((answer) => {
                     return (
-                      <Typography variant="body2" key={answer._id}>{answer.response}</Typography>
+                      <Typography variant="body2" key={answer._id} color={"secondary"} >{answer.response}</Typography>
                     )
                   })}
-                {profileAnswers.length === 0 && <Typography variant="body2">No answers to show</Typography>}
+                {profileAnswers.length === 0 && <Typography variant="body2" color={"secondary"}>No answers to show</Typography>}
 
               </Item>
             </Grid>
@@ -240,7 +239,7 @@ const UserDataProfile = () => {
                     )
                   })
                 }
-                  {profileQuestions.length === 0 && <Typography variant="body2">No questions to show</Typography>}
+                  {profileQuestions.length === 0 && <Typography variant="body2" color={"secondary"}>No questions to show</Typography>}
                 </List>
               </Item>
             </Grid>
@@ -272,7 +271,7 @@ const UserDataProfile = () => {
       {(!isLoading) && (!profile) &&
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', flexGrow: 1 }}>
           <Button sx={{ marginLeft: 1, backgroundColor: "#A5D477", color: "black", width: '20%' }} variant="outlined" onClick={handleGoBackClick}>Go Back</Button>
-          <Typography variant="h1">{errorMessage}</Typography>
+          <Typography variant="h1" component={"h5"} color={"secondary"} fontWeight={700}>{errorMessage}</Typography>
 
         </Box>
       }

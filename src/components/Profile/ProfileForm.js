@@ -39,7 +39,7 @@ const ProfileForm = () => {
         setGithub(userProfile.data[0].github)
         setLinkedin(userProfile.data[0].github)
         setTwitter(userProfile.data[0].twitter)
-        console.log(userProfile)
+        // console.log(userProfile)
         setIsLoading(false)
     }
 
@@ -69,9 +69,7 @@ const ProfileForm = () => {
 
     return (
         <Container>
-            <Typography variant='h4' component='h2' my={2} style={{
-                fontWeight: '900', color: "secondary"
-            }}>User Profile</Typography>
+            <Typography variant='h4' component='h2' my={2} color={"secondary"} fontWeight={700}>User Profile</Typography>
             {isLoading && <Typography variant="h2">Loading Profile ....</Typography>}
             {getUserProfile && <Grid container mb={4}>
                 <Grid item xs={12} sm={8} >

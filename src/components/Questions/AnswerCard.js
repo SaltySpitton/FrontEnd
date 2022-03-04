@@ -58,7 +58,7 @@ const QuestionAnswerCard = ({ key, answer, question, upVotes, downVotes, answerL
                 upVotes(answer, 'a')
               }} src={upvoted} alt="upArrow"
             />
-            <Typography variant="h5" component="span" p={3}>{answer.votes}</Typography>
+            <Typography variant="h5" component="span" p={3} color={"secondary"}>{answer.votes}</Typography>
             <img
               className='listIcon'
               onClick={() => {

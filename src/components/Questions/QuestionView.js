@@ -38,8 +38,8 @@ const QuestionView = () => {
       path = 'answers'
     let url = `${baseURL}/${path}/${item._id}`
     const updatedVotes = await axios.put(url, { votes: item.votes + 1 })
-    updatedVotes && setQuestionView(updatedVotes)
     console.log(updatedVotes)
+    updatedVotes && setQuestionView(updatedVotes)
   }
   const handleDownVote = async (item, inputType) => {
     let path;

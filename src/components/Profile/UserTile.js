@@ -22,7 +22,7 @@ const UserTile = ({ user, createdAt, width, input }) => {
                 }}
                 variant="outlined"
             >
-                <Typography variant="caption" color="text.secondary" component="p" >{verbage} {relativeTime(createdAt)}</Typography>
+                <Typography variant="caption" color={"secondary"} fontWeight={700} component="p" >{verbage} {relativeTime(createdAt)}</Typography>
                 <Box
                     sx={{
                         display: "flex",
