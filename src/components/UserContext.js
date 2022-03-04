@@ -70,7 +70,7 @@ export const UserProvider = ({ children }) => {
       url: `${baseURL}/users`,
     }).then((res) => {
       setUser(res.data)
-      console.log(res.data)
+      // console.log(res.data)
       return user
     });
   };
@@ -95,7 +95,7 @@ export const UserProvider = ({ children }) => {
     tag ? 
       returnQuestions = await axios.get(`${baseURL}/questions?tags=${tag}`) :
       returnQuestions = await axios.get(`${baseURL}/questions`)
-    console.log('return questions', returnQuestions)
+    // console.log('return questions', returnQuestions)
     await setQuestions(returnQuestions.data.questions)
     setIsLoading(false)
 

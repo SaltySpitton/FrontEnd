@@ -31,12 +31,10 @@ const Home = () => {
 
           }}>
             <img src={logo} alt="StackDevHelp logo" style={{ height: "3.5rem" }} />
-            <Typography variant='h4' component='h1' my={2} style={{
-              fontWeight: '900'
-            }}>
+            <Typography variant='h4' component='h1' my={2} color={"secondary"} fontWeight={700}>
               Q&A Without Distractions
             </Typography >
-            <Typography variant='body1' component="p" my={3}>With your help, we're working together to build a library of detailed answers to every question about programming. <strong>It's built and run by you.</strong>
+            <Typography variant='body1' component="p" my={3} color={"secondary"} >With your help, we're working together to build a library of detailed answers to every question about programming. <strong>It's built and run by you.</strong>
             </Typography>
             <Box item xs={12} md={6}>
               <LinkButton m="2rem 0" p="1rem 3rem" to={`/questions`}> Explore Questions</LinkButton></Box>
@@ -118,12 +116,10 @@ const Home = () => {
       <Box mb={4} component="section" sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={12} md={8} style={{ marginTop: "1rem", width: "100%" }}>
-            <Typography variant='h4' component='h2' my={2} style={{
-              fontWeight: '900', color: "secondary"
-            }}>
+            <Typography variant='h4' component='h2' my={2} color={"secondary"} fontWeight={700}>
               Ask Questions, Get Answers
             </Typography>
-            <Typography variant='body1' component="p" my={3}>
+            <Typography variant='body1' component="p" my={3} color={"secondary"}>
               This site is all about getting answers. It's not a discussion forum. There's  no chit-chat
             </Typography>
           </Grid>
@@ -137,10 +133,10 @@ const Home = () => {
                   <img style={{ width: "80%" }} src={upvoted} alt="" />
                 </Grid>
                 <Grid item xs={10}>
-                  <Typography variant='subtitle1' component='h3' mt={1} style={{ fontWeight: '900' }}>
+                  <Typography variant='subtitle1' component='h3' mt={1} color={"secondary"} fontWeight={700}>
                     Good answers are voted up and rise to the top
                   </Typography>
-                  <Typography variant='body2' component="p" mb={2}>
+                  <Typography variant='body2' component="p" mb={2} color={"secondary"} >
                     The best answers show up first so that they are always easy to find
                   </Typography>
                 </Grid>
@@ -150,10 +146,10 @@ const Home = () => {
                   <img style={{ width: "80%" }} src={checkMark} alt="" />
                 </Grid>
                 <Grid item xs={10}>
-                  <Typography variant='subtitle1' component='h3' mt={1} style={{ fontWeight: '900' }}>
+                  <Typography variant='subtitle1' component='h3' mt={1} color={"secondary"} fontWeight={700}>
                     The person who asked can mark one answer as “accepted”
                   </Typography>
-                  <Typography variant='body2' component="p" mb={2}>
+                  <Typography variant='body2' component="p" mb={2} color={"secondary"} >
                     Accepting the best answer just means that it worked for the person who asked
                   </Typography>
                 </Grid>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Container, Box } from '@mui/material';
+import { Container, Box, Typography } from '@mui/material';
 import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { AppButton } from '../styled/Button.styled';
@@ -9,12 +9,12 @@ import PaginationForm from './PaginationForm'
 
 const Questions = () => {
   const navigate = useNavigate()
-  const { searchTag, questions, displayQuestions } = useContext(UserContext)
+  const { searchTag, setSearchTag, searchByTag, questions } = useContext(UserContext)
   const [selection, setSelection] = useState("")
   const [page, setPage] = useState(1)
 
   const handleAskQuestion = () => {
-    console.log('clicked')
+    // console.log('clicked')
     navigate('/ask')
   }
 
@@ -28,7 +28,15 @@ const Questions = () => {
         marginBottom: 1,
 
       }}>
-        <h1>Questions {searchTag && `> ${searchTag}`} </h1>
+        <Box display={"flex"} alignItems={"center"}>
+          <Typography variant='h4' component={"h1"} fontWeight={700} color={"secondary"} >Questions {searchTag && `> ${searchTag} >`}</Typography>
+          {searchTag &&
+            <AppButton onClick={() => {
+              setSearchTag("")
+              searchByTag()
+            }}>Go Back</AppButton>
+          }
+        </Box>
         <AppButton onClick={handleAskQuestion} bg="hsla(90, 52%, 58%, 80%)">Ask Question</AppButton>
       </Box>
       <SummaryQuestion selection={selection} page={page} />

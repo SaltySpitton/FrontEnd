@@ -25,11 +25,11 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
 
     const deleteQuestion = async (id) => {
         const response = await axios.delete(`${baseURL}/questions/${id}`)
-        console.log(response)
+        // console.log(response)
         if (response.status === 200) {
             navigate("/questions")
         } else {
-            console.log("failed")
+            console.log("delete question failed")
         }
     }
 
@@ -42,7 +42,7 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
 
     return (
         <>
-            {question && <Typography variant="h5">{question.title}</Typography>}
+            {question && <Typography variant="h5" color={"secondary"} >{question.title}</Typography>}
             <Grid container component={'section'}>
                 <Grid item xs={1}>
                     <Box sx={{
@@ -127,7 +127,7 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
                         <Grid container mt={1}>
                             <Grid item xs={12} md={6}>
                                 {answerList.length >= 0 && (
-                                    <Typography variant="h6" component="p">
+                                    <Typography variant="h6" component="p" color={"secondary"} >
                                         {answerList.length} Answers
                                     </Typography>
                                 )}
@@ -154,7 +154,7 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
                     }}
                 >
                     {answerList.length > 0 && (
-                        <Typography variant="h6" component="h3" my={1}><strong>Answers</strong></Typography>
+                        <Typography variant="h6" component="h3" my={1} color={"secondary"} fontWeight={700}>Answers</Typography>
                     )}
                 </Box>
             </Grid>
@@ -166,8 +166,8 @@ const QuestionCard = ({ key, question, questionUser, upVotes, downVotes, refresh
             <Divider variant="middle" />
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
 
-                <Typography variant="h6" component="h3" my={2}>
-                    <strong>Your Answer</strong>
+                <Typography variant="h6" component="h3" my={2} color={"secondary"} fontWeight={700}>
+                    Your Answer
                 </Typography>
 
                 <Button href="https://www.markdownguide.org/cheat-sheet/" target={"_blank"} variant="text">
