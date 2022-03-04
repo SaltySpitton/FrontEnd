@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { useState, useContext } from "react";
-import { FormInput } from '../css/Form.styled';
-import { AppButton } from '../css/Button.styled';
-import { Card, styled, Grid , Button, Typography, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material';
+import { useContext } from "react";
+import { FormInput } from './styled/Form.styled';
+import { AppButton } from './styled/Button.styled';
+import { Grid, Button } from '@mui/material';
 import '../css/Login.css'
-import Axios from 'axios'
-import GitHubIcon from '@mui/icons-material/GitHub';
-import GoogleIcon from '@mui/icons-material/Google';
+// import Axios from 'axios'
+// import GitHubIcon from '@mui/icons-material/GitHub';
+// import GoogleIcon from '@mui/icons-material/Google';
 import UserContext from "./UserContext";
 
 
@@ -18,8 +18,7 @@ const AuthenticationForm = ({authenticationType, setOpen}) => {
         setLoginUsername, 
         setLoginPassword, 
         login, 
-        register, 
-        getUser, 
+      register, 
         setRegisterUsername, 
         setRegisterEmail, 
         setRegisterPassword ,

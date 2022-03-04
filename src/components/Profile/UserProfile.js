@@ -1,7 +1,7 @@
 import * as React from "react";
-import { Link, useParams , useNavigate} from "react-router-dom";
+import { useParams, useNavigate, Link as RouterLink } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { relativeTime } from "./Utils.js";
+import { relativeTime } from "../utils/Utils";
 import {
   Box,
   Paper,
@@ -11,13 +11,17 @@ import {
   Typography,
   IconButton,
   Button,
-  styled
+  styled,
+  Link,
+  List,
+  ListItem,
+  LinearProgress
 } from "@mui/material";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import EditIcon from "@mui/icons-material/Edit";
-import UserContext from "./UserContext";
+import UserContext from "../UserContext";
 import axios from "axios";
 
 
@@ -31,70 +35,66 @@ const UserDataProfile = () => {
 
   const navigate = useNavigate()
   const { userId } = useParams();
-  const { isLoading, setIsLoading, errorMessage, setErrorMessage, errorMessenger, getEnvUrl } = useContext(UserContext);
+  const { isLoading, setIsLoading, errorMessage, setErrorMessage, errorMessenger } = useContext(UserContext);
 
   const [profile, setProfile] = useState("");
   const [profileAnswers, setProfileAnswers] = useState("")
   const [profileQuestions, setProfileQuestions] = useState("")
   const loggedinUser = localStorage.getItem("user");
+  const baseURL = process.env.REACT_APP_API
 
-  console.log('userId of user the tile was clicked on',userId)
-  console.log('the current logged in user is : ', loggedinUser)
-
-  
-
-
-
+  // console.log('userId of user the tile was clicked on', userId)
+  // console.log('the current logged in user is : ', loggedinUser)
 
   const findUser = async () => {
     if (loggedinUser === userId) {
       console.log(loggedinUser)
       setIsLoading(true);
-      const url = `${getEnvUrl}/userdata/${loggedinUser}`;
+      const url = `${baseURL}/userdata/${loggedinUser}`;
       const userProfile = await axios.get(url);
       console.log(userProfile.data[0]);
-      userProfile && 
-      await setProfile(userProfile.data[0]) 
-      console.log('profile', profile)
+      userProfile &&
+        await setProfile(userProfile.data[0])
+      // console.log('profile', profile)
       setIsLoading(false);
     }
-    if(loggedinUser !== userId){
+    if (loggedinUser !== userId) {
       setIsLoading(true);
-      const url = `${getEnvUrl}/userdata/${userId}`;
+      const url = `${baseURL}/userdata/${userId}`;
       const findUserProfile = await axios.get(url);
-      await setProfile(findUserProfile.data[0]) 
-      console.log('profile', profile)
+      await setProfile(findUserProfile.data[0])
+      // console.log('profile', profile)
       setIsLoading(false)
     }
-    console.log(profile)
-    await getProfileQuestions(profile.user._id)
-    await getProfileAnswers(profile.user._id)
+    // console.log(profile)
+    await getProfileQuestions(userId)
+    await getProfileAnswers(userId)
 
   }
 
-  const getProfileAnswers = async(profileUser) => {
-      const url = `http://localhost:4200/users/${profileUser}/answers`;
-      const returnAnswers = await axios.get(url)
-      console.log(returnAnswers)
-      returnAnswers &&
+  const getProfileAnswers = async (profileUser) => {
+    const url = `${baseURL}/users/${profileUser}/answers`;
+    const returnAnswers = await axios.get(url)
+    // console.log(returnAnswers)
+    returnAnswers &&
       setProfileAnswers(returnAnswers.data)
   }
 
-  const getProfileQuestions = async(profileUser) => {
-    const url = `http://localhost:4200/users/${profileUser}/questions`;
+  const getProfileQuestions = async (profileUser) => {
+    const url = `${baseURL}/users/${profileUser}/questions`;
     const returnQuestions = await axios.get(url)
-    console.log(returnQuestions)
+    console.log(returnQuestions.data)
     returnQuestions &&
-    setProfileQuestions(returnQuestions.data)
-}
+      setProfileQuestions(returnQuestions.data)
+  }
 
   useEffect(() => {
     findUser()
   }, []);
 
-  console.log('currentUser is : ',loggedinUser, 'and the current Profile is of this persons:  ', userId )
+  // console.log('currentUser is : ', loggedinUser, 'and the current Profile is of this persons:  ', userId)
 
-  const handleGoBackClick = ()=>{
+  const handleGoBackClick = () => {
     setErrorMessage("")
     navigate(-1)
   }
@@ -142,34 +142,34 @@ const UserDataProfile = () => {
               </Typography>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Box>
-                  {profile.twitter ? 
-                  <IconButton
-                    href={`https://twitter.com/${profile.twitter}`}
-                    aria-label="twitter"
-                    size="large"
-                    target="_blank"
-                    > 
-                    <TwitterIcon />
-                  </IconButton>
+                  {profile.twitter ?
+                    <IconButton
+                      href={`https://twitter.com/${profile.twitter}`}
+                      aria-label="twitter"
+                      size="large"
+                      target="_blank"
+                    >
+                      <TwitterIcon />
+                    </IconButton>
                     : null}
-                  {profile.github ? 
-                  <IconButton
-                    href={`https://github.com/${profile.github}`}
-                    target="_blank"
-                    aria-label="twitter"
-                    size="large"
-                  >
-                    <GitHubIcon />
-                  </IconButton>
+                  {profile.github ?
+                    <IconButton
+                      href={`https://github.com/${profile.github}`}
+                      target="_blank"
+                      aria-label="twitter"
+                      size="large"
+                    >
+                      <GitHubIcon />
+                    </IconButton>
                     : null}
                   {profile.linkedin ?
-                  <IconButton
-                    href={`https://linkedin.com/in/${profile.linkedin}`}
-                    aria-label="twitter"
-                    size="large"
-                    target="_blank"
-                  >
-                    <LinkedInIcon />
+                    <IconButton
+                      href={`https://linkedin.com/in/${profile.linkedin}`}
+                      aria-label="twitter"
+                      size="large"
+                      target="_blank"
+                    >
+                      <LinkedInIcon />
                     </IconButton>
                     : null}
                 </Box>
@@ -185,7 +185,7 @@ const UserDataProfile = () => {
               </Box>
             </Grid>
 
-           {profile.about && <Grid item xs={12}>
+            {profile.about && <Grid item xs={12}>
               About
               <Item
                 sx={{
@@ -210,14 +210,14 @@ const UserDataProfile = () => {
                   boxShadow: 3,
                 }}
               >
-              {profileAnswers &&
-                profileAnswers.map((answer) => {
-                  return(
-                    <Typography>{answer.response}</Typography>
-                  )
-                })}
-              {profileAnswers.length === 0 && <Typography variant="h6">Answers Coming</Typography> } 
-  
+                {profileAnswers &&
+                  profileAnswers.map((answer) => {
+                    return (
+                      <Typography variant="body2" key={answer._id}>{answer.response}</Typography>
+                    )
+                  })}
+                {profileAnswers.length === 0 && <Typography variant="body2">No answers to show</Typography>}
+
               </Item>
             </Grid>
 
@@ -229,19 +229,19 @@ const UserDataProfile = () => {
                   borderRadius: 2,
                   boxShadow: 3,
                 }}
-              >
-              {profileQuestions &&
-                profileQuestions.map((question) => {
-                  return(
+              ><List>
+                {profileQuestions &&
 
-                    // <Item>
-                    //   <Typography>{question.answers.length}</Typography>
-                      <Typography variant="h3" component="Link">{question.title}</Typography>
-                    // </Item>
-                  )
-                }) 
+                  profileQuestions.map((question) => {
+                    return (
+                      <ListItem key={question._id}>
+                        <Link href={`/questions/${question._id}`}>{question.title}</Link>
+                      </ListItem>
+                    )
+                  })
                 }
-              {profileQuestions.length === 0 && <Typography variant="h6">Questions Coming</Typography>}  
+                  {profileQuestions.length === 0 && <Typography variant="body2">No questions to show</Typography>}
+                </List>
               </Item>
             </Grid>
 
@@ -267,16 +267,18 @@ const UserDataProfile = () => {
             </Grid> */}
           </Grid>
         </Box>
-      )  
+      )
       }
       {(!isLoading) && (!profile) &&
-        <Box sx={{width:'100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', flexGrow: 1}}>
-          <Button sx={{ marginLeft: 1, backgroundColor: "#A5D477", color: "black", width: '20%'}} variant="outlined" onClick={handleGoBackClick}>Go Back</Button>
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', flexGrow: 1 }}>
+          <Button sx={{ marginLeft: 1, backgroundColor: "#A5D477", color: "black", width: '20%' }} variant="outlined" onClick={handleGoBackClick}>Go Back</Button>
           <Typography variant="h1">{errorMessage}</Typography>
-          
+
         </Box>
       }
-      {isLoading && (!profile) && <Typography variant="h2">Loading Profile ...</Typography>}
+      {isLoading && (!profile) && <Box sx={{ width: '100%', height: '80vh' }}>
+        <LinearProgress />
+      </Box>}
       {(!isLoading) && (!profile) && errorMessenger("No Profile Exists")}
     </Container>
   );
